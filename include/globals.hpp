@@ -16,3 +16,7 @@ constexpr int SCALE = 2;
 // ROOM MANAGER
 constexpr int MAX_ENTITIES = 30;
 constexpr int MAX_ROOMS = 3;
+
+// ECS
+using Entity = int;
+using Room = vector<int>;

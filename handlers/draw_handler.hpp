@@ -1,5 +1,8 @@
 #pragma once
+#include "../handlers/draw_backend.hpp"
+#include "../objects/enemy.hpp"
 #include "../objects/game.hpp"
+#include "../objects/player.hpp"
 #include <raymath.h>
 
 class DrawHandler {
@@ -7,25 +10,21 @@ private:
     Game &g;
     char buffer[1024];
 
-    void draw() {
-
-        ClearBackground(RAYWHITE);
-
-        for (int i = 0; i < g.positions.size(); i++) {
-            Vector2 &pos = g.positions[i];
-            DrawCircle(pos.x, pos.y, g.radii[i] * SCALE, g.colors[i]);
-        }
-
-        int fps = g.dt == 0 ? 0 : 1 / g.dt;
-        snprintf(buffer, sizeof(buffer), "FPS: %d", fps);
-        DrawText(buffer, (WIDTH - 100) * SCALE, 20 * SCALE, 20 * SCALE, GREEN);
+public:
+    DrawHandler(Game &_g) : g(_g) {
     }
 
-public:
-    DrawHandler(Game &g_in) : g(g_in) {}
-
     void run() {
-        //
-        draw();
+        int fps = g.dt == 0 ? 0 : 1 / g.dt;
+        snprintf(buffer, sizeof(buffer), "FPS: %d", fps);
+
+        BeginDrawing();
+
+        Draw::clear_background(RAYWHITE);
+        Player::draw(g);
+        Enemy::draw(g);
+        Draw::draw_text(buffer, WIDTH - 100, 20, 20, GREEN);
+
+        EndDrawing();
     }
 };

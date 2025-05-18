@@ -1,27 +1,32 @@
 #include "handlers/draw_handler.hpp"
-#include "handlers/input_handler.hpp"
+#include "handlers/update_handler.hpp"
+#include "objects/enemy.hpp"
 #include "objects/game.hpp"
+#include "tests.hpp"
 #include <iostream>
 #include <raylib.h>
 
-int main() {
+void run() {
     InitWindow(WIDTH * SCALE, HEIGHT * SCALE, "dummy");
     printf("%f\n", SCALE);
 
     Game g;
+    Player::create(g, 100, 10, Vector2{WIDTH / 2, HEIGHT / 2}, RED);
+    Enemy::create(g, 100, 10, Vector2{WIDTH / 10, HEIGHT / 2}, GREEN);
 
-    InputHandler inputer(g);
     DrawHandler drawer(g);
+    UpdateHandler updater(g);
 
     SetTargetFPS(FPS);
     while (!WindowShouldClose()) {
         g.dt = GetFrameTime();
-        inputer.run();
-
-        BeginDrawing();
         drawer.run();
-        EndDrawing();
+        updater.run();
     }
 
     CloseWindow();
+}
+
+int main() {
+    run();
 }
