@@ -5,19 +5,19 @@
 class Player {
 private:
     static float &get_radius(Game &g) {
-        return g.radii.get(g.player);
+        return g.get_radius(g.player);
     }
 
     static Vector2 &get_position(Game &g) {
-        return g.positions.get(g.player);
+        return g.get_position(g.player);
     }
 
     static Color &get_color(Game &g) {
-        return g.colors.get(g.player);
+        return g.get_color(g.player);
     }
 
     static float &get_speed(Game &g) {
-        return g.speeds.get(g.player);
+        return g.get_speed(g.player);
     }
 
 public:

@@ -23,13 +23,10 @@ public:
     }
 
     static void draw(Game &g) {
-        auto array = g.enemy_ids;
-        auto data = array.get_components();
-        for (int i = 0; i < array.size(); i++) {
-            Entity id = data[i];
-            float radius = g.radii.get(id);
-            Color color = g.colors.get(id);
-            Vector2 pos = g.positions.get(id);
+        for (const Entity &id : g.enemy_ids) {
+            float radius = g.get_radius(id);
+            Color color = g.get_color(id);
+            Vector2 pos = g.get_position(id);
             Draw::draw_circle(pos.x, pos.y, radius, color);
         }
     }

@@ -19,4 +19,3 @@ constexpr int MAX_ROOMS = 3;
 
 // ECS
 using Entity = int;
-using Room = vector<int>;
