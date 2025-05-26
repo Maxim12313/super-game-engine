@@ -1,4 +1,5 @@
 #include "../ecs/packed_array_manager.hpp"
+#include "../ecs/entity_manager.hpp"
 #include "../include/test_utils.hpp"
 
 constexpr int n = 300;

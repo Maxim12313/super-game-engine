@@ -1,5 +1,5 @@
 #pragma once
-#include "../include/globals.hpp"
+#include "common.hpp"
 #include <stack>
 
 class EntityManager {
@@ -12,10 +12,9 @@ public:
             available_entities.push(Entity(id));
         }
     }
-    // return -1 if fail
     Entity get_entity() {
-        if (available_entities.empty())
-            return -1;
+        // NOTE: consider whether deny or just flag full when full
+        assert(!available_entities.empty() && "full");
         Entity res = available_entities.top();
         available_entities.pop();
         return res;

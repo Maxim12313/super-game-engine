@@ -18,9 +18,3 @@ foreach(src IN LISTS TESTS)
   add_executable(${name} ${src})
   add_test(NAME ${name} COMMAND ${name})
 endforeach()
-
-# add_executable(packed_array.out tests/packed_array.cpp) add_test(NAME
-# packed_array.out COMMAND packed_array.out)
-#
-# add_executable(packed_array_manager.out tests/packed_array_manager.cpp)
-# add_test(NAME packed_array_manager.out COMMAND packed_array_manager.out)
