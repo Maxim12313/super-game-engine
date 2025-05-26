@@ -1,6 +1,5 @@
 #pragma once
-#include "../include/globals.hpp"
-#include "entity_manager.hpp"
+#include "common.hpp"
 #include <cassert>
 #include <unordered_map>
 
