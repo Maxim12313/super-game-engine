@@ -1,13 +1,14 @@
 #pragma once
 #include "../components/components.hpp"
 #include "packed_array.hpp"
+#include <cassert>
 #include <memory>
 
 using Type_ID = uint32_t;
-
 static Type_ID curr = 0;
 template <typename T>
 Type_ID get_type_id() {
+    // static id init exactly once for each type, otherwise just ret existing
     static Type_ID id = curr++;
     return id;
 }
@@ -15,7 +16,7 @@ Type_ID get_type_id() {
 template <size_t MAX>
 class PackedArrayManager {
 private:
-    vector<shared_ptr<IPackedArray>> arrays;
+    vector<unique_ptr<IPackedArray>> arrays;
 
 public:
     PackedArrayManager() {
@@ -24,18 +25,18 @@ public:
     template <typename T>
     void register_type() {
         Type_ID id = get_type_id<T>();
-        PackedArray<T, MAX> arr;
-        arrays.emplace_back(make_shared<IPackedArray>(arr));
+        assert(id >= arrays.size() && "already registered");
+        arrays.emplace_back(make_unique<PackedArray<T, MAX>>());
     }
 
     template <typename T>
-    void add(Entity ent, T data) {
+    void set(Entity ent, T data) {
         PackedArray<T, MAX> *arr = get_array<T>();
         arr->set(ent, data);
     }
 
     template <typename T>
-    void remove(Entity ent) {
+    void erase(Entity ent) {
         PackedArray<T, MAX> *arr = get_array<T>();
         arr->erase(ent);
     }
@@ -44,7 +45,8 @@ public:
     PackedArray<T, MAX> *get_array() {
         Type_ID id = get_type_id<T>();
         assert(id < arrays.size() && "unregistered type");
-        PackedArray<T, MAX> *arr = arrays[int(id)].get();
+        auto unique = arrays[int(id)].get();
+        auto arr = static_cast<PackedArray<T, MAX> *>(unique);
         return arr;
     }
 };

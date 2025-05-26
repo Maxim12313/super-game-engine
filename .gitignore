@@ -1,6 +1,7 @@
-*.out
+bin/*
 CMake*
 !CMakeLists.txt
 Makefile
-cmake_install.cmake
 .clangd
+*.cmake
+Testing
