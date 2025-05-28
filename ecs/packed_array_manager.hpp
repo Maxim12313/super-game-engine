@@ -1,8 +1,9 @@
 #pragma once
-#include "../components/components.hpp"
 #include "packed_array.hpp"
+#include "type_id_utils.hpp"
 #include <cassert>
 #include <memory>
+#include <vector>
 
 template <size_t MAX>
 class PackedArrayManager {
@@ -15,26 +16,32 @@ public:
 
     template <typename T>
     void register_type() {
-        Type_ID id = get_type_id<T>();
+        Type_ID id = type_id_utils::get_type_id<T>();
         assert(id >= arrays.size() && "already registered");
         arrays.emplace_back(make_unique<PackedArray<T, MAX>>());
     }
 
     template <typename T>
-    void set(Entity ent, T data) {
+    void set(Entity entity, T data) {
         PackedArray<T, MAX> *arr = get_array<T>();
-        arr->set(ent, data);
+        arr->set(entity, data);
     }
 
     template <typename T>
-    void erase(Entity ent) {
+    bool contains(Entity entity) {
         PackedArray<T, MAX> *arr = get_array<T>();
-        arr->erase(ent);
+        return arr->contains(entity);
+    }
+
+    template <typename T>
+    void erase(Entity entity) {
+        PackedArray<T, MAX> *arr = get_array<T>();
+        arr->erase(entity);
     }
 
     template <typename T>
     PackedArray<T, MAX> *get_array() {
-        Type_ID id = get_type_id<T>();
+        Type_ID id = type_id_utils::get_type_id<T>();
         assert(id < arrays.size() && "unregistered type");
         auto unique = arrays[int(id)].get();
         auto arr = static_cast<PackedArray<T, MAX> *>(unique);

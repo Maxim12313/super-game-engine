@@ -1,5 +1,6 @@
 #pragma once
 #include "common.hpp"
+#include <array>
 #include <cassert>
 #include <unordered_map>
 
@@ -43,6 +44,10 @@ public:
             add(entity);
         get(entity) = val;
     }
+    bool contains(Entity entity) {
+        return entity_to_idx.count(entity);
+    }
+
     T &get(Entity entity) {
         assert(entity_to_idx.count(entity) != 0 && "not registered");
         return data[entity_to_idx[entity]];

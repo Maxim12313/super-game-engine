@@ -1,6 +1,6 @@
 #pragma once
-#include "../components/components.hpp"
 #include "packed_array.hpp"
+#include "signature_utils.hpp"
 
 class SignatureManager {
 private:
@@ -22,18 +22,22 @@ public:
         return signatures.get(entity);
     }
 
+    bool contains(Entity entity) {
+        return signatures.contains(entity);
+    }
+
     template <typename T>
     void set_bit(Entity entity) {
-        Type_ID id = get_type_id<T>();
+        if (!contains(entity)) {
+            set(entity, 0);
+        }
         Signature &curr = signatures.get(entity);
-        curr |= (1u << id);
+        curr = signature_utils::set_bit<T>(curr);
     }
 
     template <typename T>
     void reset_bit(Entity entity) {
-        Type_ID id = get_type_id<T>();
         Signature &curr = signatures.get(entity);
-        if (curr & (1u << id))
-            curr -= (1u << id);
+        curr = signature_utils::reset_bit<T>(curr);
     }
 };
