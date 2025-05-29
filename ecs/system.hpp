@@ -1,6 +1,5 @@
 #pragma once
-#include "packed_array.hpp"
-#include "packed_array_manager.hpp"
+#include "component_manager.hpp"
 
 class System {
 protected:
@@ -15,7 +14,7 @@ public:
     void add(Entity entity) {
         subscribed_entities.set(entity, entity);
     }
-    virtual void run(PackedArrayManager<MAX_ENTITIES> &component_manager) = 0;
+    virtual void run(const ComponentManager &component_manager) = 0;
 
     // mean just 1 call on registration
     virtual Signature get_signature() = 0;

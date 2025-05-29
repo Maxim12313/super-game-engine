@@ -31,7 +31,7 @@ void test1() {
         ASSERT((val.val == 1) || (val.val == 2));
     }
 
-    arrays.erase<Type1>(first);
+    arrays.erase_data<Type1>(first);
     for (auto val : *arr) {
         ASSERT(val.val == 2);
     }

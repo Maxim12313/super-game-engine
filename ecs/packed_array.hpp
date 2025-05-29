@@ -8,6 +8,7 @@ class IPackedArray {
 public:
     virtual ~IPackedArray() {
     }
+    virtual void erase(Entity entity) = 0;
 };
 
 template <typename T, size_t MAX>
@@ -50,11 +51,12 @@ public:
 
     T &get(Entity entity) {
         assert(entity_to_idx.count(entity) != 0 && "not registered");
+
         return data[entity_to_idx[entity]];
     }
-    void erase(Entity entity) {
-        if (!entity_to_idx.count(entity))
-            return;
+    void erase(Entity entity) override {
+        assert(!contains(entity) && "not registered");
+
         int left = entity_to_idx[entity];
         int right = count - 1;
         swap(data[left], data[right]);

@@ -2,6 +2,8 @@
 #include "packed_array.hpp"
 #include "signature_utils.hpp"
 
+// default init for set
+// not default init for get, (should avoid, mostly for debugging)
 class SignatureManager {
 private:
     PackedArray<Signature, MAX_ENTITIES> signatures;
@@ -19,6 +21,7 @@ public:
     }
 
     Signature &get(Entity entity) {
+        assert(contains(entity) && "not registered");
         return signatures.get(entity);
     }
 
