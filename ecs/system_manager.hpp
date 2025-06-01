@@ -1,7 +1,3 @@
-/**
- * @brief Manages registered systems with adding entities and keeping required signature for each system
- */
-
 #pragma once
 #include "coordinator.hpp"
 #include "id_utils.hpp"
@@ -11,6 +7,11 @@
 
 class Coordinator;
 
+/**
+ * @class SystemManager
+ * @brief Manages registered systems with adding entities and keeping required signature for each system
+ *
+ */
 class SystemManager {
 private:
     vector<unique_ptr<System>> systems;

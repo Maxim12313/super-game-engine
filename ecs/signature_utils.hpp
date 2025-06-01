@@ -1,4 +1,5 @@
 /**
+ * @file
  * @brief Short set of utils for bit operations on signatures
  */
 

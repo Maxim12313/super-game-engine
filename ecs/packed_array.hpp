@@ -1,13 +1,14 @@
-/**
- * @brief Data container supporting cache fast iteration and key value indexing
- */
-
 #pragma once
 #include "../include/test_utils.hpp"
 #include "common.hpp"
 #include <array>
 #include <unordered_map>
 
+/**
+ * @class IPackedArray
+ * @brief Interface placeholder for type erasing in packed array manager
+ *
+ */
 class IPackedArray {
 public:
     virtual ~IPackedArray() {
@@ -15,6 +16,12 @@ public:
     virtual void erase(Entity entity) = 0;
 };
 
+/**
+ * @brief Data container supporting cache fast iteration and key value indexing
+ *
+ * @tparam T
+ * @param entity
+ */
 template <typename T, size_t MAX>
 class PackedArray : public IPackedArray {
 private:

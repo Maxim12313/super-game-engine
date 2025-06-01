@@ -1,9 +1,9 @@
 /**
+ * @file
  * @brief Set of ECS common definitions
  */
 
 #pragma once
-#include "../include/test_utils.hpp"
 #include <cstdint>
 
 using namespace std;

@@ -1,7 +1,3 @@
-/**
- * @brief All ECS data and behavior maangement should be through the coordinaator
- */
-
 #pragma once
 #include "../include/test_utils.hpp"
 #include "common.hpp"
@@ -13,6 +9,10 @@
 class System;
 class SystemManager;
 
+/**
+ * @class Coordinator
+ * @brief All ECS data and behavior maangement should be through the coordinaator
+ */
 class Coordinator {
 private:
     SignatureManager entity_signature_manager;

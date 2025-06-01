@@ -1,4 +1,5 @@
 /**
+ * @file
  * @brief Utils for mapping type to type_id for systems and components
  */
 

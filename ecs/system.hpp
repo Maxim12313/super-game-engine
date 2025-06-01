@@ -1,15 +1,14 @@
-/**
- * @file Abstract class for a system which can register entities and operate on them
- */
-
 #pragma once
 #include "common.hpp"
 #include "packed_array.hpp"
 
-// NOTE: templating for systems expects the following class functions to be implemented
-// void run(Coordinator &)
-// don't want to deal with cyclic dependencies
-
+/**
+ * @class System
+ * @brief Abstract class for a system which can register entities and operate on them
+ * NOTE: templating for systems expects the following class functions to be implemented
+ * void run(Coordinator &)
+ * don't want to deal with cyclic dependencies
+ */
 class System {
 protected:
     PackedArray<Entity, MAX_ENTITIES> subscribed_entities;

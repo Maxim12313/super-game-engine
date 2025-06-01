@@ -1,13 +1,13 @@
-/**
- * @brief Wrapper over packed array specific for maintaing and setting signatures
- */
-
 #pragma once
 #include "packed_array.hpp"
 #include "signature_utils.hpp"
 
-// default init for set
-// not default init for get, (should avoid, mostly for debugging)
+/**
+ * @class SignatureManager
+ * @brief Wrapper over packed array specific for maintaing and setting signatures
+ *  default init for set
+ *  not default init for get (should avoid, mostly for debugging)
+ */
 class SignatureManager {
 private:
     PackedArray<Signature, MAX_ENTITIES> signatures;

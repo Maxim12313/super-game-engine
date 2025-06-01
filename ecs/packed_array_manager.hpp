@@ -1,7 +1,3 @@
-/**
- * @brief Manages registered packed arrays which can hold different types
- */
-
 #pragma once
 #include "../include/test_utils.hpp"
 #include "id_utils.hpp"
@@ -9,6 +5,10 @@
 #include <memory>
 #include <vector>
 
+/**
+ * @class PackedArrayManager
+ * @brief Manages registered packed arrays which can hold different types
+ */
 template <size_t MAX>
 class PackedArrayManager {
 private:
