@@ -21,7 +21,7 @@ public:
     }
 
     Signature &get(Entity entity) {
-        assert(contains(entity) && "not registered");
+        ASSERT(contains(entity) && "not registered");
         return signatures.get(entity);
     }
 

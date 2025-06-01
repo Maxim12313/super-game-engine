@@ -1,5 +1,5 @@
 #pragma once
-#include <cassert>
+#include "../include/test_utils.hpp"
 #include <cstdint>
 
 using namespace std;

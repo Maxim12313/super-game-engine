@@ -2,6 +2,7 @@
 #include "common.hpp"
 #include "id_utils.hpp"
 
+// NOTE: SIGNATURES ALL BASED ON COMPONENTS
 namespace signature_utils {
 template <typename T>
 Signature set_bit(Signature signature) {

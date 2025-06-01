@@ -4,7 +4,7 @@
 #include "entity_manager.hpp"
 #include "signature_manager.hpp"
 #include "system_manager.hpp"
-#include <cassert>
+#include "../include/test_utils.hpp"
 
 class System;
 class SystemManager;
@@ -28,7 +28,7 @@ public:
     }
 
     void erase_entity(Entity entity) {
-        Signature signature = entity_signature_manager.get(entity);
+        Signature &signature = entity_signature_manager.get(entity);
 
         entity_manager.erase_entity(entity);
         entity_signature_manager.erase(entity);
@@ -55,9 +55,11 @@ public:
 
     template <typename T>
     void set_component(Entity entity, T data) {
-        Signature signature = entity_signature_manager.get(entity);
-
+        // must be ref to reflect changes throughout bottom
         component_manager.set<T>(entity, data);
+        entity_signature_manager.set_bit<T>(entity);
+
+        Signature signature = entity_signature_manager.get(entity);
         system_manager->add_entity(entity, signature);
     }
 

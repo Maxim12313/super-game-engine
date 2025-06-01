@@ -1,5 +1,7 @@
 #include "../ecs/coordinator.hpp"
 #include "../include/test_utils.hpp"
+#include <ostream>
+#include <sstream>
 #include <unordered_set>
 
 struct Type1 {
@@ -17,18 +19,16 @@ public:
     PrintSystem() {
     }
 
-    void run(Coordinator &coordinator) {
-        cout << "wassup\n";
-        cout << subscribed_entities.size() << "\n";
+    void run(Coordinator &coordinator, ostream &os) {
         for (Entity entity : subscribed_entities) {
             Type1 &data1 = coordinator.get_component<Type1>(entity);
             Type2 &data2 = coordinator.get_component<Type2>(entity);
-            cout << data1.val << " " << data2.str << " for " << entity << "\n";
+            os << to_string(data1.val) << " " << data2.str + "\n";
         }
     }
 
     Signature get_signature() override {
-        Signature signature;
+        Signature signature = 0;
         signature = signature_utils::set_bit<Type1>(signature);
         signature = signature_utils::set_bit<Type2>(signature);
         return signature;
@@ -48,11 +48,11 @@ void test1() {
     coordinator.set_component(first, Type2{"first"});
 
     Entity second = coordinator.create_entity();
-    coordinator.set_component(first, Type1{1});
-    coordinator.set_component(first, Type2{"first"});
+    coordinator.set_component(second, Type1{2});
+    coordinator.set_component(second, Type2{"second"});
 
     PrintSystem *system = coordinator.get_system<PrintSystem>();
-    system->run(coordinator);
+    system->run(coordinator, cout);
 }
 
 int main() {

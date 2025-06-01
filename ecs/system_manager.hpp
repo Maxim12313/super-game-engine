@@ -2,7 +2,6 @@
 #include "coordinator.hpp"
 #include "id_utils.hpp"
 #include "system.hpp"
-#include <iostream>
 #include <memory>
 #include <vector>
 
@@ -20,7 +19,7 @@ public:
     template <typename T>
     void register_system(T system) {
         System_ID id = id_utils::get_system_id<T>();
-        assert(id >= systems.size() && "already registered");
+        ASSERT(id >= systems.size() && "already registered");
         systems.emplace_back(make_unique<T>(system));
         signatures.push_back(system.get_signature());
     }
@@ -28,7 +27,7 @@ public:
     template <typename T>
     T *get_system() {
         System_ID id = id_utils::get_system_id<T>();
-        assert(id < systems.size() && "unregistered system");
+        ASSERT(id < systems.size() && "unregistered system");
         System *system = systems[int(id)].get();
         return static_cast<T *>(system);
     }

@@ -16,10 +16,12 @@ public:
     virtual ~System() {
     }
     void add(Entity entity) {
-        subscribed_entities.set(entity, entity);
+        if (!subscribed_entities.contains(entity))
+            subscribed_entities.set(entity, entity);
     }
     void erase(Entity entity) {
-        subscribed_entities.erase(entity);
+        if (subscribed_entities.contains(entity))
+            subscribed_entities.erase(entity);
     }
     virtual Signature get_signature() = 0;
 };

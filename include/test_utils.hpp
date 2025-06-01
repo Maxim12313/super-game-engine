@@ -1,12 +1,12 @@
 #pragma once
-#include <cassert>
 #include <iostream>
 #include <vector>
 using namespace std;
 
-// more verbose assert
+// more verbose ASSERT
 // do while to ensure no nesting {} conflicts
 
+namespace debug {
 template <typename Iterable>
 string iter_to_string(Iterable data) {
     string res = "{ ";
@@ -14,6 +14,21 @@ string iter_to_string(Iterable data) {
         res += to_string(val) + ",";
     }
     res += " }";
+    return res;
+}
+
+vector<string> split(const string &s, char delimiter) {
+    vector<string> res;
+    res.push_back("");
+    for (char c : s) {
+        if (c == delimiter && !res.back().empty()) {
+            res.push_back("");
+        } else {
+            res.back() += c;
+        }
+    }
+    if (res.back().empty())
+        res.pop_back();
     return res;
 }
 
@@ -47,3 +62,5 @@ string iter_to_string(Iterable data) {
             exit(1);                                                                                                   \
         }                                                                                                              \
     } while (0)
+
+}; // namespace debug

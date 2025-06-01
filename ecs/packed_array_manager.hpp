@@ -1,7 +1,7 @@
 #pragma once
 #include "packed_array.hpp"
 #include "id_utils.hpp"
-#include <cassert>
+#include "../include/test_utils.hpp"
 #include <memory>
 #include <vector>
 
@@ -17,7 +17,7 @@ public:
     template <typename T>
     void register_type() {
         Component_ID id = id_utils::get_component_id<T>();
-        assert(id >= arrays.size() && "already registered");
+        ASSERT(id >= arrays.size() && "already registered");
         arrays.emplace_back(make_unique<PackedArray<T, MAX>>());
     }
 
@@ -58,7 +58,7 @@ public:
     template <typename T>
     PackedArray<T, MAX> *get_array() {
         Component_ID id = id_utils::get_component_id<T>();
-        assert(id < arrays.size() && "unregistered type");
+        ASSERT(id < arrays.size() && "unregistered type");
         auto unique = arrays[int(id)].get();
         auto arr = static_cast<PackedArray<T, MAX> *>(unique);
         return arr;

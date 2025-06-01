@@ -7,11 +7,12 @@
 - interfaces 
 - sparse bitstring signature vs packed array directly with types
 - be more deliberate with the contains checks. Leave for the leafs, the intermediates wrappers should not check
+- consideer looking into perfect forwarding with rvalue + lvalue handling for systems and others
+- consider placement of if checks and whether to use ASSERTions instead, decide what guarantees we want
 
 # Design Choices
 - use unique_ptr or reference for system_maanger in coordinator? ptr extra indirection, reference pollutes constructor
-- force all systems to be run from coordinator and must be all run() from coordinator and T() default constructed or just define get and set and let be made
-
+- force all systems to be run from coordinator and must be all run() from coordinator and T() default constructed or just define get and set, more flexible, more complicated call site
 
 # In Progress
 - game coordinator, handling erasing entity with signature, component, system recognizing

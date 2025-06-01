@@ -1,7 +1,7 @@
 #pragma once
 #include "common.hpp"
 #include <array>
-#include <cassert>
+#include "../include/test_utils.hpp"
 #include <unordered_map>
 
 class IPackedArray {
@@ -21,7 +21,7 @@ private:
     unordered_map<int, Entity> idx_to_entity;
 
     void add(Entity entity) {
-        assert(entity_to_idx.count(entity) == 0 && "already registered");
+        ASSERT(entity_to_idx.count(entity) == 0 && "already registered");
         entity_to_idx[entity] = count;
         idx_to_entity[count] = entity;
         count++;
@@ -50,11 +50,11 @@ public:
     }
 
     T &get(Entity entity) {
-        assert(entity_to_idx.count(entity) != 0 && "not registered");
+        ASSERT(entity_to_idx.count(entity) != 0 && "not registered");
         return data[entity_to_idx[entity]];
     }
     void erase(Entity entity) override {
-        assert(contains(entity) && "not registered");
+        ASSERT(contains(entity) && "not registered");
 
         int left = entity_to_idx[entity];
         int right = count - 1;

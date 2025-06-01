@@ -14,7 +14,7 @@ public:
     }
     Entity create_entity() {
         // NOTE: consider whether deny or just flag full when full
-        assert(!available_entities.empty() && "full");
+        ASSERT(!available_entities.empty() && "full");
         Entity res = available_entities.top();
         available_entities.pop();
         return res;
