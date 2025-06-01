@@ -1,3 +1,7 @@
+/**
+ * @brief Just alias on paccked array manager
+ */
+
 #pragma once
 #include "packed_array_manager.hpp"
 

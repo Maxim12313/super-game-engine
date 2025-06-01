@@ -1,7 +1,11 @@
+/**
+ * @brief Manages registered packed arrays which can hold different types
+ */
+
 #pragma once
-#include "packed_array.hpp"
-#include "id_utils.hpp"
 #include "../include/test_utils.hpp"
+#include "id_utils.hpp"
+#include "packed_array.hpp"
 #include <memory>
 #include <vector>
 

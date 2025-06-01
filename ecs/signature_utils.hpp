@@ -1,3 +1,7 @@
+/**
+ * @brief Short set of utils for bit operations on signatures
+ */
+
 #pragma once
 #include "common.hpp"
 #include "id_utils.hpp"

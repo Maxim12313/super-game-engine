@@ -4,8 +4,8 @@ set(CMAKE_CXX_STANDARD 23)
 set(flags
     "-g -O0 -Wall -Wextra -Wshadow -Wno-sign-compare -Wfloat-equal -fsanitize=address,undefined -Wno-switch -Wno-format"
 )
-
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 include_directories(include objects handlers ecs)
 
 add_executable(game main.cpp)

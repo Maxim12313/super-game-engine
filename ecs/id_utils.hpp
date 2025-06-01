@@ -1,3 +1,7 @@
+/**
+ * @brief Utils for mapping type to type_id for systems and components
+ */
+
 #pragma once
 #include "common.hpp"
 

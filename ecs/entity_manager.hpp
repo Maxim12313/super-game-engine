@@ -1,3 +1,7 @@
+/**
+ * @brief Ensures unique entity ids are provisioned
+ */
+
 #pragma once
 #include "common.hpp"
 #include <stack>

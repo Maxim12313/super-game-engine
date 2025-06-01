@@ -1,3 +1,7 @@
+/**
+ * @brief Manages registered systems with adding entities and keeping required signature for each system
+ */
+
 #pragma once
 #include "coordinator.hpp"
 #include "id_utils.hpp"

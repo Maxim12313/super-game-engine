@@ -1,3 +1,7 @@
+/**
+ * @file Abstract class for a system which can register entities and operate on them
+ */
+
 #pragma once
 #include "common.hpp"
 #include "packed_array.hpp"

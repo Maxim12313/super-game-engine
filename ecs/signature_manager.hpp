@@ -1,3 +1,7 @@
+/**
+ * @brief Wrapper over packed array specific for maintaing and setting signatures
+ */
+
 #pragma once
 #include "packed_array.hpp"
 #include "signature_utils.hpp"

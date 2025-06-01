@@ -5,4 +5,4 @@ if [ exit_status -neq 0 ]; then
     echo "sucker not today"
     exit 1
 fi
-
+doxygen

@@ -1,5 +1,6 @@
+# NOTES
+
 # Bucket List
-- Doxygen
 - Consider separate container optimized for flag components for systems with no real data
 - unwrapping some code (more implementation, less function calls)
 - inheritance vs enum switching

@@ -1,7 +1,11 @@
+/**
+ * @brief Data container supporting cache fast iteration and key value indexing
+ */
+
 #pragma once
+#include "../include/test_utils.hpp"
 #include "common.hpp"
 #include <array>
-#include "../include/test_utils.hpp"
 #include <unordered_map>
 
 class IPackedArray {
