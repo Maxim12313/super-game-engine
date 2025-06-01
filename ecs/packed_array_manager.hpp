@@ -1,6 +1,6 @@
 #pragma once
 #include "packed_array.hpp"
-#include "type_id_utils.hpp"
+#include "id_utils.hpp"
 #include <cassert>
 #include <memory>
 #include <vector>
@@ -16,9 +16,15 @@ public:
 
     template <typename T>
     void register_type() {
-        Type_ID id = type_id_utils::get_type_id<T>();
+        Component_ID id = id_utils::get_component_id<T>();
         assert(id >= arrays.size() && "already registered");
         arrays.emplace_back(make_unique<PackedArray<T, MAX>>());
+    }
+
+    template <typename T>
+    T &get(Entity entity) {
+        PackedArray<T, MAX> *arr = get_array<T>();
+        return arr->get(entity);
     }
 
     template <typename T>
@@ -51,7 +57,7 @@ public:
 
     template <typename T>
     PackedArray<T, MAX> *get_array() {
-        Type_ID id = type_id_utils::get_type_id<T>();
+        Component_ID id = id_utils::get_component_id<T>();
         assert(id < arrays.size() && "unregistered type");
         auto unique = arrays[int(id)].get();
         auto arr = static_cast<PackedArray<T, MAX> *>(unique);

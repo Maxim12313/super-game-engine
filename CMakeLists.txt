@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(dodge_master)
 set(CMAKE_CXX_STANDARD 23)
 set(flags
-    "-O1 -Wall -Wextra -Wshadow -Wno-sign-compare -Wfloat-equal -fsanitize=address,undefined -Wno-switch -Wno-format"
+    "-g -O0 -Wall -Wextra -Wshadow -Wno-sign-compare -Wfloat-equal -fsanitize=address,undefined -Wno-switch -Wno-format"
 )
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)

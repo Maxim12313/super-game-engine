@@ -6,7 +6,7 @@
 class Enemy {
 public:
     static void create(Game &g, float radius, float speed, Vector2 pos, Color color) {
-        Entity id = g.entity_manager.get_entity();
+        Entity id = g.entity_manager.create_entity()();
         g.enemy_ids.set(id, id);
         g.radii.set(id, radius);
         g.speeds.set(id, speed);

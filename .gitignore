@@ -5,3 +5,5 @@ Makefile
 .clangd
 *.cmake
 Testing
+compile_commands.json
+.cache

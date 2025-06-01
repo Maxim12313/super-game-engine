@@ -20,10 +20,10 @@ void test1() {
     arrays.register_type<Type1>();
     arrays.register_type<Type2>();
 
-    Entity first = entities.get_entity();
+    Entity first = entities.create_entity();
     arrays.set(first, Type1{1});
 
-    Entity second = entities.get_entity();
+    Entity second = entities.create_entity();
     arrays.set(second, Type1{2});
 
     auto arr = arrays.get_array<Type1>();

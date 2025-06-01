@@ -11,10 +11,10 @@ void test1() {
     for (int i = 0; i < n; i++) {
         if (!seen.empty() && rand() > RAND_MAX / 2) {
             Entity lose = *begin(seen);
-            manager.return_entity(lose);
+            manager.erase_entity(lose);
             seen.erase(lose);
         } else {
-            Entity adding = manager.get_entity();
+            Entity adding = manager.create_entity();
             ASSERT(!seen.count(adding));
             seen.insert(adding);
         }

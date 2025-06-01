@@ -1,37 +1,36 @@
 #pragma once
+#include "coordinator.hpp"
+#include "id_utils.hpp"
 #include "system.hpp"
-#include "type_id_utils.hpp"
+#include <iostream>
 #include <memory>
 #include <vector>
+
+class Coordinator;
 
 class SystemManager {
 private:
     vector<unique_ptr<System>> systems;
     vector<Signature> signatures;
 
-    template <typename T>
-    System *get_system() {
-        Type_ID id = get_type_id<T>();
-        assert(id < systems.size() && "unregistered type");
-        return systems[int(id)].get();
-    }
-
 public:
     SystemManager() {
     }
 
     template <typename T>
-    void register_system(Signature signature) {
-        Type_ID id = get_type_id<T>();
+    void register_system(T system) {
+        System_ID id = id_utils::get_system_id<T>();
         assert(id >= systems.size() && "already registered");
-        systems.emplace_back(make_unique(T{}));
-        signatures.push_back(signature);
+        systems.emplace_back(make_unique<T>(system));
+        signatures.push_back(system.get_signature());
     }
 
     template <typename T>
-    void run_system(PackedArrayManager<MAX_ENTITIES> &component_manager) {
-        System *system = get_system<T>();
-        system->run(component_manager);
+    T *get_system() {
+        System_ID id = id_utils::get_system_id<T>();
+        assert(id < systems.size() && "unregistered system");
+        System *system = systems[int(id)].get();
+        return static_cast<T *>(system);
     }
 
     void add_entity(Entity entity, Signature signature) {
@@ -41,6 +40,17 @@ public:
             if ((required & signature) == required) {
                 System *system = systems[i].get();
                 system->add(entity);
+            }
+        }
+    }
+
+    void erase(Entity entity, Signature signature) {
+        for (int i = 0; i < systems.size(); i++) {
+            Signature required = signatures[i];
+            // if signature contains required
+            if ((required & signature) == required) {
+                System *system = systems[i].get();
+                system->erase(entity);
             }
         }
     }

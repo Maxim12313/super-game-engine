@@ -22,7 +22,7 @@ private:
 
 public:
     static void create(Game &g, float radius, float speed, Vector2 pos, Color color) {
-        Entity player = g.entity_manager.get_entity();
+        Entity player = g.entity_manager.create_entity()();
         g.radii.set(player, radius);
         g.speeds.set(player, speed);
         g.positions.set(player, pos);

@@ -51,11 +51,10 @@ public:
 
     T &get(Entity entity) {
         assert(entity_to_idx.count(entity) != 0 && "not registered");
-
         return data[entity_to_idx[entity]];
     }
     void erase(Entity entity) override {
-        assert(!contains(entity) && "not registered");
+        assert(contains(entity) && "not registered");
 
         int left = entity_to_idx[entity];
         int right = count - 1;

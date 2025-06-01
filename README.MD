@@ -6,7 +6,15 @@
 - functional programming 
 - interfaces 
 - sparse bitstring signature vs packed array directly with types
+- be more deliberate with the contains checks. Leave for the leafs, the intermediates wrappers should not check
+
+# Design Choices
+- use unique_ptr or reference for system_maanger in coordinator? ptr extra indirection, reference pollutes constructor
+- force all systems to be run from coordinator and must be all run() from coordinator and T() default constructed or just define get and set and let be made
+
 
 # In Progress
 - game coordinator, handling erasing entity with signature, component, system recognizing
 - much testing
+- cyclic dependencies, decide how to manager systems etc
+

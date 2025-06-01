@@ -44,9 +44,9 @@ void test2() {
 
 int main() {
     // to set for consistency
-    type_id_utils::get_type_id<Type1>();
-    type_id_utils::get_type_id<Type2>();
-    type_id_utils::get_type_id<Type3>();
+    id_utils::get_component_id<Type1>();
+    id_utils::get_component_id<Type2>();
+    id_utils::get_component_id<Type3>();
 
     test1();
     test2();
