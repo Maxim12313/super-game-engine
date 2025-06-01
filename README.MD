@@ -18,4 +18,5 @@
 - game coordinator, handling erasing entity with signature, component, system recognizing
 - much testing
 - cyclic dependencies, decide how to manager systems etc
+- tests and decide on flexibility
 
