@@ -29,6 +29,12 @@ public:
         return signatures.get(entity);
     }
 
+    template <typename T>
+    bool has_bit(Entity entity) {
+        Signature curr = signatures.get(entity);
+        return signature_utils::has_bit<T>(curr);
+    }
+
     bool contains(Entity entity) {
         return signatures.contains(entity);
     }

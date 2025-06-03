@@ -26,5 +26,9 @@ public:
         if (subscribed_entities.contains(entity))
             subscribed_entities.erase(entity);
     }
+
+    bool contains(Entity entity) {
+        return subscribed_entities.contains(entity);
+    }
     virtual Signature get_signature() = 0;
 };

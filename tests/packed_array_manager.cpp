@@ -1,6 +1,6 @@
-#include "../ecs/packed_array_manager.hpp"
-#include "../ecs/entity_manager.hpp"
-#include "../include/test_utils.hpp"
+#include "../include/ecs/packed_array_manager.hpp"
+#include "../include/ecs/entity_manager.hpp"
+#include "../include/utils/test_utils.hpp"
 
 constexpr int n = 300;
 constexpr int m = 200;

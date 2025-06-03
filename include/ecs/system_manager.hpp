@@ -48,14 +48,11 @@ public:
         }
     }
 
-    void erase(Entity entity, Signature signature) {
+    void erase(Entity entity) {
         for (int i = 0; i < systems.size(); i++) {
-            Signature required = signatures[i];
-            // if signature contains required
-            if ((required & signature) == required) {
-                System *system = systems[i].get();
+            System *system = systems[i].get();
+            if (system->contains(entity))
                 system->erase(entity);
-            }
         }
     }
 };

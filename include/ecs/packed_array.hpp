@@ -1,5 +1,5 @@
 #pragma once
-#include "../include/test_utils.hpp"
+#include "../utils/test_utils.hpp"
 #include "common.hpp"
 #include <array>
 #include <unordered_map>
@@ -13,14 +13,17 @@ class IPackedArray {
 public:
     virtual ~IPackedArray() {
     }
+    /**
+     * @brief Erases the data entry for the given entity
+     *
+     * @param entity The entity whos data will be modified
+     */
     virtual void erase(Entity entity) = 0;
 };
 
 /**
+ * @class PackedArray
  * @brief Data container supporting cache fast iteration and key value indexing
- *
- * @tparam T
- * @param entity
  */
 template <typename T, size_t MAX>
 class PackedArray : public IPackedArray {
@@ -51,6 +54,7 @@ public:
     array<T, MAX> &get_data() {
         return data;
     }
+
     void set(Entity entity, T val) {
         if (!entity_to_idx.count(entity))
             add(entity);

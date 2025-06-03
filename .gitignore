@@ -7,4 +7,8 @@ Makefile
 Testing
 compile_commands.json
 .cache
-docs
+
+_build
+_doxygen
+api
+xml

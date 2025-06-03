@@ -1,5 +1,5 @@
-#include "../ecs/packed_array.hpp"
-#include "../include/test_utils.hpp"
+#include "../include/ecs/packed_array.hpp"
+#include "../include/utils/test_utils.hpp"
 
 constexpr int n = 30; // MUST BE n >= 10
 

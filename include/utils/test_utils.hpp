@@ -1,5 +1,6 @@
 /**
- * @brief
+ * @file
+ * @brief utils for testing / debugging
  */
 
 #pragma once
@@ -21,20 +22,7 @@ string iter_to_string(Iterable data) {
     return res;
 }
 
-vector<string> split(const string &s, char delimiter) {
-    vector<string> res;
-    res.push_back("");
-    for (char c : s) {
-        if (c == delimiter && !res.back().empty()) {
-            res.push_back("");
-        } else {
-            res.back() += c;
-        }
-    }
-    if (res.back().empty())
-        res.pop_back();
-    return res;
-}
+vector<string> split(const string &s, char delimiter);
 
 #define ASSERT(cond)                                                                                                   \
     do {                                                                                                               \

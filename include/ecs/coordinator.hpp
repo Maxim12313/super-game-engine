@@ -1,5 +1,5 @@
 #pragma once
-#include "../include/test_utils.hpp"
+#include "../utils/test_utils.hpp"
 #include "common.hpp"
 #include "component_manager.hpp"
 #include "entity_manager.hpp"
@@ -37,7 +37,7 @@ public:
         entity_manager.erase_entity(entity);
         entity_signature_manager.erase(entity);
         component_manager.erase_entity(entity, signature);
-        system_manager->erase(entity, signature);
+        // system_manager->erase(entity, signature);
     }
 
     // -----------------REGISTER
@@ -65,6 +65,15 @@ public:
 
         Signature signature = entity_signature_manager.get(entity);
         system_manager->add_entity(entity, signature);
+    }
+
+    // does nothing if component never registered
+    template <typename T>
+    void erase_component(Entity entity) {
+        if (!entity_signature_manager.has_bit<T>(entity))
+            return;
+        component_manager.erase_data<T>(entity);
+        entity_signature_manager.reset_bit<T>();
     }
 
     // -----------------SYSTEMS

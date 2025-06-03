@@ -13,7 +13,10 @@
 
 # Design Choices
 - use unique_ptr or reference for system_maanger in coordinator? ptr extra indirection, reference pollutes constructor
-- force all systems to be run from coordinator and must be all run() from coordinator and T() default constructed or just define get and set, more flexible, more complicated call site
+- force all systems to be run from coordinator and must be all run() from coordinator 
+and T() default constructed or just define get and set, more flexible, more complicated call site
+- consider checking system contains with system maanger signatures vs subscribed_entities.contains checks. 
+First has better cache but second simpler implementation with different cases cases considering dynamic adding / deleting
 
 # In Progress
 - game coordinator, handling erasing entity with signature, component, system recognizing

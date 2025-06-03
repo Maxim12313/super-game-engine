@@ -1,5 +1,5 @@
-#include "../ecs/coordinator.hpp"
-#include "../ecs/system.hpp"
+#include "../include/ecs/coordinator.hpp"
+#include "../include/ecs/system.hpp"
 
 // class DoubleSystem : public System {
 // public:
