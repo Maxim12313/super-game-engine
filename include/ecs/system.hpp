@@ -19,8 +19,6 @@ public:
     /**
      * @brief Registers entity to be read/modified by this system and
      * nothing if already registered
-     *
-     * @param entity
      */
     void register_entity(Entity entity) {
         subscribed_entities[entity] = entity;
@@ -28,15 +26,12 @@ public:
     /**
      * @brief Erases the entity from this system's tracking and nothing
      * if already not contained
-     *
-     * @param entity
      */
     void erase(Entity entity) {
         subscribed_entities.erase(entity);
     }
 
     /**
-     * @param entity
      * @return True if entity is tracked by the system
      */
     bool contains(Entity entity) {

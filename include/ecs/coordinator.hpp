@@ -26,8 +26,6 @@ public:
 
     /**
      * @brief Create a new entity
-     *
-     * @return
      */
     Entity create_entity() {
         Entity entity = entity_manager.create_entity();
@@ -37,8 +35,6 @@ public:
 
     /**
      * @brief Erase entity or do nothing if it does not exist
-     *
-     * @param entity
      */
     void erase_entity(Entity entity) {
         component_manager.erase_entity(entity);
@@ -49,9 +45,6 @@ public:
 
     /**
      * @brief Register T system [requires not already registered]
-     *
-     * @tparam T
-     * @param system
      */
     template <typename T>
     void register_system(T system) {
@@ -60,8 +53,6 @@ public:
 
     /**
      * @brief Register T component [requires not already registered]
-     *
-     * @tparam T
      */
     template <typename T>
     void register_component() {
@@ -70,9 +61,6 @@ public:
 
     /**
      * @brief Default init component if not exist
-     *
-     * @tparam T
-     * @param entity
      * @return Returns the associated T data for entity
      */
     template <typename T>
@@ -82,10 +70,6 @@ public:
 
     /**
      * @brief Assign entity T component data to val
-     *
-     * @tparam T
-     * @param entity
-     * @param data
      */
     template <typename T>
     void assign_component(Entity entity, T val) {
@@ -98,9 +82,6 @@ public:
 
     /**
      * @brief Erase entity's T component if exist, otherwise do nothing
-     *
-     * @tparam T
-     * @param entity
      */
     template <typename T>
     void erase_component(Entity entity) {
@@ -110,9 +91,6 @@ public:
 
     /**
      * @brief Requires that T system is registered
-     *
-     * @tparam T
-     * @return A pointer to the T system
      */
     template <typename T>
     T *get_system() {

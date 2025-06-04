@@ -27,9 +27,6 @@ public:
 
     /**
      * @brief Will default init T data for entity if not set
-     *
-     * @tparam T
-     * @param entity
      * @return Reference to the T data set for entity
      */
     template <typename T>
@@ -40,10 +37,6 @@ public:
 
     /**
      * @brief Assign entity T value to val
-     *
-     * @tparam T
-     * @param entity
-     * @param val
      */
     template <typename T>
     void assign(Entity entity, T val) {
@@ -51,8 +44,6 @@ public:
     }
 
     /**
-     * @tparam T
-     * @param entity
      * @return True if a T data type for entity is set
      */
     template <typename T>
@@ -63,9 +54,6 @@ public:
 
     /**
      * @brief Erase the T data entry for entity if it exists, else does nothing
-     *
-     * @tparam T
-     * @param entity
      */
     template <typename T>
     void erase_data(Entity entity) {
@@ -75,9 +63,6 @@ public:
 
     /**
      * @brief Erase all data for the entity and unset
-     *
-     * @param entity
-     * @param signature
      */
     void erase_entity(Entity entity) {
         for (auto &array : arrays) {
@@ -87,7 +72,6 @@ public:
 
     /**
      * @brief Requires that the type be registered already
-     * @tparam T
      * @return The packed array associeted with type T
      */
     template <typename T>

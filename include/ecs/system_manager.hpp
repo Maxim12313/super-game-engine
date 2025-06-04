@@ -23,9 +23,6 @@ public:
 
     /**
      * @brief Register T system as an available to manage
-     *
-     * @tparam T
-     * @param system
      */
     template <typename T>
     void register_system(T system) {
@@ -37,8 +34,6 @@ public:
 
     /**
      * @brief Requires that T system be registered
-     *
-     * @tparam T
      * @return A poiter to the T system
      */
     template <typename T>
@@ -52,9 +47,6 @@ public:
     /**
      * @brief Attempt to register entity with all registered systems that
      * accept its signature
-     *
-     * @param entity
-     * @param signature
      */
     void register_entity(Entity entity, Signature signature) {
         for (int i = 0; i < systems.size(); i++) {
@@ -70,8 +62,6 @@ public:
 
     /**
      * @brief Erase this entity from all registered systems
-     *
-     * @param entity
      */
     void erase_entity(Entity entity) {
         for (auto &system : systems) {

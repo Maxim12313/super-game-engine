@@ -18,9 +18,6 @@ public:
 
     /**
      * @brief Init entity signature with signature value
-     *
-     * @param entity
-     * @param signature
      */
     void set(Entity entity, Signature signature) {
         signatures[entity] = signature;
@@ -28,8 +25,6 @@ public:
 
     /**
      * @brief Default init entity signature to 0 empty
-     *
-     * @param entity
      */
     void set(Entity entity) {
         signatures[entity];
@@ -37,15 +32,12 @@ public:
 
     /**
      * @brief Erase the entity signature if it exists
-     *
-     * @param entity
      */
     void erase(Entity entity) {
         signatures.erase(entity);
     }
 
     /**
-     * @param entity
      * @return Reference to the signature of entity
      */
     Signature &operator[](Entity entity) {
@@ -53,8 +45,6 @@ public:
     }
 
     /**
-     * @tparam T
-     * @param entity
      * @return True if the bit corresponding to the T type is set in
      * entity's signature
      */
@@ -65,7 +55,6 @@ public:
     }
 
     /**
-     * @param entity
      * @return True if a signature is set for entity
      */
     bool contains(Entity entity) {
@@ -74,9 +63,6 @@ public:
 
     /**
      * @brief Sets the T type bit in entity's signature
-     *
-     * @tparam T
-     * @param entity
      */
     template <typename T>
     void set_bit(Entity entity) {
@@ -86,9 +72,6 @@ public:
 
     /**
      * @brief Resets the T type bit in entity's signature
-     *
-     * @tparam T
-     * @param entity
      */
     template <typename T>
     void reset_bit(Entity entity) {

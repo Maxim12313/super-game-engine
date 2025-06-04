@@ -36,8 +36,6 @@ private:
 
     /**
      * @brief If not already registered, default init T datatype for entity
-     *
-     * @param entity
      */
     void register_entity(Entity entity) {
         ASSERT(entity_to_idx.count(entity) == 0 && "already registered");
@@ -61,7 +59,6 @@ public:
     }
 
     /**
-     * @param entity
      * @return Returns if entity is registered with this packed array
      */
     bool contains(Entity entity) {
@@ -70,8 +67,6 @@ public:
 
     /**
      * @brief Will default init if entity not contained in the array
-     *
-     * @param entity
      * @return Returns a reference to the T data entry for entity
      */
     T &operator[](Entity entity) {
@@ -83,8 +78,6 @@ public:
     /**
      * @brief Will erase the entity from the array if it exists and
      * otherwise do nothing
-     *
-     * @param entity
      */
     void erase(Entity entity) override {
         if (!contains(entity))
@@ -108,9 +101,15 @@ public:
         return count;
     }
 
+    /**
+     * @brief Iterator to first element
+     */
     array<T, MAX>::iterator begin() {
         return data.begin();
     }
+    /**
+     * @brief Iterator to last valid element
+     */
     array<T, MAX>::iterator end() {
         return data.begin() + count;
     }

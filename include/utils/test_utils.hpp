@@ -10,8 +10,10 @@ using namespace std;
 
 // more verbose ASSERT
 // do while to ensure no nesting {} conflicts
-
 namespace debug {
+/**
+ * @brief Converts iterable type into a string
+ */
 template <typename Iterable>
 string iter_to_string(Iterable data) {
     string res = "{ ";
@@ -22,8 +24,12 @@ string iter_to_string(Iterable data) {
     return res;
 }
 
+/**
+ * @brief Split a string into a vector of strings over a delimiter
+ */
 vector<string> split(const string &s, char delimiter);
 
+/// More verbose ASSERT
 #define ASSERT(cond)                                                                                                   \
     do {                                                                                                               \
         if (!(cond)) {                                                                                                 \
@@ -32,6 +38,7 @@ vector<string> split(const string &s, char delimiter);
         }                                                                                                              \
     } while (0);
 
+/// More verbose ASSERT on equality
 #define ASSERT_EQUAL(actual, expected)                                                                                 \
     do {                                                                                                               \
         if (!((actual) == (expected))) {                                                                               \
@@ -43,7 +50,8 @@ vector<string> split(const string &s, char delimiter);
         }                                                                                                              \
     } while (0)
 
-// for iterables (auto val : data) loopable
+/// For iterables (auto val : data) loopable
+/// More verbose ASSERT on equality of iterables
 #define ASSERT_ITERABLE_EQUAL(actual, expected)                                                                        \
     do {                                                                                                               \
         if (!((actual) == (expected))) {                                                                               \
