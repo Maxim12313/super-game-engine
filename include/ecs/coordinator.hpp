@@ -24,59 +24,96 @@ public:
     Coordinator() : system_manager(make_unique<SystemManager>()) {
     }
 
-    // -----------------ENTITY
+    /**
+     * @brief Create a new entity
+     *
+     * @return
+     */
     Entity create_entity() {
         Entity entity = entity_manager.create_entity();
         entity_signature_manager.set(entity, 0);
         return entity;
     }
 
+    /**
+     * @brief Erase entity or do nothing if it does not exist
+     *
+     * @param entity
+     */
     void erase_entity(Entity entity) {
-        Signature &signature = entity_signature_manager.get(entity);
-
-        entity_manager.erase_entity(entity);
+        component_manager.erase_entity(entity);
+        system_manager->erase_entity(entity);
         entity_signature_manager.erase(entity);
-        component_manager.erase_entity(entity, signature);
-        // system_manager->erase(entity, signature);
+        entity_manager.erase_entity(entity);
     }
 
-    // -----------------REGISTER
+    /**
+     * @brief Register T system [requires not already registered]
+     *
+     * @tparam T
+     * @param system
+     */
     template <typename T>
     void register_system(T system) {
         system_manager->register_system<T>(system);
     }
 
+    /**
+     * @brief Register T component [requires not already registered]
+     *
+     * @tparam T
+     */
     template <typename T>
     void register_component() {
         component_manager.register_type<T>();
     }
 
-    // -----------------COMPONENTS
+    /**
+     * @brief Default init component if not exist
+     *
+     * @tparam T
+     * @param entity
+     * @return Returns the associated T data for entity
+     */
     template <typename T>
     T &get_component(Entity entity) {
         return component_manager.get<T>(entity);
     }
 
+    /**
+     * @brief Assign entity T component data to val
+     *
+     * @tparam T
+     * @param entity
+     * @param data
+     */
     template <typename T>
-    void set_component(Entity entity, T data) {
-        // must be ref to reflect changes throughout bottom
-        component_manager.set<T>(entity, data);
+    void assign_component(Entity entity, T val) {
+        component_manager.assign(entity, val);
         entity_signature_manager.set_bit<T>(entity);
 
-        Signature signature = entity_signature_manager.get(entity);
-        system_manager->add_entity(entity, signature);
+        Signature signature = entity_signature_manager[entity];
+        system_manager->register_entity(entity, signature);
     }
 
-    // does nothing if component never registered
+    /**
+     * @brief Erase entity's T component if exist, otherwise do nothing
+     *
+     * @tparam T
+     * @param entity
+     */
     template <typename T>
     void erase_component(Entity entity) {
-        if (!entity_signature_manager.has_bit<T>(entity))
-            return;
         component_manager.erase_data<T>(entity);
         entity_signature_manager.reset_bit<T>();
     }
 
-    // -----------------SYSTEMS
+    /**
+     * @brief Requires that T system is registered
+     *
+     * @tparam T
+     * @return A pointer to the T system
+     */
     template <typename T>
     T *get_system() {
         return system_manager->get_system<T>();

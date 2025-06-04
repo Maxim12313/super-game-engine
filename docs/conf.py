@@ -10,15 +10,13 @@
 project = "Dodge Master"
 copyright = "2025, Maxim Kim"
 author = "Maxim Kim"
-
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
-
 # The `extensions` list should already be in here from `sphinx-quickstart`
 extensions = [
+    "breathe",
     "exhale",
 ]
-
 # Setup the breathe extension
 breathe_projects = {project: "./_doxygen/xml"}
 breathe_default_project = project
@@ -51,7 +49,5 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
-
-
 html_theme = "sphinx_book_theme"
 html_static_path = ["_static"]

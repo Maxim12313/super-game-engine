@@ -9,25 +9,25 @@ void test1() {
     Entity one = 1;
     SignatureManager manager;
 
-    manager.set(one, 0);
-    Signature sig = manager.get(one);
+    manager.set(one);
+    Signature sig = manager[one];
     ASSERT_EQUAL(sig, 0);
 
     Entity two = 2;
     manager.set(two, 0b10);
-    sig = manager.get(two);
+    sig = manager[two];
     ASSERT_EQUAL(sig, 0b10);
 
     // has set { {2, 0}, { 2, 2 } }
 
     manager.set_bit<Type1>(one);
-    ASSERT_EQUAL(manager.get(one), 0b1);
+    ASSERT_EQUAL(manager[one], 0b1);
 
     manager.set_bit<Type2>(one);
-    ASSERT_EQUAL(manager.get(one), 0b11);
+    ASSERT_EQUAL(manager[one], 0b11);
 
     manager.set_bit<Type3>(two);
-    ASSERT_EQUAL(manager.get(two), 0b110);
+    ASSERT_EQUAL(manager[two], 0b110);
 }
 
 void test2() {
@@ -35,11 +35,11 @@ void test2() {
 
     Entity first = 0;
     manager.set_bit<Type3>(first);
-    ASSERT_EQUAL(manager.get(first), 0b100);
+    ASSERT_EQUAL(manager[first], 0b100);
 
     Entity second = 1;
     manager.set_bit<Type2>(second);
-    ASSERT_EQUAL(manager.get(second), 0b10);
+    ASSERT_EQUAL(manager[second], 0b10);
 }
 
 int main() {

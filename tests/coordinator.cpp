@@ -44,16 +44,16 @@ void test1() {
     coordinator.register_system(PrintSystem{});
 
     Entity first = coordinator.create_entity();
-    coordinator.set_component(first, Type1{1});
-    coordinator.set_component(first, Type2{"first"});
+    coordinator.assign_component(first, Type1{1});
+    coordinator.assign_component(first, Type2{"first"});
 
     Entity second = coordinator.create_entity();
-    coordinator.set_component(second, Type1{2});
-    coordinator.set_component(second, Type2{"second"});
+    coordinator.assign_component(second, Type1{2});
+    coordinator.assign_component(second, Type2{"second"});
 
     Entity third = coordinator.create_entity();
-    coordinator.set_component(third, Type1{3});
-    coordinator.set_component(third, Type2{"third"});
+    coordinator.assign_component(third, Type1{3});
+    coordinator.assign_component(third, Type2{"third"});
 
     {
 
@@ -89,12 +89,12 @@ void test1() {
     //     }
     // }
     //
-    // coordinator.set_component(first, Type1{10});
-    // coordinator.set_component(first, Type2{"ten"});
+    // coordinator.assign_component(first, Type1{10});
+    // coordinator.assign_component(first, Type2{"ten"});
     //
     // Entity fourth = coordinator.create_entity();
-    // coordinator.set_component(fourth, Type1{40});
-    // coordinator.set_component(fourth, Type3{true});
+    // coordinator.assign_component(fourth, Type1{40});
+    // coordinator.assign_component(fourth, Type3{true});
     //
     // {
     //
@@ -112,7 +112,7 @@ void test1() {
     //     }
     // }
     //
-    // coordinator.set_component(fourth, Type2{"fourty"});
+    // coordinator.assign_component(fourth, Type2{"fourty"});
 }
 
 int main() {

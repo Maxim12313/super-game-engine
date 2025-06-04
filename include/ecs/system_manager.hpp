@@ -21,6 +21,12 @@ public:
     SystemManager() {
     }
 
+    /**
+     * @brief Register T system as an available to manage
+     *
+     * @tparam T
+     * @param system
+     */
     template <typename T>
     void register_system(T system) {
         System_ID id = id_utils::get_system_id<T>();
@@ -29,6 +35,12 @@ public:
         signatures.push_back(system.get_signature());
     }
 
+    /**
+     * @brief Requires that T system be registered
+     *
+     * @tparam T
+     * @return A poiter to the T system
+     */
     template <typename T>
     T *get_system() {
         System_ID id = id_utils::get_system_id<T>();
@@ -37,22 +49,33 @@ public:
         return static_cast<T *>(system);
     }
 
-    void add_entity(Entity entity, Signature signature) {
+    /**
+     * @brief Attempt to register entity with all registered systems that
+     * accept its signature
+     *
+     * @param entity
+     * @param signature
+     */
+    void register_entity(Entity entity, Signature signature) {
         for (int i = 0; i < systems.size(); i++) {
             Signature required = signatures[i];
-            // if signature contains required
+
+            // if signature contains required bits
             if ((required & signature) == required) {
                 System *system = systems[i].get();
-                system->add(entity);
+                system->register_entity(entity);
             }
         }
     }
 
-    void erase(Entity entity) {
-        for (int i = 0; i < systems.size(); i++) {
-            System *system = systems[i].get();
-            if (system->contains(entity))
-                system->erase(entity);
+    /**
+     * @brief Erase this entity from all registered systems
+     *
+     * @param entity
+     */
+    void erase_entity(Entity entity) {
+        for (auto &system : systems) {
+            system->erase(entity);
         }
     }
 };

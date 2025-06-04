@@ -21,10 +21,10 @@ void test1() {
     arrays.register_type<Type2>();
 
     Entity first = entities.create_entity();
-    arrays.set(first, Type1{1});
+    arrays.assign(first, Type1{1});
 
     Entity second = entities.create_entity();
-    arrays.set(second, Type1{2});
+    arrays.assign(second, Type2{2});
 
     auto arr = arrays.get_array<Type1>();
     for (auto val : *arr) {
@@ -36,10 +36,10 @@ void test1() {
         ASSERT(val.val == 2);
     }
 
-    arrays.set(first, Type1{30});
+    arrays.assign(first, Type1{30});
 
-    arrays.set(first, Type2{60});
-    arrays.set(second, Type2{120});
+    arrays.assign(first, Type2{60});
+    arrays.assign(second, Type2{120});
 
     for (auto val : *arr) {
         ASSERT((val.val == 30) || (val.val == 2));

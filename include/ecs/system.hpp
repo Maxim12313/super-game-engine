@@ -4,10 +4,8 @@
 
 /**
  * @class System
- * @brief Abstract class for a system which can register entities and operate on them
- * NOTE: templating for systems expects the following class functions to be implemented
- * void run(Coordinator &)
- * don't want to deal with cyclic dependencies
+ * @brief Abstract class for a system which can register entities and
+ * operate on them
  */
 class System {
 protected:
@@ -18,17 +16,36 @@ public:
     }
     virtual ~System() {
     }
-    void add(Entity entity) {
-        if (!subscribed_entities.contains(entity))
-            subscribed_entities.set(entity, entity);
+    /**
+     * @brief Registers entity to be read/modified by this system and
+     * nothing if already registered
+     *
+     * @param entity
+     */
+    void register_entity(Entity entity) {
+        subscribed_entities[entity] = entity;
     }
+    /**
+     * @brief Erases the entity from this system's tracking and nothing
+     * if already not contained
+     *
+     * @param entity
+     */
     void erase(Entity entity) {
-        if (subscribed_entities.contains(entity))
-            subscribed_entities.erase(entity);
+        subscribed_entities.erase(entity);
     }
 
+    /**
+     * @param entity
+     * @return True if entity is tracked by the system
+     */
     bool contains(Entity entity) {
         return subscribed_entities.contains(entity);
     }
+
+    /**
+     * @return The systems's signature, corresponding to the components
+     * that an entity must have to be tracked by this system
+     */
     virtual Signature get_signature() = 0;
 };
