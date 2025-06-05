@@ -108,7 +108,7 @@ public:
         return data.begin();
     }
     /**
-     * @brief Iterator to last valid element
+     * @brief Iterator to 1 beyond the last valid element
      */
     array<T, MAX>::iterator end() {
         return data.begin() + count;

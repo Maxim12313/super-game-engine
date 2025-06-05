@@ -34,7 +34,7 @@ public:
 
     /**
      * @brief Requires that T system be registered
-     * @return A poiter to the T system
+     * @return A pointer to the T system
      */
     template <typename T>
     T *get_system() {
@@ -48,7 +48,7 @@ public:
      * @brief Attempt to register entity with all registered systems that
      * accept its signature
      */
-    void register_entity(Entity entity, Signature signature) {
+    void try_register_entity(Entity entity, Signature signature) {
         for (int i = 0; i < systems.size(); i++) {
             Signature required = signatures[i];
 
@@ -56,6 +56,19 @@ public:
             if ((required & signature) == required) {
                 System *system = systems[i].get();
                 system->register_entity(entity);
+            }
+        }
+    }
+    /**
+     * @brief Attempt to erase entity from all registered systems that
+     * used to accept entity signature but no longer accept the updated signature
+     */
+    void try_erase_entity(Entity entity, Signature signature) {
+        for (int i = 0; i < systems.size(); i++) {
+            Signature required = signatures[i];
+            System *system = systems[i].get();
+            if ((required & signature) != required) {
+                system->erase(entity);
             }
         }
     }

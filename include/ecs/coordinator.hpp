@@ -77,7 +77,7 @@ public:
         entity_signature_manager.set_bit<T>(entity);
 
         Signature signature = entity_signature_manager[entity];
-        system_manager->register_entity(entity, signature);
+        system_manager->try_register_entity(entity, signature);
     }
 
     /**
@@ -86,7 +86,9 @@ public:
     template <typename T>
     void erase_component(Entity entity) {
         component_manager.erase_data<T>(entity);
-        entity_signature_manager.reset_bit<T>();
+        entity_signature_manager.reset_bit<T>(entity);
+        Signature updated_signature = entity_signature_manager[entity];
+        system_manager->try_erase_entity(entity, updated_signature);
     }
 
     /**

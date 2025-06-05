@@ -26,4 +26,6 @@ First has better cache but second simpler implementation with different cases ca
 - tests and decide on flexibility
 - better system for detecting whether a component or system is registered or not yet
 - make registering multiple times harmless
+- better logging when accidentally use unregistered type. Checkout the assert 
+and see if you can print the type that was passed in
 
