@@ -21,7 +21,8 @@ public:
         }
     }
     /**
-     * @return The unique entity identifier free for use
+     * @return The unique entity identifier free for use.
+     * NOTE: this does not return a random id
      */
     Entity create_entity() {
         // NOTE: consider whether deny or just flag full when full

@@ -11,7 +11,7 @@ include_directories(include)
 
 file(GLOB SOURCE_FILES "src/*")
 
-add_executable(game main.cpp ${SOURCE_FILES})
+add_executable(game app/dodge_master.cpp ${SOURCE_FILES})
 target_link_libraries(game raylib)
 
 enable_testing()
@@ -20,4 +20,5 @@ foreach(src IN LISTS TESTS)
   get_filename_component(name ${src} NAME_WE)
   add_executable(${name} ${src} ${SOURCE_FILES})
   add_test(NAME ${name} COMMAND ${name})
+  target_link_libraries(${name} raylib)
 endforeach()

@@ -9,7 +9,8 @@ class Coordinator;
 
 /**
  * @class SystemManager
- * @brief Manages registered systems with adding entities and keeping required signature for each system
+ * @brief Manages registered systems with adding entities and keeping required
+ * signature for each system
  *
  */
 class SystemManager {
@@ -33,6 +34,15 @@ public:
     }
 
     /**
+     * @brief Run the system T
+     */
+    template <typename T>
+    void run_system(Coordinator &coordinator) {
+        T *system = get_system<T>();
+        system->run(coordinator);
+    }
+
+    /**
      * @brief Requires that T system be registered
      * @return A pointer to the T system
      */
@@ -45,10 +55,10 @@ public:
     }
 
     /**
-     * @brief Attempt to register entity with all registered systems that
+     * @brief Register fresh entity with all registered systems that
      * accept its signature
      */
-    void try_register_entity(Entity entity, Signature signature) {
+    void register_updated_entity(Entity entity, Signature signature) {
         for (int i = 0; i < systems.size(); i++) {
             Signature required = signatures[i];
 
@@ -60,10 +70,11 @@ public:
         }
     }
     /**
-     * @brief Attempt to erase entity from all registered systems that
-     * used to accept entity signature but no longer accept the updated signature
+     * @brief  Erase fresh entity from all registered systems that
+     * used to accept entity signature but no longer accept the updated
+     * signature
      */
-    void try_erase_entity(Entity entity, Signature signature) {
+    void erase_updated_entity(Entity entity, Signature signature) {
         for (int i = 0; i < systems.size(); i++) {
             Signature required = signatures[i];
             System *system = systems[i].get();

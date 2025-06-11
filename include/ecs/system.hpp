@@ -5,7 +5,10 @@
 /**
  * @class System
  * @brief Abstract class for a system which can register entities and
- * operate on them
+ * operate on them.
+ * from templating, expected to implement
+ * void run(Coordinator &coordinator). Left templated to avoid circular
+ * dependency here
  */
 class System {
 protected:

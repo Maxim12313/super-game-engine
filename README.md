@@ -18,6 +18,8 @@ and T() default constructed or just define get and set, more flexible, more comp
 - consider checking system contains with system maanger signatures vs subscribed_entities.contains checks. 
 First has better cache but second simpler implementation with different cases cases considering dynamic adding / deleting
 - Use static_cast and member function vs inheritance virtual function lookup. Speed diff?
+- Consider restricting colors and using ptrs to colors flyweight
+- Distinguishing rectangle and square generality vs wasted space
 
 # In Progress
 - game coordinator, handling erasing entity with signature, component, system recognizing

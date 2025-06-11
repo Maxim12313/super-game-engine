@@ -11,7 +11,8 @@ class SystemManager;
 
 /**
  * @class Coordinator
- * @brief All ECS data and behavior maangement should be through the coordinaator
+ * @brief All ECS data and behavior maangement should be through the
+ * coordinaator
  */
 class Coordinator {
 private:
@@ -69,6 +70,26 @@ public:
     }
 
     /**
+     * @brief Requires that the compoennt be already registered for this
+     * entity
+     * @return Returns the associated T data for entity
+     */
+    template <typename T>
+    T &strict_get_component(Entity entity) {
+        ASSERT(component_manager.contains<T>(entity) &&
+               "entity does not have this component");
+        return component_manager.get<T>(entity);
+    }
+
+    /**
+     * @return True if this entity has this component type registered
+     */
+    template <typename T>
+    bool has_component(Entity entity) {
+        return component_manager.contains<T>(entity);
+    }
+
+    /**
      * @brief Assign entity T component data to val
      */
     template <typename T>
@@ -77,7 +98,7 @@ public:
         entity_signature_manager.set_bit<T>(entity);
 
         Signature signature = entity_signature_manager[entity];
-        system_manager->try_register_entity(entity, signature);
+        system_manager->register_updated_entity(entity, signature);
     }
 
     /**
@@ -88,7 +109,7 @@ public:
         component_manager.erase_data<T>(entity);
         entity_signature_manager.reset_bit<T>(entity);
         Signature updated_signature = entity_signature_manager[entity];
-        system_manager->try_erase_entity(entity, updated_signature);
+        system_manager->erase_updated_entity(entity, updated_signature);
     }
 
     /**

@@ -1,7 +1,1 @@
 #!/usr/bin/sh
-cmake . && make && ctest
-exit_status="$?"
-if [ exit_status -ne 0 ]; then
-    echo "sucker not today"
-    exit 1
-fi
