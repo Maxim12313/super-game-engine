@@ -5,9 +5,9 @@ inline void draw_handler(Entity entity, Coordinator &coordinator) {
     Shape &shape = coordinator.get_component<Shape>(entity);
     switch (shape.shape_id) {
         case Shape::rectangle:
-            draw_rectangle(entity, coordinator);
+            rectangle_draw(entity, coordinator);
         case Shape::circle:
-            draw_circle(entity, coordinator);
+            circle_draw(entity, coordinator);
     }
 }
 
@@ -21,13 +21,12 @@ class DrawSystem : public System {
 public:
     /**
      * @brief Draw everything
+     * NOTE: Does not call begin_drawing or end_drawing
      */
     void run(Coordinator &coordinator) {
-        Graphics::begin_drawing();
         for (Entity entity : subscribed_entities) {
             draw_handler(entity, coordinator);
         }
-        Graphics::end_drawing();
     }
 
     Signature get_signature() override {

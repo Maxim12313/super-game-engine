@@ -1,10 +1,17 @@
 #!/usr/bin/sh
-# cd docs && make html
-# cd ..
-cmake . && make && ctest
-exit_status="$?"
-if [ exit_status -ne 0 ]; then
-    echo "sucker not today"
+cmake . && make;
+status="$?"
+
+if [ $status -ne 0 ]; then
+    echo "not compiled"
     exit 1
 fi
+
+ctest
+exit_b="$?"
+if [ $status -ne 0 ]; then
+    echo "not passed test"
+    exit 1
+fi
+
 

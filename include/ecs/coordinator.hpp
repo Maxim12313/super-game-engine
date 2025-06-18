@@ -61,21 +61,12 @@ public:
     }
 
     /**
-     * @brief Default init component if not exist
-     * @return Returns the associated T data for entity
-     */
-    template <typename T>
-    T &get_component(Entity entity) {
-        return component_manager.get<T>(entity);
-    }
-
-    /**
      * @brief Requires that the compoennt be already registered for this
      * entity
      * @return Returns the associated T data for entity
      */
     template <typename T>
-    T &strict_get_component(Entity entity) {
+    T &get_component(Entity entity) {
         ASSERT(component_manager.contains<T>(entity) &&
                "entity does not have this component");
         return component_manager.get<T>(entity);
@@ -118,5 +109,11 @@ public:
     template <typename T>
     T *get_system() {
         return system_manager->get_system<T>();
+    }
+
+    template <typename T>
+    void run_system() {
+        T *system = get_system<T>();
+        system->run(*this);
     }
 };

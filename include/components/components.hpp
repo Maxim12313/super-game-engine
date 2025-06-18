@@ -21,6 +21,10 @@ struct Velocity {
     Vector2 velocity;
 };
 
+struct MoveSpeed {
+    float speed;
+};
+
 struct WidthHeight {
     float width;
     float height;
