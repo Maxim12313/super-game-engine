@@ -9,12 +9,9 @@ struct Radius {
     float radius;
 };
 
-struct Shape {
-    enum ShapeID {
-        rectangle = 0,
-        circle,
-    };
-    ShapeID shape_id;
+enum class Shape {
+    rectangle = 0,
+    circle,
 };
 
 struct Velocity {

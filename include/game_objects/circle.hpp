@@ -1,6 +1,6 @@
 #pragma once
 #include "common.hpp"
-#include "ecs/common.hpp"
+#include "components/components.hpp"
 
 inline void circle_draw(Entity entity, Coordinator &coordinator) {
     Position position = coordinator.get_component<Position>(entity);
@@ -11,5 +11,7 @@ inline void circle_draw(Entity entity, Coordinator &coordinator) {
 
 inline void circle_init(Entity entity, Coordinator &coordinator,
                         Position position, Radius radius, Color color) {
-    components_init(entity, coordinator, position, radius, color);
+    components_init(entity, coordinator, position, radius, color,
+                    Shape::circle);
+    cout << "hello world\n";
 }

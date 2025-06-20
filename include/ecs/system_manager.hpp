@@ -2,6 +2,7 @@
 #include "coordinator.hpp"
 #include "id_utils.hpp"
 #include "system.hpp"
+#include <bitset>
 #include <memory>
 #include <vector>
 
@@ -31,6 +32,9 @@ public:
         ASSERT(id >= systems.size() && "already registered");
         systems.emplace_back(make_unique<T>(system));
         signatures.push_back(system.get_signature());
+
+        SPDLOG_DEBUG("Registered {}", typeid(T).name());
+        SPDLOG_DEBUG("Signature {}", system.get_signature());
     }
 
     /**
@@ -61,7 +65,6 @@ public:
     void register_updated_entity(Entity entity, Signature signature) {
         for (int i = 0; i < systems.size(); i++) {
             Signature required = signatures[i];
-
             // if signature contains required bits
             if ((required & signature) == required) {
                 System *system = systems[i].get();

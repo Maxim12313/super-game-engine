@@ -3,7 +3,7 @@
 
 inline void draw_handler(Entity entity, Coordinator &coordinator) {
     Shape &shape = coordinator.get_component<Shape>(entity);
-    switch (shape.shape_id) {
+    switch (shape) {
         case Shape::rectangle:
             rectangle_draw(entity, coordinator);
         case Shape::circle:

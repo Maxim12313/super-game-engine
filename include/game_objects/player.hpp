@@ -11,4 +11,5 @@ inline void player_init(Entity entity, Coordinator &coordinator,
 
 inline void wasd_move(Entity entity, Coordinator &coordinator) {
     Position &position = coordinator.get_component<Position>(entity);
+    MoveSpeed &speed = coordinator.get_component<MoveSpeed>(entity);
 }

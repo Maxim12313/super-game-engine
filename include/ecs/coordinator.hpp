@@ -47,17 +47,17 @@ public:
     /**
      * @brief Register T system [requires not already registered]
      */
-    template <typename T>
-    void register_system(T system) {
-        system_manager->register_system<T>(system);
+    template <typename... T>
+    void register_system(T... system) {
+        (system_manager->register_system<T>(system), ...);
     }
 
     /**
      * @brief Register T component [requires not already registered]
      */
-    template <typename T>
+    template <typename... T>
     void register_component() {
-        component_manager.register_type<T>();
+        (component_manager.register_type<T>(), ...);
     }
 
     /**
