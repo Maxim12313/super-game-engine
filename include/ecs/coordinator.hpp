@@ -4,6 +4,7 @@
 #include "component_manager.hpp"
 #include "entity_manager.hpp"
 #include "signature_manager.hpp"
+#include "system.hpp"
 #include "system_manager.hpp"
 
 class System;
@@ -20,9 +21,18 @@ private:
     EntityManager entity_manager;
     ComponentManager component_manager;
     unique_ptr<SystemManager> system_manager;
+    float delta_time;
 
 public:
     Coordinator() : system_manager(make_unique<SystemManager>()) {
+    }
+
+    void set_delta_time(float time) {
+        delta_time = time;
+    }
+
+    float get_delta_time() {
+        return delta_time;
     }
 
     /**

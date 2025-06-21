@@ -13,5 +13,4 @@ inline void circle_init(Entity entity, Coordinator &coordinator,
                         Position position, Radius radius, Color color) {
     components_init(entity, coordinator, position, radius, color,
                     Shape::circle);
-    cout << "hello world\n";
 }

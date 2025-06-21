@@ -22,7 +22,7 @@ public:
     template <typename T>
     void register_type() {
         Component_ID id = id_utils::get_component_id<T>();
-        SPDLOG_DEBUG(typeid(T).name());
+        SPDLOG_TRACE(typeid(T).name());
         ASSERT(id >= arrays.size() && "Already registered");
         arrays.emplace_back(make_unique<PackedArray<T, MAX>>());
     }
@@ -79,7 +79,7 @@ public:
     template <typename T>
     PackedArray<T, MAX> *get_array() {
         Component_ID id = id_utils::get_component_id<T>();
-        SPDLOG_DEBUG(typeid(T).name());
+        SPDLOG_TRACE(typeid(T).name());
         ASSERT(id < arrays.size() && "unregistered type");
         auto unique = arrays[int(id)].get();
         auto arr = static_cast<PackedArray<T, MAX> *>(unique);

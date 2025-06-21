@@ -19,6 +19,9 @@ public:
     PrintSystem() {
     }
 
+    void run(Coordinator &coordinator) override {
+    }
+
     void run(Coordinator &coordinator, ostream &os) {
         for (Entity entity : subscribed_entities) {
             Type1 &data1 = coordinator.get_component<Type1>(entity);
@@ -29,8 +32,8 @@ public:
 
     Signature get_signature() override {
         Signature signature = 0;
-        signature = signature_utils::set_bit<Type1>(signature);
-        signature = signature_utils::set_bit<Type2>(signature);
+        signature_utils::set_bit<Type1>(signature);
+        signature_utils::set_bit<Type2>(signature);
         return signature;
     }
 };

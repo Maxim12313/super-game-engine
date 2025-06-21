@@ -4,6 +4,7 @@
 #include "../include/systems/draw_system.hpp"
 #include "config.hpp"
 #include "game_objects/player.hpp"
+#include "systems/input_system.hpp"
 #include <raylib.h>
 #include <spdlog/spdlog.h>
 
@@ -20,16 +21,19 @@ int main() {
     Coordinator coordinator = coordinator_init();
 
     Entity player = coordinator.create_entity();
-    player_init(player, coordinator, Position{100, 100}, Radius{100}, ORANGE,
-                MoveSpeed{10});
+    player_init(player, coordinator, Position{100, 100}, WidthHeight{100, 100},
+                ORANGE, MoveSpeed{1000});
 
     while (!Graphics::should_close()) {
         float delta_time = 1.0 / GetFPS();
+        coordinator.set_delta_time(delta_time);
 
         Graphics::begin_drawing();
         Graphics::clear_background(RAYWHITE);
         coordinator.run_system<DrawSystem>();
         Graphics::end_drawing();
+
+        coordinator.run_system<MoveSystem>();
     }
     Graphics::close_window();
 }
@@ -43,11 +47,12 @@ Coordinator coordinator_init() {
     Coordinator coordinator;
 
     // components
-    coordinator.register_component<Shape, Position, Color, WidthHeight, Radius,
-                                   MoveSpeed>();
+    coordinator.register_component<Position, Color, WidthHeight, Radius,
+                                   MoveSpeed, Shape, PlayerMovable>();
 
     // systems
     coordinator.register_system(DrawSystem{});
+    coordinator.register_system(MoveSystem{});
 
     return coordinator;
 }

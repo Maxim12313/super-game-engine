@@ -1,15 +1,16 @@
 #pragma once
 #include "common.hpp"
 #include "packed_array.hpp"
+#include "signature_utils.hpp"
 
 /**
  * @class System
  * @brief Abstract class for a system which can register entities and
  * operate on them.
- * from templating, expected to implement
- * void run(Coordinator &coordinator). Left templated to avoid circular
- * dependency here
  */
+
+class Coordinator;
+
 class System {
 protected:
     PackedArray<Entity, MAX_ENTITIES> subscribed_entities;
@@ -40,6 +41,8 @@ public:
     bool contains(Entity entity) {
         return subscribed_entities.contains(entity);
     }
+
+    virtual void run(Coordinator &coordinator) = 0;
 
     /**
      * @return The systems's signature, corresponding to the components

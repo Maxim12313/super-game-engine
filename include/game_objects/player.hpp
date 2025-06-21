@@ -1,15 +1,13 @@
 #pragma once
 #include "common.hpp"
 #include "game_objects/circle.hpp"
+#include "game_objects/rectangle.hpp"
 
 inline void player_init(Entity entity, Coordinator &coordinator,
-                        Position position, Radius radius, Color color,
-                        MoveSpeed move_speed) {
-    circle_init(entity, coordinator, position, radius, color);
-    coordinator.assign_component(entity, move_speed);
-}
+                        Position position, WidthHeight width_height,
+                        Color color, MoveSpeed move_speed) {
 
-inline void wasd_move(Entity entity, Coordinator &coordinator) {
-    Position &position = coordinator.get_component<Position>(entity);
-    MoveSpeed &speed = coordinator.get_component<MoveSpeed>(entity);
+    rectangle_init(entity, coordinator, position, width_height, color);
+    coordinator.assign_component(entity, move_speed);
+    coordinator.assign_component(entity, PlayerMovable{});
 }

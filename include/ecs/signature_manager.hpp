@@ -4,9 +4,9 @@
 
 /**
  * @class SignatureManager
- * @brief Wrapper over packed array specific for maintaing and setting signatures
- *  default init for set
- *  not default init for get (should avoid, mostly for debugging)
+ * @brief Wrapper over packed array specific for maintaing and setting
+ * signatures default init for set not default init for get (should avoid,
+ * mostly for debugging)
  */
 class SignatureManager {
 private:
@@ -67,7 +67,7 @@ public:
     template <typename T>
     void set_bit(Entity entity) {
         Signature &curr = signatures[entity];
-        curr = signature_utils::set_bit<T>(curr);
+        signature_utils::set_bit<T>(curr);
     }
 
     /**
@@ -76,6 +76,6 @@ public:
     template <typename T>
     void reset_bit(Entity entity) {
         Signature &curr = signatures[entity];
-        curr = signature_utils::reset_bit<T>(curr);
+        signature_utils::reset_bit<T>(curr);
     }
 };
