@@ -85,7 +85,7 @@ public:
         return arr;
     }
 
-    // IPackedArray *get_array(int id) {
-    //     return arrays[id].get();
+    // template <typename Component const vector<Entity> &get_entities() {
+    //     Component_IDH
     // }
 };

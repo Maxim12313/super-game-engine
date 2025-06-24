@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 3.10)
 project(dodge_master)
 set(CMAKE_CXX_STANDARD 23)
 
-add_compile_options(-g -O0 -std=c++23 -Wshadow -Wunused -DSPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG)
+set(SANITIZE_FLAGS "-fsanitize=address")
+add_link_options(${SANITIZE_FLAGS})
+add_compile_options(-g -O0 -std=c++23 -Wshadow -Wunused -DSPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG ${SANITIZE_FLAGS})
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 

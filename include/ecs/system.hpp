@@ -42,8 +42,6 @@ public:
         return entities.contains(entity);
     }
 
-    virtual void run(Coordinator &coordinator) = 0;
-
     /**
      * @return The systems's signature, corresponding to the components
      * that an entity must have to be tracked by this system

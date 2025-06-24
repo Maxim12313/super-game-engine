@@ -10,6 +10,10 @@
  *
  */
 class IPackedArray {
+protected:
+    unordered_map<Entity, int> to_idx;
+    vector<Entity> to_entity;
+
 public:
     virtual ~IPackedArray() {
     }
@@ -19,6 +23,28 @@ public:
      * @param entity The entity whos data will be erased for this type
      */
     virtual void erase(Entity entity) = 0;
+
+    /**
+     * @brief Clear the array, resetting size to 0
+     */
+    void clear() {
+        to_idx.clear();
+        to_entity.clear();
+    }
+
+    /**
+     * @return Returns if entity is registered with this packed array
+     */
+    bool contains(Entity entity) {
+        return to_idx.count(entity);
+    }
+
+    size_t size() {
+        return to_entity.size();
+    }
+    const vector<Entity> &entities() {
+        return to_entity;
+    }
 };
 
 /**
@@ -28,48 +54,22 @@ public:
 template <typename T>
 class PackedArray : public IPackedArray {
 private:
-    int count = 0;
     vector<T> data;
-
-    unordered_map<Entity, int> entity_to_idx;
-    unordered_map<int, Entity> idx_to_entity;
 
     /**
      * @brief If not already registered, default init T datatype for entity
      */
     void register_entity(Entity entity) {
-        ASSERT(entity_to_idx.count(entity) == 0 && "already registered");
-        entity_to_idx[entity] = count;
-        idx_to_entity[count] = entity;
+        ASSERT(to_idx.count(entity) == 0 && "already registered");
+        to_idx[entity] = to_entity.size();
 
         // default init
-        if (count == data.size()) {
-            data.emplace_back();
-        } else {
-            data[count] = T();
-        }
-
-        count++;
+        data.emplace_back();
+        to_entity.push_back(entity);
     }
 
 public:
     PackedArray() {
-    }
-
-    /**
-     * @brief Clear the array, resetting size to 0
-     */
-    void clear() {
-        count = 0;
-        entity_to_idx.clear();
-        idx_to_entity.clear();
-    }
-
-    /**
-     * @return Returns if entity is registered with this packed array
-     */
-    bool contains(Entity entity) {
-        return entity_to_idx.count(entity);
     }
 
     /**
@@ -79,7 +79,7 @@ public:
     T &operator[](Entity entity) {
         if (!contains(entity))
             register_entity(entity);
-        return data[entity_to_idx[entity]];
+        return data[to_idx[entity]];
     }
 
     /**
@@ -90,34 +90,38 @@ public:
         if (!contains(entity))
             return;
 
-        int left = entity_to_idx[entity];
-        int right = count - 1;
-        swap(data[left], data[right]);
+        Entity &left_entity = entity;
 
-        int right_entity = idx_to_entity[right];
-        entity_to_idx[right_entity] = left;
-        idx_to_entity[left] = right_entity;
-        entity_to_idx.erase(entity);
-        count--;
-    }
+        int left_idx = to_idx[left_entity];
+        int right_idx = to_entity.size() - 1;
 
-    /**
-     * @return Number of valid entries
-     */
-    size_t size() const {
-        return count;
+        Entity right_entity = to_entity[right_idx];
+
+        if (left_entity != right_entity) {
+            // move left data to right side to pop
+            swap(to_entity[left_entity], to_entity[right_entity]);
+            swap(data[left_idx], data[right_idx]);
+
+            // remap right ent to left
+            to_idx[right_entity] = left_idx;
+        }
+
+        // cleanup all left side info
+        to_idx.erase(left_entity);
+        to_entity.pop_back();
+        data.pop_back();
     }
 
     /**
      * @brief Iterator to first element
      */
     vector<T>::iterator begin() {
-        return data.begin();
+        return std::begin(data);
     }
     /**
      * @brief Iterator to 1 beyond the last valid element
      */
     vector<T>::iterator end() {
-        return data.begin() + count;
+        return std::end(data);
     }
 };
