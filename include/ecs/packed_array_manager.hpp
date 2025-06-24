@@ -10,7 +10,6 @@
  * @class PackedArrayManager
  * @brief Manages registered packed arrays which can hold different types
  */
-template <size_t MAX>
 class PackedArrayManager {
 private:
     vector<unique_ptr<IPackedArray>> arrays;
@@ -24,7 +23,7 @@ public:
         Component_ID id = id_utils::get_component_id<T>();
         SPDLOG_TRACE(typeid(T).name());
         ASSERT(id >= arrays.size() && "Already registered");
-        arrays.emplace_back(make_unique<PackedArray<T, MAX>>());
+        arrays.emplace_back(make_unique<PackedArray<T>>());
     }
 
     /**
@@ -33,7 +32,7 @@ public:
      */
     template <typename T>
     T &get(Entity entity) {
-        PackedArray<T, MAX> *arr = get_array<T>();
+        PackedArray<T> *arr = get_array<T>();
         return (*arr)[entity];
     }
 
@@ -50,7 +49,7 @@ public:
      */
     template <typename T>
     bool contains(Entity entity) {
-        PackedArray<T, MAX> *arr = get_array<T>();
+        PackedArray<T> *arr = get_array<T>();
         return arr->contains(entity);
     }
 
@@ -59,7 +58,7 @@ public:
      */
     template <typename T>
     void erase_data(Entity entity) {
-        PackedArray<T, MAX> *arr = get_array<T>();
+        PackedArray<T> *arr = get_array<T>();
         arr->erase(entity);
     }
 
@@ -77,12 +76,12 @@ public:
      * @return The packed array associeted with type T
      */
     template <typename T>
-    PackedArray<T, MAX> *get_array() {
+    PackedArray<T> *get_array() {
         Component_ID id = id_utils::get_component_id<T>();
         SPDLOG_TRACE(typeid(T).name());
         ASSERT(id < arrays.size() && "unregistered type");
         auto unique = arrays[int(id)].get();
-        auto arr = static_cast<PackedArray<T, MAX> *>(unique);
+        auto arr = static_cast<PackedArray<T> *>(unique);
         return arr;
     }
 

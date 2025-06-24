@@ -37,6 +37,10 @@ public:
         SPDLOG_DEBUG("Signature {}", system.get_signature());
     }
 
+    template <typename... Components>
+    void filter_views() {
+    }
+
     /**
      * @brief Run the system T
      */

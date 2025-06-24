@@ -3,9 +3,9 @@
 #include "components/components.hpp"
 
 inline void circle_draw(Entity entity, Coordinator &coordinator) {
-    Position position = coordinator.get_component<Position>(entity);
-    Radius radius = coordinator.get_component<Radius>(entity);
-    Color color = coordinator.get_component<Color>(entity);
+    Position position = coordinator.get<Position>(entity);
+    Radius radius = coordinator.get<Radius>(entity);
+    Color color = coordinator.get<Color>(entity);
     Graphics::draw_circle(position.pos.x, position.pos.y, radius.radius, color);
 }
 

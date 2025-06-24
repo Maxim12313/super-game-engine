@@ -13,7 +13,7 @@ class Coordinator;
 
 class System {
 protected:
-    PackedArray<Entity, MAX_ENTITIES> subscribed_entities;
+    PackedArray<Entity> entities;
 
 public:
     System() {
@@ -25,21 +25,21 @@ public:
      * nothing if already registered
      */
     void register_entity(Entity entity) {
-        subscribed_entities[entity] = entity;
+        entities[entity] = entity;
     }
     /**
      * @brief Erases the entity from this system's tracking and nothing
      * if already not contained
      */
     void erase(Entity entity) {
-        subscribed_entities.erase(entity);
+        entities.erase(entity);
     }
 
     /**
      * @return True if entity is tracked by the system
      */
     bool contains(Entity entity) {
-        return subscribed_entities.contains(entity);
+        return entities.contains(entity);
     }
 
     virtual void run(Coordinator &coordinator) = 0;

@@ -25,11 +25,11 @@ public:
  * @class PackedArray
  * @brief Data container supporting cache fast iteration and key value indexing
  */
-template <typename T, size_t MAX>
+template <typename T>
 class PackedArray : public IPackedArray {
 private:
     int count = 0;
-    array<T, MAX> data;
+    vector<T> data;
 
     unordered_map<Entity, int> entity_to_idx;
     unordered_map<int, Entity> idx_to_entity;
@@ -41,7 +41,14 @@ private:
         ASSERT(entity_to_idx.count(entity) == 0 && "already registered");
         entity_to_idx[entity] = count;
         idx_to_entity[count] = entity;
-        data[count] = T(); // default init
+
+        // default init
+        if (count == data.size()) {
+            data.emplace_back();
+        } else {
+            data[count] = T();
+        }
+
         count++;
     }
 
@@ -104,13 +111,13 @@ public:
     /**
      * @brief Iterator to first element
      */
-    array<T, MAX>::iterator begin() {
+    vector<T>::iterator begin() {
         return data.begin();
     }
     /**
      * @brief Iterator to 1 beyond the last valid element
      */
-    array<T, MAX>::iterator end() {
+    vector<T>::iterator end() {
         return data.begin() + count;
     }
 };

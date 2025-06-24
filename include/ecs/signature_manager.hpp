@@ -10,7 +10,7 @@
  */
 class SignatureManager {
 private:
-    PackedArray<Signature, MAX_ENTITIES> signatures;
+    PackedArray<Signature> signatures;
 
 public:
     SignatureManager() {

@@ -4,9 +4,9 @@
 #include <raymath.h>
 
 inline void wasd_move(Entity entity, Coordinator &coordinator) {
-    auto movable = coordinator.get_component<PlayerMovable>(entity);
-    auto &position = coordinator.get_component<Position>(entity);
-    auto speed = coordinator.get_component<MoveSpeed>(entity);
+    auto movable = coordinator.get<PlayerMovable>(entity);
+    auto &position = coordinator.get<Position>(entity);
+    auto speed = coordinator.get<MoveSpeed>(entity);
 
     Vector2 change(0, 0);
     if (IsKeyDown(KEY_D))
@@ -28,23 +28,24 @@ inline void wasd_move(Entity entity, Coordinator &coordinator) {
     position.pos = Vector2Add(position.pos, change);
 }
 
-/**
- * @class DrawSystem
- * @brief Takes Shape, Position, Color
- *
- */
-class MoveSystem : public System {
-public:
-    /**
-     * @brief Player controllable
-     */
-    void run(Coordinator &coordinator) {
-        for (Entity entity : subscribed_entities) {
-            wasd_move(entity, coordinator);
-        }
-    }
-
-    Signature get_signature() override {
-        return signature_utils::set_signature<Color, Position, PlayerMovable>();
-    }
-};
+// /**
+//  * @class DrawSystem
+//  * @brief Takes Shape, Position, Color
+//  *
+//  */
+// class MoveSystem : public System {
+// public:
+//     /**
+//      * @brief Player controllable
+//      */
+//     void run(Coordinator &coordinator) {
+//         for (Entity entity : entities) {
+//             wasd_move(entity, coordinator);
+//         }
+//     }
+//
+//     Signature get_signature() override {
+//         return signature_utils::set_signature<Color, Position,
+//         PlayerMovable>();
+//     }
+// };

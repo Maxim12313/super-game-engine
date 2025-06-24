@@ -14,7 +14,7 @@ struct Type2 {
 };
 
 void test1() {
-    PackedArrayManager<n> arrays;
+    PackedArrayManager arrays;
     EntityManager entities;
 
     arrays.register_type<Type1>();

@@ -2,7 +2,7 @@
 #include "common.hpp"
 
 inline void draw_handler(Entity entity, Coordinator &coordinator) {
-    auto shape = coordinator.get_component<Shape>(entity);
+    auto shape = coordinator.get<Shape>(entity);
     switch (shape) {
         case Shape::rectangle:
             rectangle_draw(entity, coordinator);
@@ -13,15 +13,15 @@ inline void draw_handler(Entity entity, Coordinator &coordinator) {
     }
 }
 
-class DrawSystem : public System {
-public:
-    void run(Coordinator &coordinator) override {
-        for (Entity entity : subscribed_entities) {
-            draw_handler(entity, coordinator);
-        }
-    }
-
-    Signature get_signature() override {
-        return signature_utils::set_signature<Shape, Position, Color>();
-    }
-};
+// class DrawSystem : public System {
+// public:
+//     void run(Coordinator &coordinator) override {
+//         for (Entity entity : entities) {
+//             draw_handler(entity, coordinator);
+//         }
+//     }
+//
+//     Signature get_signature() override {
+//         return signature_utils::set_signature<Shape, Position, Color>();
+//     }
+// };

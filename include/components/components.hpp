@@ -1,4 +1,5 @@
 #pragma once
+#include "ecs/common.hpp"
 #include <raylib.h>
 
 struct Position {
@@ -23,8 +24,11 @@ struct MoveSpeed {
 };
 
 struct WidthHeight {
-    float width;
-    float height;
+    Vector2 wh;
 };
 
 struct PlayerMovable {};
+
+struct Collided {
+    Entity other;
+};

@@ -76,7 +76,7 @@ public:
      * @return Returns the associated T data for entity
      */
     template <typename T>
-    T &get_component(Entity entity) {
+    T &get(Entity entity) {
         ASSERT(component_manager.contains<T>(entity) &&
                "entity does not have this component");
         return component_manager.get<T>(entity);

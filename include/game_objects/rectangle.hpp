@@ -3,11 +3,11 @@
 #include "components/components.hpp"
 
 inline void rectangle_draw(Entity entity, Coordinator &coordinator) {
-    Position position = coordinator.get_component<Position>(entity);
-    Color color = coordinator.get_component<Color>(entity);
-    WidthHeight wh = coordinator.get_component<WidthHeight>(entity);
-    Graphics::draw_rectangle(position.pos.x, position.pos.y, wh.width,
-                             wh.height, color);
+    Position position = coordinator.get<Position>(entity);
+    Color color = coordinator.get<Color>(entity);
+    WidthHeight wh = coordinator.get<WidthHeight>(entity);
+    Graphics::draw_rectangle(position.pos.x, position.pos.y, wh.wh.x, wh.wh.y,
+                             color);
 }
 
 inline void rectangle_init(Entity entity, Coordinator &coordinator,
