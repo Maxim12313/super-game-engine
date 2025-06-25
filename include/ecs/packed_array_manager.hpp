@@ -84,8 +84,4 @@ public:
         auto arr = static_cast<PackedArray<T> *>(unique);
         return arr;
     }
-
-    // template <typename Component const vector<Entity> &get_entities() {
-    //     Component_IDH
-    // }
 };

@@ -2,16 +2,15 @@
 #include "../include/utils/test_utils.hpp"
 #include <unordered_set>
 
-// MUST BE LESS THAN THE MAX NUM ENTITIES
 constexpr int n = 100;
 
-void test1() {
+void test_destroy_create() {
     EntityManager manager;
     unordered_set<Entity> seen;
     for (int i = 0; i < n; i++) {
         if (!seen.empty() && rand() > RAND_MAX / 2) {
             Entity lose = *begin(seen);
-            manager.erase_entity(lose);
+            manager.destroy_entity(lose);
             seen.erase(lose);
         } else {
             Entity adding = manager.create_entity();
@@ -21,6 +20,11 @@ void test1() {
     }
 }
 
+void test_component_entity_tracking() {
+    EntityManager manager;
+}
+
 int main() {
-    test1();
+    test_destroy_create();
+    test_component_entity_tracking();
 }

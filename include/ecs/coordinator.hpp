@@ -51,7 +51,7 @@ public:
         component_manager.erase_entity(entity);
         system_manager->erase_entity(entity);
         entity_signature_manager.erase(entity);
-        entity_manager.erase_entity(entity);
+        entity_manager.destroy_entity(entity);
     }
 
     /**

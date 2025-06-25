@@ -20,6 +20,7 @@ First has better cache but second simpler implementation with different cases ca
 - Use static_cast and member function vs inheritance virtual function lookup. Speed diff?
 - Consider restricting colors and using ptrs to colors flyweight
 - Distinguishing rectangle and square generality vs wasted space
+- If max entity limit hit, what does entity manager do? Stop creation? Overwrite old?
 
 # In Progress
 - game coordinator, handling erasing entity with signature, component, system recognizing
