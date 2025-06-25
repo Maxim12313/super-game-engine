@@ -1,6 +1,6 @@
 #pragma once
 #include "common.hpp"
-#include "packed_array.hpp"
+#include "sparse_set.hpp"
 #include "signature_utils.hpp"
 
 /**
@@ -13,7 +13,7 @@ class Coordinator;
 
 class System {
 protected:
-    PackedArray<Entity> entities;
+    SparseSet<Entity> entities;
 
 public:
     System() {

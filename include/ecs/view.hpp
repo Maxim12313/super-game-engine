@@ -1,20 +1,20 @@
 #pragma once
 #include "ecs/common.hpp"
 #include "ecs/component_manager.hpp"
-#include "ecs/packed_array.hpp"
+#include "ecs/sparse_set.hpp"
 #include <vector>
 
 namespace internal {
 vector<Entity> get_view_helper(ComponentManager &manager,
-                               vector<IPackedArray *> &packed_arrays);
+                               vector<ISparseSet *> &packed_arrays);
 
-void filter_intersection(vector<Entity> &entities, IPackedArray *array);
+void filter_intersection(vector<Entity> &entities, ISparseSet *array);
 
 }; // namespace internal
 
 template <typename... Components>
 vector<Entity> get_view(ComponentManager &manager) {
-    vector<IPackedArray *> packed_arrays = {manager.get_array<Components>()...};
+    vector<ISparseSet *> packed_arrays = {manager.get_array<Components>()...};
     return internal::get_view_helper(manager, packed_arrays);
 }
 

@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
-project(dodge_master)
+project(super_game_engine)
 set(CMAKE_CXX_STANDARD 23)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(SANITIZE_FLAGS "-fsanitize=address")
 add_link_options(${SANITIZE_FLAGS})
@@ -20,8 +22,8 @@ find_package(raylib REQUIRED)
 # target_precompile_headers(game PRIVATE <pch.hpp>)
 
 enable_testing()
-# file(GLOB TESTS "tests/*")
-file(GLOB TESTS "tests/view.cpp")
+file(GLOB TESTS "tests/*")
+# file(GLOB TESTS "tests/view.cpp")
 foreach(src IN LISTS TESTS)
   get_filename_component(name ${src} NAME_WE)
   add_executable(${name} ${src} ${SOURCE_FILES})

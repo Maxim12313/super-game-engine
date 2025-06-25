@@ -1,5 +1,5 @@
 #pragma once
-#include "packed_array.hpp"
+#include "sparse_set.hpp"
 #include "signature_utils.hpp"
 
 /**
@@ -10,7 +10,7 @@
  */
 class SignatureManager {
 private:
-    PackedArray<Signature> signatures;
+    SparseSet<Signature> signatures;
 
 public:
     SignatureManager() {

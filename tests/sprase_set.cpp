@@ -1,10 +1,10 @@
-#include "../include/ecs/packed_array.hpp"
+#include "../include/ecs/sparse_set.hpp"
 #include "../include/utils/test_utils.hpp"
 
 constexpr int n = 30; // MUST BE n >= 10
 
 void test2() {
-    PackedArray<int> array;
+    SparseSet<int> array;
     for (int i = 0; i < n; i++)
         array[i] = i;
 
@@ -22,7 +22,7 @@ void test2() {
 }
 
 void test1() {
-    PackedArray<int> array;
+    SparseSet<int> array;
     for (int i = 0; i < n; i++)
         array[i] = i;
 

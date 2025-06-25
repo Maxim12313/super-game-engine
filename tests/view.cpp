@@ -2,7 +2,7 @@
 #include "../include/utils/test_utils.hpp"
 
 void test_filter_intersection() {
-    PackedArray<int> arr;
+    SparseSet<int> arr;
     for (int i = 0; i < 20; i += 2) {
         arr[i] = -i;
     }

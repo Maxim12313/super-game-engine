@@ -5,17 +5,17 @@
 #include <unordered_map>
 
 /**
- * @class IPackedArray
+ * @class ISparseSet
  * @brief Interface placeholder for type erasing in packed array manager
  *
  */
-class IPackedArray {
+class ISparseSet {
 protected:
     unordered_map<Entity, int> to_idx;
     vector<Entity> to_entity;
 
 public:
-    virtual ~IPackedArray() {
+    virtual ~ISparseSet() {
     }
     /**
      * @brief Erases the data entry for the given entity
@@ -48,11 +48,11 @@ public:
 };
 
 /**
- * @class PackedArray
+ * @class SparseSet
  * @brief Data container supporting cache fast iteration and key value indexing
  */
 template <typename T>
-class PackedArray : public IPackedArray {
+class SparseSet : public ISparseSet {
 private:
     vector<T> data;
 
@@ -69,7 +69,7 @@ private:
     }
 
 public:
-    PackedArray() {
+    SparseSet() {
     }
 
     /**

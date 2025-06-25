@@ -1,9 +1,6 @@
-#include "../include/ecs/packed_array_manager.hpp"
+#include "../include/ecs/component_manager.hpp"
 #include "../include/ecs/entity_manager.hpp"
 #include "../include/utils/test_utils.hpp"
-
-constexpr int n = 300;
-constexpr int m = 200;
 
 struct Type1 {
     int val;
@@ -14,7 +11,7 @@ struct Type2 {
 };
 
 void test1() {
-    PackedArrayManager arrays;
+    ComponentManager arrays;
     EntityManager entities;
 
     arrays.register_type<Type1>();
