@@ -8,24 +8,24 @@
 #include "common.hpp"
 #include "id_utils.hpp"
 
-namespace signature_utils {
+namespace internal {
 
 /**
  * @brief Set T component bit or do nothing if already set
  */
-template <typename T>
-void set_bit(Signature &signature) {
-    Component_ID id = id_utils::get_component_id<T>();
-    signature = signature | (1u << id);
+template <typename Component>
+Signature set_bit(Signature signature) {
+    Component_ID id = internal::get_component_id<Component>();
+    return signature | (1u << id);
 }
 
 /**
  * @brief Reset T component bit or do nothing if already set
  */
 template <typename T>
-void reset_bit(Signature &signature) {
-    Component_ID id = id_utils::get_component_id<T>();
-    signature = signature & ~(1u << id);
+Signature reset_bit(Signature signature) {
+    Component_ID id = internal::get_component_id<T>();
+    return signature & ~(1u << id);
 }
 
 /**
@@ -33,15 +33,15 @@ void reset_bit(Signature &signature) {
  */
 template <typename T>
 bool has_bit(Signature signature) {
-    Component_ID id = id_utils::get_component_id<T>();
+    Component_ID id = internal::get_component_id<T>();
     return signature & (1 << id);
 }
 
-template <typename... T>
+template <typename... Component>
 Signature set_signature() {
     Signature signature = 0;
-    (set_bit<T>(signature), ...);
+    ((signature |= set_bit<Component>(signature)), ...);
     return signature;
 }
 
-}; // namespace signature_utils
+}; // namespace internal

@@ -7,7 +7,7 @@
 // class PhysicsSystem : public System {
 // public:
 //     Signature get_signature() override {
-//         return signature_utils::set_signature<Position, Velocity>();
+//         return internal::set_signature<Position, Velocity>();
 //     }
 //
 //     void run(Coordinator &coordinator) override {

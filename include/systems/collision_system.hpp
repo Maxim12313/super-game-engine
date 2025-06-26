@@ -25,7 +25,7 @@ bool is_colliding_rect_rect(Entity a, Entity b, Coordinator &c) {
 // class CollisionSystem : public System {
 // public:
 //     Signature get_signature() override {
-//         return signature_utils::set_signature<Position, Velocity, Shape,
+//         return internal::set_signature<Position, Velocity, Shape,
 //                                               Collided>();
 //     }
 //

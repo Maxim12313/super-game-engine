@@ -36,8 +36,8 @@ int main() {
 //
 //     Signature get_signature() override {
 //         Signature signature = 0;
-//         signature_utils::set_bit<Type1>(signature);
-//         signature_utils::set_bit<Type2>(signature);
+//         internal::set_bit<Type1>(signature);
+//         internal::set_bit<Type2>(signature);
 //         return signature;
 //     }
 // };
@@ -158,10 +158,10 @@ int main() {
 //
 // int main() {
 //     // for consistency
-//     id_utils::get_component_id<Type1>();
-//     id_utils::get_component_id<Type2>();
-//     id_utils::get_component_id<Type3>();
-//     id_utils::get_system_id<PrintSystem>();
+//     internal::get_component_id<Type1>();
+//     internal::get_component_id<Type2>();
+//     internal::get_component_id<Type3>();
+//     internal::get_system_id<PrintSystem>();
 //
 //     test1();
 // }

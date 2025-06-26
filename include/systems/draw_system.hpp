@@ -22,6 +22,6 @@ inline void draw_handler(Entity entity, Coordinator &coordinator) {
 //     }
 //
 //     Signature get_signature() override {
-//         return signature_utils::set_signature<Shape, Position, Color>();
+//         return internal::set_signature<Shape, Position, Color>();
 //     }
 // };

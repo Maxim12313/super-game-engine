@@ -1,6 +1,6 @@
 #pragma once
-#include "sparse_set.hpp"
 #include "signature_utils.hpp"
+#include "sparse_set.hpp"
 
 /**
  * @class SignatureManager
@@ -19,7 +19,7 @@ public:
     /**
      * @brief Init entity signature with signature value
      */
-    void set(Entity entity, Signature signature) {
+    void assign(Entity entity, Signature signature) {
         signatures[entity] = signature;
     }
 
@@ -51,7 +51,7 @@ public:
     template <typename T>
     bool has_bit(Entity entity) {
         Signature curr = signatures[entity];
-        return signature_utils::has_bit<T>(curr);
+        return internal::has_bit<T>(curr);
     }
 
     /**
@@ -67,7 +67,7 @@ public:
     template <typename T>
     void set_bit(Entity entity) {
         Signature &curr = signatures[entity];
-        signature_utils::set_bit<T>(curr);
+        internal::set_bit<T>(curr);
     }
 
     /**
@@ -76,6 +76,6 @@ public:
     template <typename T>
     void reset_bit(Entity entity) {
         Signature &curr = signatures[entity];
-        signature_utils::reset_bit<T>(curr);
+        internal::reset_bit<T>(curr);
     }
 };

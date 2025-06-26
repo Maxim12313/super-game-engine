@@ -6,7 +6,7 @@
 #pragma once
 #include "common.hpp"
 
-namespace id_utils {
+namespace internal {
 
 static Component_ID curr_component = 0;
 template <typename T>
@@ -24,4 +24,4 @@ System_ID get_system_id() {
     return id;
 }
 
-}; // namespace id_utils
+}; // namespace internal

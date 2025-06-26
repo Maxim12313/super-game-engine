@@ -45,7 +45,7 @@ inline void wasd_move(Entity entity, Coordinator &coordinator) {
 //     }
 //
 //     Signature get_signature() override {
-//         return signature_utils::set_signature<Color, Position,
+//         return internal::set_signature<Color, Position,
 //         PlayerMovable>();
 //     }
 // };

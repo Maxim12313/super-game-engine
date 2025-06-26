@@ -1,6 +1,6 @@
 #pragma once
+#include "../ecs/id_utils.hpp"
 #include "../utils/test_utils.hpp"
-#include "id_utils.hpp"
 #include "sparse_set.hpp"
 #include <memory>
 #include <spdlog/spdlog.h>
@@ -20,7 +20,7 @@ public:
 
     template <typename T>
     void register_type() {
-        Component_ID id = id_utils::get_component_id<T>();
+        Component_ID id = internal::get_component_id<T>();
         SPDLOG_TRACE(typeid(T).name());
         ASSERT(id >= arrays.size() && "Already registered");
         arrays.emplace_back(make_unique<SparseSet<T>>());
@@ -77,7 +77,7 @@ public:
      */
     template <typename T>
     SparseSet<T> *get_array() {
-        Component_ID id = id_utils::get_component_id<T>();
+        Component_ID id = internal::get_component_id<T>();
         SPDLOG_TRACE(typeid(T).name());
         ASSERT(id < arrays.size() && "unregistered type");
         auto unique = arrays[int(id)].get();

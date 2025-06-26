@@ -14,7 +14,7 @@ void test1() {
     ASSERT_EQUAL(sig, 0);
 
     Entity two = 2;
-    manager.set(two, 0b10);
+    manager.assign(two, 0b10);
     sig = manager[two];
     ASSERT_EQUAL(sig, 0b10);
 
@@ -44,9 +44,9 @@ void test2() {
 
 int main() {
     // to set for consistency
-    id_utils::get_component_id<Type1>();
-    id_utils::get_component_id<Type2>();
-    id_utils::get_component_id<Type3>();
+    internal::get_component_id<Type1>();
+    internal::get_component_id<Type2>();
+    internal::get_component_id<Type3>();
 
     test1();
     test2();
