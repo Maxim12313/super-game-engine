@@ -1,6 +1,6 @@
-#include "../include/ecs/component_manager.hpp"
-#include "../include/ecs/entity_manager.hpp"
-#include "../include/utils/test_utils.hpp"
+#include "../../include/ecs/component_manager.hpp"
+#include "../../include/ecs/entity_manager.hpp"
+#include "../../include/utils/test_utils.hpp"
 
 struct Type1 {
     int val;

@@ -67,7 +67,7 @@ public:
     template <typename T>
     void set_bit(Entity entity) {
         Signature &curr = signatures[entity];
-        internal::set_bit<T>(curr);
+        curr = internal::set_bit<T>(curr);
     }
 
     /**
@@ -76,6 +76,6 @@ public:
     template <typename T>
     void reset_bit(Entity entity) {
         Signature &curr = signatures[entity];
-        internal::reset_bit<T>(curr);
+        curr = internal::reset_bit<T>(curr);
     }
 };

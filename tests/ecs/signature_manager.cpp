@@ -1,5 +1,5 @@
-#include "../include/ecs/signature_manager.hpp"
-#include "../include/utils/test_utils.hpp"
+#include "../../include/ecs/signature_manager.hpp"
+#include "../../include/utils/test_utils.hpp"
 
 struct Type1 {};
 struct Type2 {};

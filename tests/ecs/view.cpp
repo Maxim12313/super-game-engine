@@ -1,5 +1,5 @@
-#include "../include/ecs/view.hpp"
-#include "../include/utils/test_utils.hpp"
+#include "../../include/ecs/view.hpp"
+#include "../../include/utils/test_utils.hpp"
 
 void test_filter_intersection() {
     SparseSet<int> arr;

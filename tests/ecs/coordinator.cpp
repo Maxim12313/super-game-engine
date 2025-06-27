@@ -1,5 +1,5 @@
-#include "../include/ecs/coordinator.hpp"
-#include "../include/utils/test_utils.hpp"
+#include "../../include/ecs/coordinator.hpp"
+#include "../../include/utils/test_utils.hpp"
 #include <ostream>
 #include <sstream>
 #include <unordered_set>

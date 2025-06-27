@@ -1,5 +1,5 @@
-#include "../include/ecs/entity_manager.hpp"
-#include "../include/utils/test_utils.hpp"
+#include "../../include/ecs/entity_manager.hpp"
+#include "../../include/utils/test_utils.hpp"
 #include <unordered_set>
 
 constexpr int n = 100;

@@ -1,5 +1,5 @@
-#include "../include/ecs/sparse_set.hpp"
-#include "../include/utils/test_utils.hpp"
+#include "../../include/ecs/sparse_set.hpp"
+#include "../../include/utils/test_utils.hpp"
 
 constexpr int n = 30; // MUST BE n >= 10
 

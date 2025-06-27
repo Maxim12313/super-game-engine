@@ -15,15 +15,15 @@ include_directories(include)
 file(GLOB SOURCE_FILES "src/*")
 
 find_package(spdlog REQUIRED)
-find_package(raylib REQUIRED)
+# find_package(raylib REQUIRED)
 
 # add_executable(game app/dodge_master.cpp ${SOURCE_FILES})
 # target_link_libraries(game raylib spdlog::spdlog)
 # target_precompile_headers(game PRIVATE <pch.hpp>)
 
 enable_testing()
-file(GLOB TESTS "tests/*")
-# file(GLOB TESTS "tests/view.cpp")
+file(GLOB TESTS "tests/ecs/*")
+# file(GLOB TESTS "tests/play.cpp")
 foreach(src IN LISTS TESTS)
   get_filename_component(name ${src} NAME_WE)
   add_executable(${name} ${src} ${SOURCE_FILES})
