@@ -1,32 +1,28 @@
 cmake_minimum_required(VERSION 3.10)
 project(super_game_engine)
+
+# settings
 set(CMAKE_CXX_STANDARD 23)
-
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_COLOR_DIAGNOSTICS ON) # for ninja
 
-set(SANITIZE_FLAGS "-fsanitize=address")
+# compile definition for log levels and debugging
+add_compile_definitions(LOG_LEVEL=LOG_LEVEL_DEBUG DEBUG)
+
+# outputs
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
+
+# compilations
+set(SANITIZE_FLAGS "-fsanitize=undefined")
 add_link_options(${SANITIZE_FLAGS})
-add_compile_options(-g -O0 -std=c++23 -Wshadow -Wunused -DSPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG ${SANITIZE_FLAGS})
+add_compile_options(-g -O0 -Wshadow -Wunused -Wshadow ${SANITIZE_FLAGS})
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
-include_directories(include)
-
-file(GLOB SOURCE_FILES "src/*")
-
-find_package(spdlog REQUIRED)
-# find_package(raylib REQUIRED)
-
-# add_executable(game app/dodge_master.cpp ${SOURCE_FILES})
-# target_link_libraries(game raylib spdlog::spdlog)
-# target_precompile_headers(game PRIVATE <pch.hpp>)
+# subdirs
+add_subdirectory(code/glad)
+add_subdirectory(code/ecs)
+add_subdirectory(code/tests)
+add_subdirectory(code/utils)
 
 enable_testing()
-file(GLOB TESTS "tests/ecs/*")
-# file(GLOB TESTS "tests/play.cpp")
-foreach(src IN LISTS TESTS)
-  get_filename_component(name ${src} NAME_WE)
-  add_executable(${name} ${src} ${SOURCE_FILES})
-  add_test(NAME ${name} COMMAND ${name})
-  target_link_libraries(${name} raylib spdlog::spdlog)
-endforeach()

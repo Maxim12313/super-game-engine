@@ -1,14 +1,21 @@
+# cmake
 bin/*
 CMake*
 !CMakeLists.txt
 Makefile
-.clangd
 *.cmake
 Testing
 compile_commands.json
+*ninja*
+lib/
+
+# docs
 .cache
 _build
 _doxygen
 api
 xml
 html
+
+# cpp
+.clangd
