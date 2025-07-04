@@ -1,5 +1,4 @@
 # cmake
-bin/*
 CMake*
 !CMakeLists.txt
 Makefile
@@ -7,7 +6,7 @@ Makefile
 Testing
 compile_commands.json
 *ninja*
-lib/
+build
 
 # docs
 .cache
