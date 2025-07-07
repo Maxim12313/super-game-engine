@@ -20,8 +20,8 @@
     (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
 #define LOG(prefix, color, fmt, ...)                                           \
-    std::print("{}[{}]{} [{} {}:{}]: " fmt "\n", color, prefix, COLOR_RESET,   \
-               __FILENAME__, __func__, __LINE__, ##__VA_ARGS__)
+    std::println("{}[{}]{} [{} {}:{}]: " fmt, color, prefix, COLOR_RESET,      \
+                 __FILENAME__, __func__, __LINE__, ##__VA_ARGS__)
 
 // log ../macros
 #if LOG_LEVEL >= LOG_LEVEL_ERROR

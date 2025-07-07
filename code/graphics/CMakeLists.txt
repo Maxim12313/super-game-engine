@@ -2,6 +2,7 @@ project(graphics)
 
 # make library
 file(GLOB_RECURSE source_files "${PROJECT_SOURCE_DIR}/graphics/*.cpp")
+
 add_library(${PROJECT_NAME} ${source_files})
 target_include_directories(${PROJECT_NAME} PUBLIC "${PROJECT_SOURCE_DIR}")
 
