@@ -50,27 +50,37 @@ void compile_program(uint32_t id) {
 }
 
 Shader::Shader(std::string vertex_path, std::string fragment_path) {
-    id = glCreateProgram();
+    m_id = glCreateProgram();
 
     // build shaders
     std::string vertex_code = read_file(vertex_path);
     LOG_DEBUG("vertex_code:\n{}", vertex_code.c_str());
     uint32_t vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     compile_shader("vertex", vertex_code.c_str(), vertex_shader);
-    glAttachShader(id, vertex_shader);
+    glAttachShader(m_id, vertex_shader);
 
     std::string fragment_code = read_file(fragment_path);
     LOG_DEBUG("fragment_code:\n{}", fragment_code.c_str());
     uint32_t fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
     compile_shader("fragment", fragment_code.c_str(), fragment_shader);
-    glAttachShader(id, fragment_shader);
+    glAttachShader(m_id, fragment_shader);
 
     // build program
-    compile_program(id);
+    compile_program(m_id);
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
 }
 
 void Shader::use() const {
-    glUseProgram(id);
+    glUseProgram(m_id);
+}
+
+void Shader::set_int(const char *name, int value) const {
+    glUniform1i(glGetUniformLocation(m_id, name), value);
+}
+void Shader::set_float(const char *name, float value) const {
+    glUniform1f(glGetUniformLocation(m_id, name), value);
+}
+void Shader::set_bool(const char *name, bool value) const {
+    glUniform1i(glGetUniformLocation(m_id, name), int(value));
 }
