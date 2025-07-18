@@ -10,9 +10,11 @@ target_include_directories(${PROJECT_NAME} PUBLIC "${PROJECT_SOURCE_DIR}")
 set(OpenGL_GL_PREFERENCE GLVND)
 find_package(OpenGL REQUIRED)
 find_package(glfw3 3.3 REQUIRED)
+find_package(glm CONFIG REQUIRED)
+
 target_link_libraries(
   ${PROJECT_NAME}
-  PUBLIC OpenGL::GL Glad glfw
+  PUBLIC OpenGL::GL Glad glfw glm::glm
   PRIVATE utils)
 
 # tests

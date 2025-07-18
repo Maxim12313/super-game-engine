@@ -2,9 +2,12 @@
 #include "utils/macros.hpp"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/ext/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <graphics/shader.hpp>
 #include <graphics/context.hpp>
 #include <graphics/config.hpp>
+#include <glm/glm.hpp>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <utils/stb_image.h>
@@ -26,8 +29,8 @@ int main() {
 
     stbi_set_flip_vertically_on_load(true);
 
-    Shader shader(paths::SHADER_DIR / "vertex.glsl",
-                  paths::SHADER_DIR / "fragment.glsl");
+    Shader shader(paths::SHADER_DIR / "texture_vertex.glsl",
+                  paths::SHADER_DIR / "texture_fragment.glsl");
 
     float vertices[] = {
         // positions          // colors           // texture coords
@@ -53,6 +56,11 @@ int main() {
     shader.use();
     shader.set_int("texture0", 0);
     shader.set_int("texture1", 1);
+
+    glm::mat4 trans = glm::mat4(1.0f);
+    trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+    trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+    shader.set_mat4("transform", glm::value_ptr(trans));
 
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
