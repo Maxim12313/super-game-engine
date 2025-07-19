@@ -13,7 +13,6 @@ public:
     void end_drawing() const;
 
 private:
-private:
     double m_width, m_height;
     GLFWwindow *m_window;
 };

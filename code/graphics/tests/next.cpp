@@ -108,7 +108,7 @@ void runner() {
         for (size_t i = 0; i < size; i++) {
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, cube_positions[i]);
-            float angle = 20 * i + 5 * glfwGetTime();
+            float angle = 20 * i + 100 * glfwGetTime();
             model = glm::rotate(model, glm::radians(angle),
                                 glm::vec3{1.0, 0.3, 0.5});
             shader.set_mat4("model", glm::value_ptr(model));
