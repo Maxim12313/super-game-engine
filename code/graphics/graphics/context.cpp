@@ -9,6 +9,7 @@
 
 void init_context() {
     glfwInit();
+    // window
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -38,21 +39,16 @@ void configure_draw_data(float vertices[], size_t n) {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, n, vertices, GL_STATIC_DRAW);
 
-    uint32_t stride = 8 * sizeof(float);
+    uint32_t stride = 5 * sizeof(float);
 
     // position
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void *)0);
     glEnableVertexAttribArray(0);
 
-    // color
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride,
+    // texture
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride,
                           (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
-
-    // texture
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride,
-                          (void *)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
 }
 
 void configure_draw_indices(uint32_t indices[], size_t n) {
