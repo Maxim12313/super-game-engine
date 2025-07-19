@@ -2,12 +2,14 @@
 #include "utils/macros.hpp"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <graphics/shader.hpp>
 #include <graphics/context.hpp>
 #include <graphics/config.hpp>
 #include <glm/glm.hpp>
+#include <iostream>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <utils/stb_image.h>
@@ -57,10 +59,21 @@ int main() {
     shader.set_int("texture0", 0);
     shader.set_int("texture1", 1);
 
-    glm::mat4 trans = glm::mat4(1.0f);
-    trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-    trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
-    shader.set_mat4("transform", glm::value_ptr(trans));
+    glm::mat4 model = glm::mat4(1.0f);
+    model =
+        glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+    glm::mat4 view = glm::mat4(1.0f);
+    view = glm::translate(view, glm::vec3(0, 0, -3));
+
+    glm::mat4 projection = glm::mat4(1.0f);
+    projection =
+        glm::perspective(glm::radians(45.0), window::RATIO, 0.1, 1000.0);
+
+    shader.use();
+    shader.set_mat4("model", glm::value_ptr(model));
+    shader.set_mat4("view", glm::value_ptr(view));
+    shader.set_mat4("projection", glm::value_ptr(projection));
 
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
@@ -75,6 +88,7 @@ int main() {
         glBindTexture(GL_TEXTURE_2D, texture1);
 
         shader.use();
+
         glBindVertexArray(vao);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
