@@ -18,7 +18,8 @@ void processInput(GLFWwindow *window);
 
 int main() {
     init_context();
-    GLFWwindow *window = create_window(800, 600, "reading test");
+    GLFWwindow *window =
+        create_window(window::HEIGHT, window::HEIGHT, "reading test");
     if (window == nullptr) {
         LOG_ERROR("failed to initialize window");
         destroy_context();
@@ -92,17 +93,17 @@ int main() {
         glm::vec3(1.3f, -2.0f, -2.5f),  glm::vec3(1.5f, 2.0f, -2.5f),
         glm::vec3(1.5f, 0.2f, -1.5f),   glm::vec3(-1.3f, 1.0f, -1.5f)};
 
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture0);
+
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, texture1);
+
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture0);
-
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, texture1);
 
         shader.use();
         glBindVertexArray(vao);

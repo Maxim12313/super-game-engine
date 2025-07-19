@@ -5,7 +5,6 @@
 #include "context.hpp"
 #include "graphics/glad_utils.hpp"
 #include <filesystem>
-#include "graphics/shader.hpp"
 
 void init_context() {
     glfwInit();
