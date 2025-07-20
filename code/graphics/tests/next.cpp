@@ -1,3 +1,4 @@
+#include "graphics/clock.hpp"
 #include "graphics/glad_utils.hpp"
 #include "graphics/window.hpp"
 #include "utils/macros.hpp"
@@ -31,11 +32,11 @@ glm::vec3 camera_pos(0, 0, 3);
 glm::vec3 camera_front(0, 0, -1);
 glm::vec3 camera_up(0, 1, 0);
 
-void handle_input(Window &window) {
+void handle_input(Window &window, double dt) {
     if (window.key_status(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         window.set_should_close();
     }
-    const float camera_speed = 0.2;
+    const float camera_speed = 10 * dt;
     if (window.key_status(GLFW_KEY_W) == GLFW_PRESS) {
         camera_pos += camera_speed * camera_front;
     }
@@ -90,6 +91,8 @@ void runner() {
     Shader shader(paths::SHADER_DIR / "texture_vertex.glsl",
                   paths::SHADER_DIR / "texture_fragment.glsl");
 
+    Clock clock(window::FPS);
+
     uint32_t vao = gen_vertex_array();
     glBindVertexArray(vao);
     configure_draw_data(vertices, sizeof(vertices));
@@ -118,7 +121,8 @@ void runner() {
     shader.set_mat4("projection", glm::value_ptr(projection));
 
     while (!window.should_close()) {
-        handle_input(window);
+        double dt = clock.update_dt();
+        handle_input(window, dt);
 
         glClear(clear_bits);
 

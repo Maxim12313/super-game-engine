@@ -12,6 +12,7 @@ namespace window {
 const int WIDTH = 1280;
 const int HEIGHT = 800;
 const double RATIO = double(WIDTH) / HEIGHT;
+const int FPS = 60;
 } // namespace window
 
 namespace vectors {
