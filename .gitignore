@@ -16,5 +16,6 @@ api
 xml
 html
 
-# cpp
+# other
 .clangd
+.vscode

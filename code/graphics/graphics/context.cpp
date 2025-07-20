@@ -6,33 +6,7 @@
 #include "graphics/glad_utils.hpp"
 #include <filesystem>
 
-void init_context() {
-    glfwInit();
-    // window
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-}
-
-void destroy_context() {
-    glfwTerminate();
-}
-
-void framebuffer_size_callback(GLFWwindow *window, int w, int h) {
-    glViewport(0, 0, w, h);
-}
-
-GLFWwindow *create_window(int w, int h, const char *name) {
-    GLFWwindow *window = glfwCreateWindow(w, h, name, nullptr, nullptr);
-    if (window == nullptr)
-        return nullptr;
-
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    return window;
-}
-
-void configure_draw_data(float vertices[], size_t n) {
+void configure_draw_data(const float vertices[], size_t n) {
     uint32_t vbo = gen_buffer();
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -50,7 +24,7 @@ void configure_draw_data(float vertices[], size_t n) {
     glEnableVertexAttribArray(1);
 }
 
-void configure_draw_indices(uint32_t indices[], size_t n) {
+void configure_draw_indices(const uint32_t indices[], size_t n) {
     uint32_t ebo = gen_buffer();
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, n, indices, GL_STATIC_DRAW);

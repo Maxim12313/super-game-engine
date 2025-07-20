@@ -29,6 +29,12 @@ Window::Window(int width, int height, const char *title)
     size_callback(m_window, width, height);
 }
 
+Window::~Window() {
+    if (m_window != nullptr) {
+        glfwTerminate();
+    }
+}
+
 double Window::get_width() const {
     return m_width;
 }
@@ -49,4 +55,8 @@ void Window::set_should_close() {
 void Window::end_drawing() const {
     glfwSwapBuffers(m_window);
     glfwPollEvents();
+}
+
+int Window::key_status(int key) const {
+    return glfwGetKey(m_window, key);
 }
