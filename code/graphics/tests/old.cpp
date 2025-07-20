@@ -66,7 +66,7 @@ const glm::vec3 cube_positions[] = {
     glm::vec3(1.5f, 0.2f, -1.5f),   glm::vec3(-1.3f, 1.0f, -1.5f)};
 
 void runner() {
-    Window window(800, 600, "next");
+    Window window(window::WIDTH, window::HEIGHT, "next");
 
     Shader shader(paths::SHADER_DIR / "texture_vertex.glsl",
                   paths::SHADER_DIR / "texture_fragment.glsl");
@@ -89,20 +89,14 @@ void runner() {
     shader.set_int("texture0", 0);
     shader.set_int("texture1", 1);
 
-    glm::mat4 view(1.0f);
-    view = glm::translate(view, glm::vec3(0, 0, -3));
+    glEnable(GL_DEPTH_TEST);
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    uint32_t clear_bits = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
 
     glm::mat4 projection(1.0f);
     projection =
         glm::perspective(glm::radians(45.0), window::RATIO, 0.1, 1000.0);
-
-    shader.use();
-    shader.set_mat4("view", glm::value_ptr(view));
     shader.set_mat4("projection", glm::value_ptr(projection));
-
-    glEnable(GL_DEPTH_TEST);
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    uint32_t clear_bits = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
 
     while (!window.should_close()) {
         handle_input(window);
@@ -110,6 +104,15 @@ void runner() {
         glClear(clear_bits);
 
         shader.use();
+
+        const float radius = 10;
+        float cam_x = sin(glfwGetTime()) * radius;
+        float cam_z = cos(glfwGetTime()) * radius;
+        glm::mat4 view =
+            glm::lookAt(glm::vec3(cam_x, 0.0, cam_z), glm::vec3(0.0, 0.0, 0.0),
+                        glm::vec3(0.0, 1.0, 0.0));
+        shader.set_mat4("view", glm::value_ptr(view));
+
         glBindVertexArray(vao);
         size_t size = sizeof(cube_positions) / sizeof(glm::vec3);
         for (size_t i = 0; i < size; i++) {

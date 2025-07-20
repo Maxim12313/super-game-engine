@@ -27,9 +27,28 @@ int main() {
     }
 }
 
+glm::vec3 camera_pos(0, 0, 3);
+glm::vec3 camera_front(0, 0, -1);
+glm::vec3 camera_up(0, 1, 0);
+
 void handle_input(Window &window) {
     if (window.key_status(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         window.set_should_close();
+    }
+    const float camera_speed = 0.2;
+    if (window.key_status(GLFW_KEY_W) == GLFW_PRESS) {
+        camera_pos += camera_speed * camera_front;
+    }
+    if (window.key_status(GLFW_KEY_S) == GLFW_PRESS) {
+        camera_pos -= camera_speed * camera_front;
+    }
+    glm::vec3 camera_right =
+        glm::normalize(glm::cross(camera_front, camera_up));
+    if (window.key_status(GLFW_KEY_D) == GLFW_PRESS) {
+        camera_pos += camera_speed * camera_right;
+    }
+    if (window.key_status(GLFW_KEY_A) == GLFW_PRESS) {
+        camera_pos -= camera_speed * camera_right;
     }
 }
 
@@ -105,12 +124,8 @@ void runner() {
 
         shader.use();
 
-        const float radius = 10;
-        float cam_x = sin(glfwGetTime()) * radius;
-        float cam_z = cos(glfwGetTime()) * radius;
         glm::mat4 view =
-            glm::lookAt(glm::vec3(cam_x, 0.0, cam_z), glm::vec3(0.0, 0.0, 0.0),
-                        glm::vec3(0.0, 1.0, 0.0));
+            glm::lookAt(camera_pos, camera_pos + camera_front, camera_up);
         shader.set_mat4("view", glm::value_ptr(view));
 
         glBindVertexArray(vao);

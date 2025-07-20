@@ -18,4 +18,5 @@ namespace vectors {
 const glm::vec3 UP(0, 1, 0);
 const glm::vec3 LEFT(1, 0, 0);
 const glm::vec3 RIGHT(0, 0, 1);
+const glm::vec3 ZERO(0, 0, 0);
 } // namespace vectors
