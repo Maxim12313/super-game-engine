@@ -32,27 +32,26 @@ int main() {
 glm::vec3 g_camera_pos(0, 0, 3);
 glm::vec3 g_camera_front(0, 0, -1);
 glm::vec3 g_camera_up(0, 1, 0);
-Window g_window(window::WIDTH, window::HEIGHT, "next");
 
 void handle_input(Window &window, double dt) {
-    if (window.key_status(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        window.set_should_close();
-    }
-    const float camera_speed = 10 * dt;
-    if (window.key_status(GLFW_KEY_W) == GLFW_PRESS) {
-        g_camera_pos += camera_speed * g_camera_front;
-    }
-    if (window.key_status(GLFW_KEY_S) == GLFW_PRESS) {
-        g_camera_pos -= camera_speed * g_camera_front;
-    }
-    glm::vec3 camera_right =
-        glm::normalize(glm::cross(g_camera_front, g_camera_up));
-    if (window.key_status(GLFW_KEY_D) == GLFW_PRESS) {
-        g_camera_pos += camera_speed * camera_right;
-    }
-    if (window.key_status(GLFW_KEY_A) == GLFW_PRESS) {
-        g_camera_pos -= camera_speed * camera_right;
-    }
+    // if (window.key_status(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+    //     window.set_should_close();
+    // }
+    // const float camera_speed = 10 * dt;
+    // if (window.key_status(GLFW_KEY_W) == GLFW_PRESS) {
+    //     g_camera_pos += camera_speed * g_camera_front;
+    // }
+    // if (window.key_status(GLFW_KEY_S) == GLFW_PRESS) {
+    //     g_camera_pos -= camera_speed * g_camera_front;
+    // }
+    // glm::vec3 camera_right =
+    //     glm::normalize(glm::cross(g_camera_front, g_camera_up));
+    // if (window.key_status(GLFW_KEY_D) == GLFW_PRESS) {
+    //     g_camera_pos += camera_speed * camera_right;
+    // }
+    // if (window.key_status(GLFW_KEY_A) == GLFW_PRESS) {
+    //     g_camera_pos -= camera_speed * camera_right;
+    // }
 }
 
 bool first_mouse = true;
@@ -128,7 +127,7 @@ const glm::vec3 cube_positions[] = {
     glm::vec3(1.5f, 0.2f, -1.5f),   glm::vec3(-1.3f, 1.0f, -1.5f)};
 
 void runner() {
-    g_window.set_mouse_callback(mouse_callback);
+    // g_window.add_mouse_callback(mouse_callback);
 
     Shader shader(paths::SHADER_DIR / "texture_vertex.glsl",
                   paths::SHADER_DIR / "texture_fragment.glsl");
