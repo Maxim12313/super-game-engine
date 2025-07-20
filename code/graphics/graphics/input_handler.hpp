@@ -11,21 +11,16 @@ using KeyCallback =
 
 class InputHandler {
 public:
-    // cannot move/assign
     InputHandler(const InputHandler &) = delete;
-    InputHandler(InputHandler &&) = delete;
+    InputHandler(InputHandler &&) = default;
     InputHandler &operator=(const InputHandler &) = delete;
-    InputHandler &operator=(InputHandler &&) = delete;
+    InputHandler &operator=(InputHandler &&) = default;
 
-    static InputHandler &instance();
+    InputHandler(GLFWwindow *window);
     void add_mouse_pos_callback(MousePosCallback callback);
     void add_key_callback(KeyCallback callback);
 
-    // must call after full init
-    static void setup(GLFWwindow *window);
-
 private:
-    InputHandler() = default;
     static void mouse_pos_runner(GLFWwindow *window, double x, double y);
     static void key_runner(GLFWwindow *window, int key, int scancode,
                            int action, int mods);

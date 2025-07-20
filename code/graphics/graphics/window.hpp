@@ -8,6 +8,11 @@ class GLFWwindow;
 
 class Window {
 public:
+    Window(const Window &) = delete;
+    Window(Window &&) = default;
+    Window &operator=(const Window &) = delete;
+    Window &operator=(Window &&) = default;
+
     Window(int width, int height, const char *title, GLFWwindow *window);
     ~Window();
     double get_width() const;

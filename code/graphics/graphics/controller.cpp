@@ -4,8 +4,8 @@
 #include "graphics/constants.hpp"
 #include "window.hpp"
 
-Controller::Controller(Window window, InputHandler &input_handler)
-    : m_window(std::move(window)), m_input_handler(input_handler) {
+Controller::Controller(Window window, InputHandler input_handler)
+    : m_window(std::move(window)), m_input_handler(std::move(input_handler)) {
 }
 
 Controller Controller_setup() {
@@ -29,8 +29,8 @@ Controller Controller_setup() {
         throw new std::runtime_error("Failed to initialize glad");
     }
 
-    Window game_window = Window(width, height, title, window);
-    InputHandler &input_handler = InputHandler::instance();
+    Window game_window(width, height, title, window);
+    InputHandler input_handler(window);
 
-    return Controller{game_window, input_handler};
+    return Controller{std::move(game_window), std::move(input_handler)};
 }
