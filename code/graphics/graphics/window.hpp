@@ -14,6 +14,7 @@ public:
     void set_should_close();
     void end_drawing() const;
     int key_status(int key) const;
+    void set_mouse_callback(void (*callback)(GLFWwindow *, double, double));
 
 private:
     double m_width, m_height;

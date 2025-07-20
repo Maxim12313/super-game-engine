@@ -1,12 +1,15 @@
+#include <functional>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <stdexcept>
 #include "window.hpp"
 
+// helpers **********
 void size_callback(GLFWwindow *window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
+// class public **********
 Window::Window(int width, int height, const char *title)
     : m_width(width), m_height(height) {
     glfwInit();
@@ -59,4 +62,12 @@ void Window::end_drawing() const {
 
 int Window::key_status(int key) const {
     return glfwGetKey(m_window, key);
+}
+
+void Window::set_mouse_callback(void (*callback)(GLFWwindow *, double,
+                                                 double)) {
+    // find a better place to put this
+    glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+    glfwSetCursorPosCallback(m_window, callback);
 }
