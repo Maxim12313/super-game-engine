@@ -14,29 +14,12 @@ private:
 public:
     RingBuffer() : m_sz(0), m_head(0), m_tail(0) {};
 
-    // TODO: learn about perfect forwarding
+    // TODO: perfect forwarding: moved if rvalue, copied if lvalue
     void push(T val) {
-        T res;
-        // just pass it on without ret
-        push(std::move(val), res);
-    }
-
-    // returns true if it overwrote and puts popped in vres
-    bool push(T val, T &res) {
-        // overwrites if max capacity
-        bool popped = false;
-        if (full()) {
-            res = front();
-            pop();
-            popped = true;
-        }
-
-        // perfect forwarding: moved if rvalue, copied if lvalue
+        ASSERT(!full() && "is full");
         m_data[m_head] = val;
         m_head = iterate(m_head);
         m_sz++;
-
-        return popped;
     }
 
     // fails if empty
