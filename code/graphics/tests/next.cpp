@@ -122,6 +122,10 @@ void runner() {
 
     while (!window.should_close()) {
         double dt = clock.update_dt();
+
+        double avg_fps = clock.avg_fps();
+        LOG_DEBUG("avg fps: {}", avg_fps);
+
         handle_input(window, dt);
 
         glClear(clear_bits);
