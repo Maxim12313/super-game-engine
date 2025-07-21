@@ -16,7 +16,8 @@ public:
     InputHandler &operator=(const InputHandler &) = delete;
     InputHandler &operator=(InputHandler &&) = default;
 
-    InputHandler(GLFWwindow *window);
+    InputHandler() = default;
+    void setup(GLFWwindow *window);
     void add_mouse_pos_callback(MousePosCallback callback);
     void add_key_callback(KeyCallback callback);
 

@@ -10,8 +10,8 @@ public:
     // updates and returns dt in sec, todo at start of game loop
     double update_dt();
 
-    // returns dt in sec but does not change prev frame
-    double get_dt() const;
+    // returns dt in sec prev frame to now
+    double get_dt_now() const;
 
     // sleeps to get target_fps as cap, ignore if target_fps==-1
     void adjust_fps(double accuracy = 0.001) const;

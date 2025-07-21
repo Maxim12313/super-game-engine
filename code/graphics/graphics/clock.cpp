@@ -33,7 +33,7 @@ double Clock::update_dt() {
     return dt;
 }
 
-double Clock::get_dt() const {
+double Clock::get_dt_now() const {
     auto curr_frame = std::chrono::high_resolution_clock::now();
     auto duration = curr_frame - m_prev_frame;
     int ms =
@@ -44,7 +44,7 @@ double Clock::get_dt() const {
 void Clock::adjust_fps(double accuracy) const {
     if (m_target_fps == -1)
         return;
-    double dt = get_dt();
+    double dt = get_dt_now();
     double target_dt = to_dt(m_target_fps);
     double to_wait = target_dt - dt;
     if (to_wait > accuracy) {

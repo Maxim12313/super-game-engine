@@ -32,26 +32,27 @@ int main() {
 glm::vec3 g_camera_pos(0, 0, 3);
 glm::vec3 g_camera_front(0, 0, -1);
 glm::vec3 g_camera_up(0, 1, 0);
+Window g_window(window::WIDTH, window::HEIGHT, "next");
 
 void handle_input(Window &window, double dt) {
-    // if (window.key_status(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-    //     window.set_should_close();
-    // }
-    // const float camera_speed = 10 * dt;
-    // if (window.key_status(GLFW_KEY_W) == GLFW_PRESS) {
-    //     g_camera_pos += camera_speed * g_camera_front;
-    // }
-    // if (window.key_status(GLFW_KEY_S) == GLFW_PRESS) {
-    //     g_camera_pos -= camera_speed * g_camera_front;
-    // }
-    // glm::vec3 camera_right =
-    //     glm::normalize(glm::cross(g_camera_front, g_camera_up));
-    // if (window.key_status(GLFW_KEY_D) == GLFW_PRESS) {
-    //     g_camera_pos += camera_speed * camera_right;
-    // }
-    // if (window.key_status(GLFW_KEY_A) == GLFW_PRESS) {
-    //     g_camera_pos -= camera_speed * camera_right;
-    // }
+    if (window.key_status(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        window.set_should_close();
+    }
+    const float camera_speed = 10 * dt;
+    if (window.key_status(GLFW_KEY_W) == GLFW_PRESS) {
+        g_camera_pos += camera_speed * g_camera_front;
+    }
+    if (window.key_status(GLFW_KEY_S) == GLFW_PRESS) {
+        g_camera_pos -= camera_speed * g_camera_front;
+    }
+    glm::vec3 camera_right =
+        glm::normalize(glm::cross(g_camera_front, g_camera_up));
+    if (window.key_status(GLFW_KEY_D) == GLFW_PRESS) {
+        g_camera_pos += camera_speed * camera_right;
+    }
+    if (window.key_status(GLFW_KEY_A) == GLFW_PRESS) {
+        g_camera_pos -= camera_speed * camera_right;
+    }
 }
 
 bool first_mouse = true;
@@ -59,7 +60,7 @@ double prev_x;
 double prev_y;
 double yaw = -90;
 double pitch = 0;
-void mouse_callback(GLFWwindow *window, double x, double y) {
+void mouse_callback(double x, double y) {
     if (first_mouse) {
         prev_x = x;
         prev_y = y;
@@ -160,6 +161,8 @@ void runner() {
     projection =
         glm::perspective(glm::radians(45.0), window::RATIO, 0.1, 1000.0);
     shader.set_mat4("projection", glm::value_ptr(projection));
+
+    g_window.add_mouse_pos_callback(mouse_callback);
 
     while (!g_window.should_close()) {
         double dt = game_clock.update_dt();
