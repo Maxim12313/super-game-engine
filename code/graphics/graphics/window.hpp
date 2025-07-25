@@ -1,8 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include <vector>
-#include "input_handler.hpp"
+#include "callback_handler.hpp"
 
 class GLFWwindow;
 
@@ -15,9 +14,9 @@ public:
 
     Window(int width, int height, const char *title);
     ~Window();
-    double get_width() const;
-    double get_height() const;
-    double get_ratio() const;
+    double width() const;
+    double height() const;
+    double aspect_ratio() const;
     void end_drawing() const;
 
     bool should_close() const;
@@ -28,8 +27,10 @@ public:
     void add_mouse_pos_callback(MousePosCallback callback);
     void add_key_callback(KeyCallback callback);
 
+    void cursor_pos(double &x, double &y) const;
+
 private:
     double m_width, m_height;
     GLFWwindow *m_window;
-    InputHandler m_input_handler;
+    CallbackHandler m_input_handler;
 };

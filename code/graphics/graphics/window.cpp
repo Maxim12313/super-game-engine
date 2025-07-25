@@ -1,6 +1,7 @@
 #include <functional>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/ext/vector_float2.hpp>
 #include <stdexcept>
 #include "window.hpp"
 
@@ -39,15 +40,15 @@ Window::~Window() {
     }
 }
 
-double Window::get_width() const {
+double Window::width() const {
     return m_width;
 }
 
-double Window::get_height() const {
+double Window::height() const {
     return m_height;
 }
 
-double Window::get_ratio() const {
+double Window::aspect_ratio() const {
     return m_width / m_height;
 }
 bool Window::should_close() const {
@@ -69,4 +70,8 @@ void Window::add_mouse_pos_callback(MousePosCallback callback) {
 }
 void Window::add_key_callback(KeyCallback callback) {
     m_input_handler.add_key_callback(callback);
+}
+
+void Window::cursor_pos(double &x, double &y) const {
+    glfwGetCursorPos(m_window, &x, &y);
 }

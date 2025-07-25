@@ -9,14 +9,14 @@ using MousePosCallback = std::function<void(double x, double y)>;
 using KeyCallback =
     std::function<void(int key, int scancode, int action, int mods)>;
 
-class InputHandler {
+class CallbackHandler {
 public:
-    InputHandler(const InputHandler &) = delete;
-    InputHandler(InputHandler &&) = default;
-    InputHandler &operator=(const InputHandler &) = delete;
-    InputHandler &operator=(InputHandler &&) = default;
+    CallbackHandler(const CallbackHandler &) = delete;
+    CallbackHandler(CallbackHandler &&) = default;
+    CallbackHandler &operator=(const CallbackHandler &) = delete;
+    CallbackHandler &operator=(CallbackHandler &&) = default;
 
-    InputHandler() = default;
+    CallbackHandler() = default;
     void setup(GLFWwindow *window);
     void add_mouse_pos_callback(MousePosCallback callback);
     void add_key_callback(KeyCallback callback);
