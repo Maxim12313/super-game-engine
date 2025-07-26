@@ -57,8 +57,12 @@ bool Window::should_close() const {
 void Window::set_should_close() {
     glfwSetWindowShouldClose(m_window, true);
 }
-bool Window::key_status(uint32_t key) const {
+bool Window::key_status(int key) const {
     return glfwGetKey(m_window, key);
+}
+
+bool Window::is_key_pressed(int key) const {
+    return glfwGetKey(m_window, key) == GLFW_PRESS;
 }
 
 void Window::end_drawing() const {

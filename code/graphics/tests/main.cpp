@@ -36,16 +36,16 @@ void handle_input(Window &window, Camera &camera, double dt) {
     }
 
     const float camera_speed = 10 * dt;
-    if (window.key_status(GLFW_KEY_W) == GLFW_PRESS) {
+    if (window.is_key_pressed(GLFW_KEY_W)) {
         camera.move_forward(camera_speed);
     }
-    if (window.key_status(GLFW_KEY_S) == GLFW_PRESS) {
+    if (window.is_key_pressed(GLFW_KEY_S)) {
         camera.move_backward(camera_speed);
     }
-    if (window.key_status(GLFW_KEY_D) == GLFW_PRESS) {
+    if (window.is_key_pressed(GLFW_KEY_D)) {
         camera.move_right(camera_speed);
     }
-    if (window.key_status(GLFW_KEY_A) == GLFW_PRESS) {
+    if (window.is_key_pressed(GLFW_KEY_A)) {
         camera.move_left(camera_speed);
     }
 
@@ -53,6 +53,14 @@ void handle_input(Window &window, Camera &camera, double dt) {
     double x, y;
     window.cursor_pos(x, y);
     camera.move_cursor(x, y, sensitivity);
+
+    double fov_dt = 45 * dt;
+    if (window.is_key_pressed(GLFW_KEY_O)) {
+        camera.change_fov(fov_dt);
+    }
+    if (window.is_key_pressed(GLFW_KEY_P)) {
+        camera.change_fov(-fov_dt);
+    }
 }
 
 const float vertices[] = {
@@ -91,7 +99,7 @@ void runner() {
     // g_window.add_mouse_callback(mouse_callback);
 
     Window window(window::WIDTH, window::HEIGHT, "next");
-    Camera camera;
+    Camera camera(camera::FOV, camera::Z_NEAR, camera::Z_FAR);
     Shader shader(paths::SHADER_DIR / "texture_vertex.glsl",
                   paths::SHADER_DIR / "texture_fragment.glsl");
 
@@ -119,11 +127,6 @@ void runner() {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     uint32_t clear_bits = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
 
-    glm::mat4 projection(1.0f);
-    projection =
-        glm::perspective(glm::radians(45.0), window::RATIO, 0.1, 1000.0);
-    shader.set_mat4("projection", glm::value_ptr(projection));
-
     while (!window.should_close()) {
         double dt = game_clock.update_dt();
         double avg_fps = game_clock.avg_fps();
@@ -137,6 +140,10 @@ void runner() {
 
         auto view = camera.view();
         shader.set_mat4("view", glm::value_ptr(view));
+
+        glm::mat4 projection(1.0f);
+        projection = camera.projection(window.aspect_ratio());
+        shader.set_mat4("projection", glm::value_ptr(projection));
 
         glBindVertexArray(vao);
         size_t size = sizeof(cube_positions) / sizeof(glm::vec3);

@@ -6,13 +6,15 @@ class Window;
 
 class Camera {
 public:
-    Camera();
+    Camera(double fov, double z_near, double z_far);
     void move_left(float amount);
     void move_right(float amount);
     void move_forward(float amount);
     void move_backward(float amount);
     void move_cursor(double x, double y, double amount);
+    void change_fov(double amount);
     glm::mat4 view() const;
+    glm::mat4 projection(double aspect_ratio) const;
 
 private:
     void move_z(float amount);
@@ -24,6 +26,9 @@ private:
     double m_pitch;
     double m_prev_x; // default
     double m_prev_y; // default
+    double m_fov;
+    double m_z_near;
+    double m_z_far;
     glm::vec3 m_camera_pos;
     glm::vec3 m_camera_front;
     glm::vec3 m_camera_up;
