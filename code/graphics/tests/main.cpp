@@ -48,7 +48,11 @@ void handle_input(Window &window, Camera &camera, double dt) {
     if (window.key_status(GLFW_KEY_A) == GLFW_PRESS) {
         camera.move_left(camera_speed);
     }
-    camera.cursor_pos_input(window, dt);
+
+    const float sensitivity = 5 * dt;
+    double x, y;
+    window.cursor_pos(x, y);
+    camera.move_cursor(x, y, sensitivity);
 }
 
 const float vertices[] = {
@@ -87,8 +91,7 @@ void runner() {
     // g_window.add_mouse_callback(mouse_callback);
 
     Window window(window::WIDTH, window::HEIGHT, "next");
-    double sensitivity = 5;
-    Camera camera(sensitivity);
+    Camera camera;
     Shader shader(paths::SHADER_DIR / "texture_vertex.glsl",
                   paths::SHADER_DIR / "texture_fragment.glsl");
 

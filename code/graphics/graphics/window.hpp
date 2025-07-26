@@ -18,15 +18,11 @@ public:
     double height() const;
     double aspect_ratio() const;
     void end_drawing() const;
-
     bool should_close() const;
     void set_should_close();
-
     bool key_status(uint32_t key) const;
-
     void add_mouse_pos_callback(MousePosCallback callback);
     void add_key_callback(KeyCallback callback);
-
     void cursor_pos(double &x, double &y) const;
 
 private:

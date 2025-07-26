@@ -6,12 +6,12 @@ class Window;
 
 class Camera {
 public:
-    Camera(double sensitivity);
+    Camera();
     void move_left(float amount);
     void move_right(float amount);
     void move_forward(float amount);
     void move_backward(float amount);
-    void cursor_pos_input(Window &window, double dt);
+    void move_cursor(double x, double y, double amount);
     glm::mat4 view() const;
 
 private:
@@ -24,8 +24,6 @@ private:
     double m_pitch;
     double m_prev_x; // default
     double m_prev_y; // default
-    double m_sensitivity;
-    double m_move_speed;
     glm::vec3 m_camera_pos;
     glm::vec3 m_camera_front;
     glm::vec3 m_camera_up;

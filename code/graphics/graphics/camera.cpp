@@ -30,9 +30,9 @@ glm::vec3 calculate_camera_right(glm::vec3 camera_front, glm::vec3 camera_up) {
 
 // class public *********
 
-Camera::Camera(double sensitivity)
-    : m_yaw(-90), m_pitch(0), m_first_mouse(true), m_sensitivity(sensitivity),
-      m_camera_pos(0, 0, 3), m_camera_front(0, 0, -1), m_camera_up(0, 1, 0),
+Camera::Camera()
+    : m_yaw(-90), m_pitch(0), m_first_mouse(true), m_camera_pos(0, 0, 3),
+      m_camera_front(0, 0, -1), m_camera_up(0, 1, 0),
       m_camera_right(glm::normalize(glm::cross(m_camera_front, m_camera_up))) {
 }
 
@@ -49,21 +49,15 @@ void Camera::move_backward(float amount) {
     move_z(-amount);
 }
 
-void Camera::cursor_pos_input(Window &window, double dt) {
-    double x, y;
-    window.cursor_pos(x, y);
+void Camera::move_cursor(double x, double y, double amount) {
     if (m_first_mouse) {
         m_prev_x = x;
         m_prev_y = y;
         m_first_mouse = false;
         return;
     }
-    double dx = x - m_prev_x;
-    double dy = y - m_prev_y;
-
-    double sens = m_sensitivity * dt;
-    dx *= sens;
-    dy *= sens;
+    double dx = (x - m_prev_x) * amount;
+    double dy = (y - m_prev_y) * amount;
 
     m_yaw += dx;
     m_pitch = bound_pitch(m_pitch - dy);
