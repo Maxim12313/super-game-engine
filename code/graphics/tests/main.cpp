@@ -30,10 +30,25 @@ int main() {
     }
 }
 
-void handle_input(Window &window, double dt) {
+void handle_input(Window &window, Camera &camera, double dt) {
     if (window.key_status(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         window.set_should_close();
     }
+
+    const float camera_speed = 10 * dt;
+    if (window.key_status(GLFW_KEY_W) == GLFW_PRESS) {
+        camera.move_forward(camera_speed);
+    }
+    if (window.key_status(GLFW_KEY_S) == GLFW_PRESS) {
+        camera.move_backward(camera_speed);
+    }
+    if (window.key_status(GLFW_KEY_D) == GLFW_PRESS) {
+        camera.move_right(camera_speed);
+    }
+    if (window.key_status(GLFW_KEY_A) == GLFW_PRESS) {
+        camera.move_left(camera_speed);
+    }
+    camera.cursor_pos_input(window, dt);
 }
 
 const float vertices[] = {
@@ -72,7 +87,8 @@ void runner() {
     // g_window.add_mouse_callback(mouse_callback);
 
     Window window(window::WIDTH, window::HEIGHT, "next");
-    Camera camera;
+    double sensitivity = 5;
+    Camera camera(sensitivity);
     Shader shader(paths::SHADER_DIR / "texture_vertex.glsl",
                   paths::SHADER_DIR / "texture_fragment.glsl");
 
@@ -110,8 +126,7 @@ void runner() {
         double avg_fps = game_clock.avg_fps();
         // LOG_DEBUG("avg fps: {}", avg_fps);
 
-        handle_input(window, dt);
-        camera.handle_input(window, dt);
+        handle_input(window, camera, dt);
 
         glClear(clear_bits);
 

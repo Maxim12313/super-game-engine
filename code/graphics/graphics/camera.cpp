@@ -4,30 +4,52 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/glm.hpp>
 
-// class public *********
-
-Camera::Camera()
-    : m_yaw(-90), m_pitch(0), m_first_mouse(true), m_camera_pos(0, 0, 3),
-      m_camera_front(0, 0, -1), m_camera_up(0, 1, 0) {
+// helpers *********
+double bound_pitch(double pitch) {
+    if (pitch > 89)
+        return 89;
+    else if (pitch < -89)
+        return -89;
+    return pitch;
 }
 
-void Camera::handle_input(Window &window, double dt) {
-    const float camera_speed = 10 * dt;
-    if (window.key_status(GLFW_KEY_W) == GLFW_PRESS) {
-        m_camera_pos += camera_speed * m_camera_front;
-    }
-    if (window.key_status(GLFW_KEY_S) == GLFW_PRESS) {
-        m_camera_pos -= camera_speed * m_camera_front;
-    }
-    glm::vec3 camera_right =
-        glm::normalize(glm::cross(m_camera_front, m_camera_up));
-    if (window.key_status(GLFW_KEY_D) == GLFW_PRESS) {
-        m_camera_pos += camera_speed * camera_right;
-    }
-    if (window.key_status(GLFW_KEY_A) == GLFW_PRESS) {
-        m_camera_pos -= camera_speed * camera_right;
-    }
+glm::vec3 calculate_camera_front(double yaw, double pitch) {
+    glm::vec3 dir;
+    double rad_yaw = glm::radians(yaw);
+    double rad_pitch = glm::radians(pitch);
+    dir.x = cos(rad_yaw) * cos(rad_pitch);
 
+    dir.y = sin(rad_pitch);
+    dir.z = sin(rad_yaw) * cos(rad_pitch);
+    return glm::normalize(dir);
+}
+
+glm::vec3 calculate_camera_right(glm::vec3 camera_front, glm::vec3 camera_up) {
+    return glm::normalize(glm::cross(camera_front, camera_up));
+}
+
+// class public *********
+
+Camera::Camera(double sensitivity)
+    : m_yaw(-90), m_pitch(0), m_first_mouse(true), m_sensitivity(sensitivity),
+      m_camera_pos(0, 0, 3), m_camera_front(0, 0, -1), m_camera_up(0, 1, 0),
+      m_camera_right(glm::normalize(glm::cross(m_camera_front, m_camera_up))) {
+}
+
+void Camera::move_left(float amount) {
+    move_x(-amount);
+}
+void Camera::move_right(float amount) {
+    move_x(amount);
+}
+void Camera::move_forward(float amount) {
+    move_z(amount);
+}
+void Camera::move_backward(float amount) {
+    move_z(-amount);
+}
+
+void Camera::cursor_pos_input(Window &window, double dt) {
     double x, y;
     window.cursor_pos(x, y);
     if (m_first_mouse) {
@@ -36,29 +58,18 @@ void Camera::handle_input(Window &window, double dt) {
         m_first_mouse = false;
         return;
     }
-
     double dx = x - m_prev_x;
     double dy = y - m_prev_y;
 
-    double sens = 0.1;
+    double sens = m_sensitivity * dt;
     dx *= sens;
     dy *= sens;
 
     m_yaw += dx;
-    m_pitch -= dy;
+    m_pitch = bound_pitch(m_pitch - dy);
 
-    if (m_pitch > 89)
-        m_pitch = 89;
-    else if (m_pitch < -89)
-        m_pitch = -89;
-
-    glm::vec3 dir;
-    double rad_yaw = glm::radians(m_yaw);
-    double rad_pitch = glm::radians(m_pitch);
-    dir.x = cos(rad_yaw) * cos(rad_pitch);
-    dir.y = sin(rad_pitch);
-    dir.z = sin(rad_yaw) * cos(rad_pitch);
-    m_camera_front = glm::normalize(dir);
+    m_camera_front = calculate_camera_front(m_yaw, m_pitch);
+    m_camera_right = calculate_camera_right(m_camera_front, m_camera_up);
 
     m_prev_x = x;
     m_prev_y = y;
@@ -67,4 +78,13 @@ void Camera::handle_input(Window &window, double dt) {
 glm::mat4 Camera::view() const {
     return glm::lookAt(m_camera_pos, m_camera_pos + m_camera_front,
                        m_camera_up);
+}
+
+// class private *********
+void Camera::move_z(float amount) {
+    m_camera_pos += amount * m_camera_front;
+}
+
+void Camera::move_x(float amount) {
+    m_camera_pos += amount * m_camera_right;
 }
