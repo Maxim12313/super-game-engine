@@ -9,11 +9,11 @@
 #define LOG_LEVEL_TRACE 3
 
 // Reset
-#define COLOR_RESET "\033[0m"
-#define COLOR_GRAY "\033[90m"
-#define COLOR_CYAN "\033[36m"
-#define COLOR_GREEN "\033[32m"
-#define COLOR_RED "\033[31m"
+[[maybe_unused]] static const char *COLOR_RESET = "\033[0m";
+[[maybe_unused]] static const char *COLOR_GRAY = "\033[90m";
+[[maybe_unused]] static const char *COLOR_CYAN = "\033[36m";
+[[maybe_unused]] static const char *COLOR_GREEN = "\033[32m";
+[[maybe_unused]] static const char *COLOR_RED = "\033[31m";
 
 // HELPERS
 #define __FILENAME__                                                           \

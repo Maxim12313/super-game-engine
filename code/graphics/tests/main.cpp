@@ -1,7 +1,7 @@
 #include "graphics/camera.hpp"
 #include "../src/core/clock.hpp"
 #include "../src/core/glad_utils.hpp"
-#include "../src/core/window.hpp"
+#include "graphics/window.hpp"
 #include "../src/core/shader.hpp"
 #include "../src/core/context.hpp"
 #include "../src/core/constants.hpp"
@@ -99,12 +99,10 @@ const glm::vec3 cube_positions[] = {
 void runner() {
     // g_window.add_mouse_callback(mouse_callback);
 
-    Window window(window::WIDTH, window::HEIGHT, "next");
-    Camera camera(camera::FOV, camera::Z_NEAR, camera::Z_FAR);
+    Window window;
+    Camera camera;
     Shader shader(paths::SHADER_DIR / "texture_vertex.glsl",
                   paths::SHADER_DIR / "texture_fragment.glsl");
-
-    Clock game_clock(window::FPS);
 
     uint32_t vao = gen_vertex_array();
     glBindVertexArray(vao);
@@ -129,10 +127,7 @@ void runner() {
     uint32_t clear_bits = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
 
     while (!window.should_close()) {
-        double dt = game_clock.update_dt();
-        double avg_fps = game_clock.avg_fps();
-        // LOG_DEBUG("avg fps: {}", avg_fps);
-
+        double dt = window.begin_update();
         handle_input(window, camera, dt);
 
         glClear(clear_bits);
@@ -157,7 +152,6 @@ void runner() {
             shader.set_mat4("model", glm::value_ptr(model));
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
-        window.end_drawing();
-        game_clock.adjust_fps();
+        window.end_update();
     }
 }

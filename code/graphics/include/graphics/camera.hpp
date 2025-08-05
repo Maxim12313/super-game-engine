@@ -8,7 +8,7 @@ enum class Direction { UP, RIGHT, FORWARD, DOWN, LEFT, BACKWARD };
 
 class Camera {
 public:
-    Camera(double fov, double z_near, double z_far);
+    Camera(double fov = 45, double z_near = 0.1, double z_far = 1000);
     void move_direction(Direction dir, double amount);
     void move_cursor(double x, double y, double amount);
 
