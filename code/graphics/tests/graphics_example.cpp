@@ -1,4 +1,4 @@
-#include "graphics/camera.hpp"
+#include "graphics/camera3d.hpp"
 #include "../src/core/clock.hpp"
 #include "graphics/window.hpp"
 #include "../src/core/shader.hpp"
@@ -30,7 +30,7 @@ int main() {
     }
 }
 
-void handle_input(Window &window, Camera &camera, double dt) {
+void handle_input(Window &window, Camera3D &camera, double dt) {
     if (window.key_status(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         window.set_should_close();
     }
@@ -50,9 +50,8 @@ void handle_input(Window &window, Camera &camera, double dt) {
         camera.move_direction(Direction::DOWN, camera_speed);
 
     const float sensitivity = 5 * dt;
-    double x, y;
-    window.cursor_pos(x, y);
-    camera.move_cursor(x, y, sensitivity);
+    glm::vec2 pos = window.cursor_pos();
+    camera.move_cursor(pos.x, pos.y, sensitivity);
 
     double fov_dt = 45 * dt;
     if (window.is_key_pressed(GLFW_KEY_O)) {
@@ -65,5 +64,5 @@ void handle_input(Window &window, Camera &camera, double dt) {
 
 void runner() {
     Window window;
-    Camera camera;
+    Camera3D camera;
 }

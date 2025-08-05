@@ -87,8 +87,10 @@ bool Window::key_status(int key) const {
 bool Window::is_key_pressed(int key) const {
     return glfwGetKey(m_window, key) == GLFW_PRESS;
 }
-void Window::cursor_pos(double &x, double &y) const {
-    glfwGetCursorPos(m_window, &x, &y);
+glm::vec2 Window::cursor_pos() const {
+    glm::vec2 pos;
+    glfwGetCursorPos(m_window, (double *)&pos.x, (double *)&pos.y);
+    return pos;
 }
 
 // callbacks ********

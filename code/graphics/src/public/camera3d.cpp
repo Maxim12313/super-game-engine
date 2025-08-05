@@ -1,4 +1,4 @@
-#include "graphics/camera.hpp"
+#include "graphics/camera3d.hpp"
 #include "graphics/window.hpp"
 #include "../core/constants.hpp"
 #include "utils/macros.hpp"
@@ -40,42 +40,16 @@ glm::vec3 calculate_camera_right(glm::vec3 camera_front, glm::vec3 camera_up) {
 }
 
 // class public *********
-
-Camera::Camera(double fov, double z_near, double z_far)
-    : m_yaw(-90), m_pitch(0), m_first_mouse(true), m_fov(fov), m_z_near(z_near),
-      m_z_far(z_far), m_camera_pos(0, 0, 3), m_camera_front(0, 0, -1),
-      m_camera_up(0, 1, 0),
-      m_camera_right(glm::normalize(glm::cross(m_camera_front, m_camera_up))) {
+Camera3D::Camera3D(double fov, double z_near, double z_far)
+    : Camera2D(), m_yaw(-90), m_pitch(0), m_first_mouse(true), m_fov(fov),
+      m_z_near(z_near), m_z_far(z_far) {
 }
 
-void Camera::move_direction(Direction dir, double amount) {
-    switch (dir) {
-        case Direction::UP:
-            move_y(amount);
-            break;
-        case Direction::RIGHT:
-            move_x(amount);
-            break;
-        case Direction::FORWARD:
-            move_z(amount);
-            break;
-        case Direction::DOWN:
-            move_y(-amount);
-            break;
-        case Direction::LEFT:
-            move_x(-amount);
-            break;
-        case Direction::BACKWARD:
-            move_z(-amount);
-            break;
-    }
-}
-
-void Camera::change_fov(double amount) {
+void Camera3D::change_fov(double amount) {
     m_fov = bound_val(m_fov + amount, FOV_LOW, FOV_HIGH);
 }
 
-void Camera::move_cursor(double x, double y, double amount) {
+void Camera3D::move_cursor(double x, double y, double amount) {
     if (m_first_mouse) {
         m_prev_x = x;
         m_prev_y = y;
@@ -95,24 +69,8 @@ void Camera::move_cursor(double x, double y, double amount) {
     m_prev_y = y;
 }
 
-glm::mat4 Camera::view() const {
-    return glm::lookAt(m_camera_pos, m_camera_pos + m_camera_front,
-                       m_camera_up);
-}
-glm::mat4 Camera::projection(double aspect_ratio) const {
+glm::mat4 Camera3D::projection(double width, double height) const {
+    double aspect_ratio = width / height;
     return glm::perspective(glm::radians(m_fov), aspect_ratio, m_z_near,
                             m_z_far);
-}
-
-// class private *********
-void Camera::move_z(float amount) {
-    m_camera_pos += amount * m_camera_front;
-}
-
-void Camera::move_x(float amount) {
-    m_camera_pos += amount * m_camera_right;
-}
-
-void Camera::move_y(float amount) {
-    m_camera_pos += amount * m_camera_up;
 }

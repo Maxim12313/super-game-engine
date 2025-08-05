@@ -35,7 +35,7 @@ public:
     // input
     bool key_status(int key) const;
     bool is_key_pressed(int key) const;
-    void cursor_pos(double &x, double &y) const;
+    glm::vec2 cursor_pos() const;
 
     // callbacks
     void add_mouse_pos_callback(MousePosCallback callback);
