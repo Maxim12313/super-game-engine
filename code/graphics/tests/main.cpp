@@ -36,18 +36,18 @@ void handle_input(Window &window, Camera &camera, double dt) {
     }
 
     const float camera_speed = 10 * dt;
-    if (window.is_key_pressed(GLFW_KEY_W)) {
+    if (window.is_key_pressed(GLFW_KEY_W))
         camera.move_forward(camera_speed);
-    }
-    if (window.is_key_pressed(GLFW_KEY_S)) {
+    if (window.is_key_pressed(GLFW_KEY_S))
         camera.move_backward(camera_speed);
-    }
-    if (window.is_key_pressed(GLFW_KEY_D)) {
+    if (window.is_key_pressed(GLFW_KEY_D))
         camera.move_right(camera_speed);
-    }
-    if (window.is_key_pressed(GLFW_KEY_A)) {
+    if (window.is_key_pressed(GLFW_KEY_A))
         camera.move_left(camera_speed);
-    }
+    if (window.is_key_pressed(GLFW_KEY_SPACE))
+        camera.move_up(camera_speed);
+    if (window.is_key_pressed(GLFW_KEY_LEFT_SHIFT))
+        camera.move_down(camera_speed);
 
     const float sensitivity = 5 * dt;
     double x, y;

@@ -55,6 +55,13 @@ void Camera::move_backward(float amount) {
     move_z(-amount);
 }
 
+void Camera::move_up(double amount) {
+    move_y(amount);
+}
+void Camera::move_down(double amount) {
+    move_y(-amount);
+}
+
 void Camera::change_fov(double amount) {
     m_fov = bound_val(m_fov + amount, camera::FOV_LOW, camera::FOV_HIGH);
 }
@@ -95,4 +102,8 @@ void Camera::move_z(float amount) {
 
 void Camera::move_x(float amount) {
     m_camera_pos += amount * m_camera_right;
+}
+
+void Camera::move_y(float amount) {
+    m_camera_pos += amount * m_camera_up;
 }

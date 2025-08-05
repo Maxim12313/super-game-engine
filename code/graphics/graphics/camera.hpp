@@ -12,6 +12,9 @@ public:
     void move_forward(float amount);
     void move_backward(float amount);
     void move_cursor(double x, double y, double amount);
+    void move_up(double amount);
+    void move_down(double amount);
+
     void change_fov(double amount);
     glm::mat4 view() const;
     glm::mat4 projection(double aspect_ratio) const;
@@ -19,6 +22,7 @@ public:
 private:
     void move_z(float amount);
     void move_x(float amount);
+    void move_y(float amount);
 
 private:
     bool m_first_mouse;
