@@ -2,29 +2,47 @@
 #include <GLFW/glfw3.h>
 #include <utils/macros.hpp>
 #include <utils/stb_image.h>
-#include "context.hpp"
-#include "glad_utils.hpp"
+#include "buffer_handler.hpp"
 #include <filesystem>
 
-void configure_draw_data(const float vertices[], size_t n) {
-    uint32_t vbo = gen_buffer();
+// helpers ********
+uint32_t gen_buffer() {
+    uint32_t buffer;
+    glGenBuffers(1, &buffer);
+    return buffer;
+}
 
+uint32_t gen_vertex_array() {
+    uint32_t vao;
+    glGenVertexArrays(1, &vao);
+    return vao;
+}
+
+uint32_t gen_texture() {
+    uint32_t texture;
+    glGenTextures(1, &texture);
+    return texture;
+}
+
+// functions ********
+uint32_t configure_vao(const float vertices[], size_t n) {
+    uint32_t vao = gen_vertex_array();
+    glBindVertexArray(vao);
+
+    uint32_t vbo = gen_buffer();
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, n, vertices, GL_STATIC_DRAW);
 
-    uint32_t stride = 5 * sizeof(float);
+    uint32_t stride = 3 * sizeof(float);
 
     // position
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void *)0);
     glEnableVertexAttribArray(0);
 
-    // texture
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride,
-                          (void *)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
+    return vao;
 }
 
-void configure_draw_indices(const uint32_t indices[], size_t n) {
+void configure_indices(const uint32_t indices[], size_t n) {
     uint32_t ebo = gen_buffer();
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, n, indices, GL_STATIC_DRAW);

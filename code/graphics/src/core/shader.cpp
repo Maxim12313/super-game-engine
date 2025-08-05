@@ -95,12 +95,12 @@ void Shader::set_mat4(const std::string &name, float *value) const {
 }
 
 // shader maanger class public ********
-ShaderManager::ShaderManager() {
+ShaderManager::ShaderManager() : m_shader_idx(SHADER_MODE_2D) {
     add_shader(paths::SHADER_DIR / "2d_vertex.glsl",
-               paths::SHADER_DIR / "2d_fragment");
+               paths::SHADER_DIR / "2d_fragment.glsl");
 
     add_shader(paths::SHADER_DIR / "3d_vertex.glsl",
-               paths::SHADER_DIR / "3d_fragment");
+               paths::SHADER_DIR / "3d_fragment.glsl");
 }
 void ShaderManager::set_mode(size_t idx) {
     m_shader_idx = idx;

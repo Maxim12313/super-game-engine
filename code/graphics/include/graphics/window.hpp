@@ -17,11 +17,6 @@ class Color;
 
 class Window {
 public:
-    Window(const Window &) = delete;
-    Window(Window &&) = default;
-    Window &operator=(const Window &) = delete;
-    Window &operator=(Window &&) = default;
-
     Window(int width = 1280, int height = 720,
            const char *title = "my cool game", int target_fps = 60);
     ~Window();
@@ -51,14 +46,17 @@ public:
 
     // drawing
     void set_background(Color color);
-    void clear_background() const;
     void draw_rectangle(glm::vec2 point, glm::vec2 dimensions, Color color);
     void draw_circle(glm::vec2 point, double radius, Color color);
+
+    // shader
+    void set_mode2d() const;
+    void set_mode3d() const;
 
 private:
     double m_width, m_height;
     GLFWwindow *m_window;
-    std::unique_ptr<CallbackHandler> m_input_handler;
+    std::unique_ptr<CallbackHandler> m_callback_handler;
     std::unique_ptr<Clock> m_clock;
     std::unique_ptr<ShaderManager> m_shader_manager;
 };

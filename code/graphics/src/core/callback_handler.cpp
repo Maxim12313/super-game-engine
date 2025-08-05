@@ -2,7 +2,7 @@
 #include <GLFW/glfw3.h>
 
 // class public **********
-void CallbackHandler::setup(GLFWwindow *window) {
+CallbackHandler::CallbackHandler(GLFWwindow *window) {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     // let this input handler be part of the windows context

@@ -1,9 +1,8 @@
 #include "graphics/camera.hpp"
 #include "../src/core/clock.hpp"
-#include "../src/core/glad_utils.hpp"
 #include "graphics/window.hpp"
 #include "../src/core/shader.hpp"
-#include "../src/core/context.hpp"
+#include "../src/core/buffer_handler.hpp"
 #include "../src/core/constants.hpp"
 #include "utils/macros.hpp"
 
@@ -65,23 +64,6 @@ void handle_input(Window &window, Camera &camera, double dt) {
 }
 
 void runner() {
-    // g_window.add_mouse_callback(mouse_callback);
-
     Window window;
     Camera camera;
-    Shader shader(paths::SHADER_DIR / "texture_vertex.glsl",
-                  paths::SHADER_DIR / "texture_fragment.glsl");
-
-    glEnable(GL_DEPTH_TEST);
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    uint32_t clear_bits = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
-
-    while (!window.should_close()) {
-        double dt = window.begin_update();
-        handle_input(window, camera, dt);
-
-        glClear(clear_bits);
-
-        window.end_update();
-    }
 }

@@ -6,6 +6,8 @@
 #include "graphics/window.hpp"
 #include "../core/callback_handler.hpp"
 #include "../core/clock.hpp"
+#include "../core/shader.hpp"
+#include "graphics/color.hpp"
 
 // helpers **********
 void size_callback(GLFWwindow *window, int width, int height) {
@@ -14,10 +16,7 @@ void size_callback(GLFWwindow *window, int width, int height) {
 
 // class public **********
 Window::Window(int width, int height, const char *title, int target_fps)
-    : m_width(width), m_height(height),
-      m_input_handler(std::make_unique<CallbackHandler>()),
-      m_clock(std::make_unique<Clock>(target_fps)),
-      m_shader(std::make_unique<Shader>()) {
+    : m_width(width), m_height(height) {
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -36,7 +35,10 @@ Window::Window(int width, int height, const char *title, int target_fps)
 
     glfwSetFramebufferSizeCallback(m_window, size_callback);
     size_callback(m_window, width, height);
-    m_input_handler->setup(m_window);
+
+    m_clock = std::make_unique<Clock>(target_fps);
+    m_callback_handler = std::make_unique<CallbackHandler>(m_window);
+    m_shader_manager = std::make_unique<ShaderManager>();
 }
 
 Window::~Window() {
@@ -91,13 +93,31 @@ void Window::cursor_pos(double &x, double &y) const {
 
 // callbacks ********
 void Window::add_mouse_pos_callback(MousePosCallback callback) {
-    m_input_handler->add_mouse_pos_callback(callback);
+    m_callback_handler->add_mouse_pos_callback(callback);
 }
 void Window::add_key_callback(KeyCallback callback) {
-    m_input_handler->add_key_callback(callback);
+    m_callback_handler->add_key_callback(callback);
 }
 
 // clock ********
 double Window::avg_fps() const {
     return m_clock->avg_fps();
+}
+
+// drawing ********
+void Window::set_background(Color color) {
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+}
+void Window::draw_rectangle(glm::vec2 point, glm::vec2 dimensions,
+                            Color color) {
+}
+void Window::draw_circle(glm::vec2 point, double radius, Color color) {
+}
+
+// shader ********
+void Window::set_mode2d() const {
+    m_shader_manager->set_mode(SHADER_MODE_2D);
+}
+void Window::set_mode3d() const {
+    m_shader_manager->set_mode(SHADER_MODE_3D);
 }

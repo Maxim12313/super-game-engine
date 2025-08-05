@@ -11,13 +11,7 @@ using KeyCallback =
 
 class CallbackHandler {
 public:
-    CallbackHandler(const CallbackHandler &) = delete;
-    CallbackHandler(CallbackHandler &&) = default;
-    CallbackHandler &operator=(const CallbackHandler &) = delete;
-    CallbackHandler &operator=(CallbackHandler &&) = default;
-
-    CallbackHandler() = default;
-    void setup(GLFWwindow *window);
+    CallbackHandler(GLFWwindow *window);
     void add_mouse_pos_callback(MousePosCallback callback);
     void add_key_callback(KeyCallback callback);
 
