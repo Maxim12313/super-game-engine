@@ -1,6 +1,6 @@
-#include "camera.hpp"
-#include "graphics/window.hpp"
-#include "constants.hpp"
+#include "graphics/camera.hpp"
+#include "../core/window.hpp"
+#include "../core/constants.hpp"
 #include "utils/macros.hpp"
 #include <GLFW/glfw3.h>
 #include <glm/ext/matrix_clip_space.hpp>
@@ -42,24 +42,27 @@ Camera::Camera(double fov, double z_near, double z_far)
       m_camera_right(glm::normalize(glm::cross(m_camera_front, m_camera_up))) {
 }
 
-void Camera::move_left(float amount) {
-    move_x(-amount);
-}
-void Camera::move_right(float amount) {
-    move_x(amount);
-}
-void Camera::move_forward(float amount) {
-    move_z(amount);
-}
-void Camera::move_backward(float amount) {
-    move_z(-amount);
-}
-
-void Camera::move_up(double amount) {
-    move_y(amount);
-}
-void Camera::move_down(double amount) {
-    move_y(-amount);
+void Camera::move_direction(Direction dir, double amount) {
+    switch (dir) {
+        case Direction::UP:
+            move_y(amount);
+            break;
+        case Direction::RIGHT:
+            move_x(amount);
+            break;
+        case Direction::FORWARD:
+            move_z(amount);
+            break;
+        case Direction::DOWN:
+            move_y(-amount);
+            break;
+        case Direction::LEFT:
+            move_x(-amount);
+            break;
+        case Direction::BACKWARD:
+            move_z(-amount);
+            break;
+    }
 }
 
 void Camera::change_fov(double amount) {

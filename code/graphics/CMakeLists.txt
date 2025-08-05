@@ -1,10 +1,11 @@
 project(graphics)
 
 # make library
-file(GLOB_RECURSE source_files "${PROJECT_SOURCE_DIR}/graphics/*.cpp")
+file(GLOB_RECURSE source_files "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
 add_library(${PROJECT_NAME} ${source_files})
-target_include_directories(${PROJECT_NAME} PUBLIC "${PROJECT_SOURCE_DIR}")
+target_include_directories(${PROJECT_NAME}
+                           PUBLIC "${PROJECT_SOURCE_DIR}/include")
 
 # link libraries
 set(OpenGL_GL_PREFERENCE GLVND)

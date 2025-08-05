@@ -3,7 +3,7 @@
 #include <utils/macros.hpp>
 #include <utils/stb_image.h>
 #include "context.hpp"
-#include "graphics/glad_utils.hpp"
+#include "glad_utils.hpp"
 #include <filesystem>
 
 void configure_draw_data(const float vertices[], size_t n) {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "graphics/stat_window.hpp"
+#include "stat_window.hpp"
 #include <chrono>
 class Clock {
 public:

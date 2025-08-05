@@ -1,6 +1,6 @@
 #pragma once
 
-#include "graphics/ring_buffer.hpp"
+#include "ring_buffer.hpp"
 #include <cstddef>
 
 // T must be a numeric type, we expect to take sum,avg

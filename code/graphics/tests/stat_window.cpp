@@ -1,4 +1,4 @@
-#include <graphics/stat_window.hpp>
+#include "../src/core/stat_window.hpp"
 int main() {
     StatWindow<int, 20> stat_window;
     for (int r = 0; r < 100; r++) {

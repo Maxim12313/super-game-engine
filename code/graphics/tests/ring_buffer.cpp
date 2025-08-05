@@ -1,6 +1,6 @@
 #include "utils/macros.hpp"
 #include <queue>
-#include <graphics/ring_buffer.hpp>
+#include "../src/core/ring_buffer.hpp"
 
 int main() {
     RingBuffer<int, 10> actual;

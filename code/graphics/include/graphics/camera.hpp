@@ -4,16 +4,13 @@
 
 class Window;
 
+enum class Direction { UP, RIGHT, FORWARD, DOWN, LEFT, BACKWARD };
+
 class Camera {
 public:
     Camera(double fov, double z_near, double z_far);
-    void move_left(float amount);
-    void move_right(float amount);
-    void move_forward(float amount);
-    void move_backward(float amount);
+    void move_direction(Direction dir, double amount);
     void move_cursor(double x, double y, double amount);
-    void move_up(double amount);
-    void move_down(double amount);
 
     void change_fov(double amount);
     glm::mat4 view() const;
