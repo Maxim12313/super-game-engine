@@ -16,7 +16,8 @@ void size_callback(GLFWwindow *window, int width, int height) {
 Window::Window(int width, int height, const char *title, int target_fps)
     : m_width(width), m_height(height),
       m_input_handler(std::make_unique<CallbackHandler>()),
-      m_clock(std::make_unique<Clock>(target_fps)) {
+      m_clock(std::make_unique<Clock>(target_fps)),
+      m_shader(std::make_unique<Shader>()) {
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);

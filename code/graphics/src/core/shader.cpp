@@ -1,6 +1,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "shader.hpp"
+#include "constants.hpp"
 #include "utils/macros.hpp"
 #include <cstdint>
 #include <iostream>
@@ -8,7 +9,8 @@
 #include <print>
 #include <sstream>
 
-std::string read_file(std::string path) {
+// helpers ********
+std::string read_file(const std::string &path) {
     std::ifstream file;
     std::stringstream stream;
     file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
@@ -23,10 +25,11 @@ std::string read_file(std::string path) {
     }
 }
 
-void compile_shader(const char *name, const char *shader_code,
+void compile_shader(const std::string &name, const std::string &shader_code,
                     uint32_t shader_id) {
 
-    glShaderSource(shader_id, 1, &shader_code, nullptr);
+    const char *code = shader_code.c_str();
+    glShaderSource(shader_id, 1, &code, nullptr);
     glCompileShader(shader_id);
 
     int success;
@@ -49,20 +52,22 @@ void compile_program(uint32_t id) {
     }
 }
 
-Shader::Shader(std::string vertex_path, std::string fragment_path) {
+// shader class public ********
+Shader::Shader(const std::string &vertex_path,
+               const std::string &fragment_path) {
     m_id = glCreateProgram();
 
     // build shaders
     std::string vertex_code = read_file(vertex_path);
     LOG_DEBUG("vertex_code:\n{}", vertex_code.c_str());
     uint32_t vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-    compile_shader("vertex", vertex_code.c_str(), vertex_shader);
+    compile_shader("vertex", vertex_code, vertex_shader);
     glAttachShader(m_id, vertex_shader);
 
     std::string fragment_code = read_file(fragment_path);
     LOG_DEBUG("fragment_code:\n{}", fragment_code.c_str());
     uint32_t fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    compile_shader("fragment", fragment_code.c_str(), fragment_shader);
+    compile_shader("fragment", fragment_code, fragment_shader);
     glAttachShader(m_id, fragment_shader);
 
     // build program
@@ -75,15 +80,32 @@ void Shader::use() const {
     glUseProgram(m_id);
 }
 
-void Shader::set_int(const char *name, int value) const {
-    glUniform1i(glGetUniformLocation(m_id, name), value);
+void Shader::set_int(const std::string &name, int value) const {
+    glUniform1i(glGetUniformLocation(m_id, name.c_str()), value);
 }
-void Shader::set_float(const char *name, float value) const {
-    glUniform1f(glGetUniformLocation(m_id, name), value);
+void Shader::set_float(const std::string &name, float value) const {
+    glUniform1f(glGetUniformLocation(m_id, name.c_str()), value);
 }
-void Shader::set_bool(const char *name, bool value) const {
-    glUniform1i(glGetUniformLocation(m_id, name), int(value));
+void Shader::set_bool(const std::string &name, bool value) const {
+    glUniform1i(glGetUniformLocation(m_id, name.c_str()), int(value));
 }
-void Shader::set_mat4(const char *name, float *value) const {
-    glUniformMatrix4fv(glGetUniformLocation(m_id, name), 1, GL_FALSE, value);
+void Shader::set_mat4(const std::string &name, float *value) const {
+    glUniformMatrix4fv(glGetUniformLocation(m_id, name.c_str()), 1, GL_FALSE,
+                       value);
+}
+
+// shader maanger class public ********
+ShaderManager::ShaderManager() {
+    add_shader(paths::SHADER_DIR / "2d_vertex.glsl",
+               paths::SHADER_DIR / "2d_fragment");
+
+    add_shader(paths::SHADER_DIR / "3d_vertex.glsl",
+               paths::SHADER_DIR / "3d_fragment");
+}
+void ShaderManager::set_mode(size_t idx) {
+    m_shader_idx = idx;
+}
+void ShaderManager::add_shader(const std::string &vertex_path,
+                               const std::string &fragment_path) {
+    m_shaders.emplace_back(vertex_path, fragment_path);
 }

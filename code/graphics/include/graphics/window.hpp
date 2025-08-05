@@ -2,15 +2,18 @@
 
 #include <cstdint>
 #include <functional>
+#include <glm/ext/vector_float2.hpp>
 #include <memory>
 
-class GLFWwindow;
 using MousePosCallback = std::function<void(double x, double y)>;
 using KeyCallback =
     std::function<void(int key, int scancode, int action, int mods)>;
-class CallbackHandler;
 
+class GLFWwindow;
+class CallbackHandler;
 class Clock;
+class ShaderManager;
+class Color;
 
 class Window {
 public:
@@ -46,9 +49,16 @@ public:
     // clock
     double avg_fps() const;
 
+    // drawing
+    void set_background(Color color);
+    void clear_background() const;
+    void draw_rectangle(glm::vec2 point, glm::vec2 dimensions, Color color);
+    void draw_circle(glm::vec2 point, double radius, Color color);
+
 private:
     double m_width, m_height;
     GLFWwindow *m_window;
     std::unique_ptr<CallbackHandler> m_input_handler;
     std::unique_ptr<Clock> m_clock;
+    std::unique_ptr<ShaderManager> m_shader_manager;
 };
