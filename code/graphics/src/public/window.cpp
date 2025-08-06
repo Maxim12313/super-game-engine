@@ -7,6 +7,9 @@
 #include "../core/callback_handler.hpp"
 #include "../core/clock.hpp"
 #include "../core/shader.hpp"
+#include "../core/constants.hpp"
+#include "../core/drawer.hpp"
+#include "../core/camera2d.hpp"
 #include "graphics/color.hpp"
 
 // helpers **********
@@ -38,7 +41,6 @@ Window::Window(int width, int height, const char *title, int target_fps)
 
     m_clock = std::make_unique<Clock>(target_fps);
     m_callback_handler = std::make_unique<CallbackHandler>(m_window);
-    m_shader_manager = std::make_unique<ShaderManager>();
 }
 
 Window::~Window() {
@@ -64,7 +66,9 @@ double Window::aspect_ratio() const {
 
 // also returns dt
 double Window::begin_update() {
-    return m_clock->update_dt();
+    double dt = m_clock->update_dt();
+    m_drawer->clear();
+    return dt;
 }
 
 void Window::end_update() {
@@ -107,19 +111,10 @@ double Window::avg_fps() const {
 }
 
 // drawing ********
-void Window::set_background(Color color) {
+void Window::set_background(Color color) const {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 }
-void Window::draw_rectangle(glm::vec2 point, glm::vec2 dimensions,
-                            Color color) {
-}
-void Window::draw_circle(glm::vec2 point, double radius, Color color) {
-}
 
-// shader ********
-void Window::set_mode2d() const {
-    m_shader_manager->set_mode(SHADER_MODE_2D);
-}
-void Window::set_mode3d() const {
-    m_shader_manager->set_mode(SHADER_MODE_3D);
+void Window::draw_rectangle(int x, int y, int w, int h) const {
+    // m_drawer->draw_rectangle(x, y, w, h, camera)
 }

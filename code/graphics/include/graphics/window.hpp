@@ -12,8 +12,11 @@ using KeyCallback =
 class GLFWwindow;
 class CallbackHandler;
 class Clock;
-class ShaderManager;
 class Color;
+class Shader;
+class Drawer;
+class Camera2D;
+enum class Direction;
 
 class Window {
 public:
@@ -45,18 +48,13 @@ public:
     double avg_fps() const;
 
     // drawing
-    void set_background(Color color);
-    void draw_rectangle(glm::vec2 point, glm::vec2 dimensions, Color color);
-    void draw_circle(glm::vec2 point, double radius, Color color);
-
-    // shader
-    void set_mode2d() const;
-    void set_mode3d() const;
+    void set_background(Color color) const;
 
 private:
     double m_width, m_height;
     GLFWwindow *m_window;
     std::unique_ptr<CallbackHandler> m_callback_handler;
     std::unique_ptr<Clock> m_clock;
-    std::unique_ptr<ShaderManager> m_shader_manager;
+    std::unique_ptr<Drawer> m_drawer;
+    std::unique_ptr<Camera2D> m_camera;
 };

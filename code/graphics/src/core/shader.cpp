@@ -89,23 +89,7 @@ void Shader::set_float(const std::string &name, float value) const {
 void Shader::set_bool(const std::string &name, bool value) const {
     glUniform1i(glGetUniformLocation(m_id, name.c_str()), int(value));
 }
-void Shader::set_mat4(const std::string &name, float *value) const {
+void Shader::set_mat4(const std::string &name, const float *value) const {
     glUniformMatrix4fv(glGetUniformLocation(m_id, name.c_str()), 1, GL_FALSE,
                        value);
-}
-
-// shader maanger class public ********
-ShaderManager::ShaderManager() : m_shader_idx(SHADER_MODE_2D) {
-    add_shader(paths::SHADER_DIR / "2d_vertex.glsl",
-               paths::SHADER_DIR / "2d_fragment.glsl");
-
-    add_shader(paths::SHADER_DIR / "3d_vertex.glsl",
-               paths::SHADER_DIR / "3d_fragment.glsl");
-}
-void ShaderManager::set_mode(size_t idx) {
-    m_shader_idx = idx;
-}
-void ShaderManager::add_shader(const std::string &vertex_path,
-                               const std::string &fragment_path) {
-    m_shaders.emplace_back(vertex_path, fragment_path);
 }

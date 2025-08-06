@@ -1,27 +1,36 @@
 #pragma once
+#include <glm/ext/matrix_float4x4.hpp>
 #include <glm/ext/vector_float2.hpp>
 #include <iterator>
+#include <memory>
+#include <stack>
 class Window;
 class Color;
-class Shader;
+class WorldShader;
+class Camera2D;
+
+struct Rect {
+    int x;
+    int y;
+    int w;
+    int h;
+};
 
 class Drawer {
 public:
     Drawer();
 
+    void begin_camera(std::shared_ptr<Camera2D> camera);
+    void end_camera();
     void set_background_color(Color color) const;
     void clear() const;
-    void draw_rectangle(int x, int y, int w, int h, int window_width,
-                        int window_height) const;
+    void queue_rectangle(double x, double y, double w, double h) const;
+    void execute_draw() const;
 
 private:
     uint32_t m_clear_bits;
     uint32_t m_square_vao;
+    std::unique_ptr<WorldShader> m_shader;
+    std::shared_ptr<Camera2D> m_camera;
+    std::stack<Rect> m_rects;
 };
-
-// void clear_background(Window &window);
-// void draw_rectangle(glm::vec2 position, glm::vec2 dimensions, Color color);
-//
-// // such as vector<glm::vec2> points
-// template <typename Iterator>
-// void draw_polygon(Iterator points_begin, Iterator points_end, Color color);
