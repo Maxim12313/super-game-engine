@@ -1,5 +1,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <stdexcept>
 #include <utils/macros.hpp>
 #include <utils/stb_image.h>
 #include "buffer_handler.hpp"
@@ -25,13 +26,14 @@ uint32_t gen_texture() {
 }
 
 // functions ********
-uint32_t configure_vao(const float vertices[], size_t n) {
+uint32_t configure_vao(const float vertices[], size_t count) {
     uint32_t vao = gen_vertex_array();
     glBindVertexArray(vao);
 
     uint32_t vbo = gen_buffer();
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, n, vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, count * sizeof(float), vertices,
+                 GL_STATIC_DRAW);
 
     uint32_t stride = 3 * sizeof(float);
 
@@ -43,12 +45,18 @@ uint32_t configure_vao(const float vertices[], size_t n) {
 }
 
 void configure_indices(const uint32_t indices[], size_t n) {
+    // TODO:
+    throw new std::logic_error("implement");
+
     uint32_t ebo = gen_buffer();
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, n, indices, GL_STATIC_DRAW);
 }
 
 void set_texture_settings() {
+    // TODO:
+    throw new std::logic_error("implenent");
+
     // when covering outside
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);

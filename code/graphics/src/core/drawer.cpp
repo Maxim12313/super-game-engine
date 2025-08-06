@@ -4,15 +4,21 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "utils/macros.hpp"
-#include "world_shader.hpp"
 #include "shapes.hpp"
 #include "drawer.hpp"
 #include "buffer_handler.hpp"
-#include "graphics/color.hpp"
-#include "../core/constants.hpp"
+#include "constants.hpp"
+#include "graphics/camera2d.hpp"
+
+// helpers ********
+glm::mat4 calculate_model_rect(int x, int y, int w, int h) {
+    glm::mat4 model = glm::translate(math::IDENTITY, glm::vec3{x, y, 0});
+    return glm::scale(model, glm::vec3{w, h, 1});
+}
 
 // class public ********
-Drawer::Drawer() {
+Drawer::Drawer(const double &width, const double &height)
+    : m_width(width), m_height(height) {
     m_shader = std::make_unique<WorldShader>(
         paths::SHADER_DIR / "color_vertex.glsl",
         paths::SHADER_DIR / "color_fragment.glsl");
@@ -41,19 +47,56 @@ void Drawer::clear() const {
     glClear(m_clear_bits);
 }
 
-void Drawer::queue_rectangle(double x, double y, double w, double h) const {
-    // TODO:
-    ASSERT(false && "implement this");
+void Drawer::queue_rectangle(double x, double y, double w, double h,
+                             Color color) {
+    m_rects.push(Rect{x, y, w, h});
 }
 
-void Drawer::execute_draw() const {
-    // TODO:
-    ASSERT(false && "implement this");
+void Drawer::execute_draw() {
+    m_shader->use();
 
-    // glm::mat4 model = glm::translate(math::IDENTITY, glm::vec3(x, y, 0));
-    // m_shader->set_mat4("model", glm::value_ptr(model));
+    set_transform_uniforms();
+    m_shader->set_color(PURPLE);
+
+    int x = 1;
+    int y = 1;
+    int w = 1;
+    int h = 1;
+    glm::mat4 model = calculate_model_rect(x, y, w, h);
+    m_shader->set_model(glm::value_ptr(model));
 
     glBindVertexArray(m_square_vao);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);
+
+    //
+    // // draw rects
+    // glBindVertexArray(m_square_vao);
+    // while (!m_rects.empty()) {
+    //     auto [x, y, w, h, color] = m_rects.top();
+    //     m_rects.pop();
+    //
+    //     glm::mat4 model = calculate_model_rect(x, y, w, h);
+    //     m_shader->set_model(glm::value_ptr(model));
+    //     m_shader->set_color(color);
+    //     glDrawArrays(GL_TRIANGLES, 0, 6);
+    // }
+    // glBindVertexArray(0);
+}
+
+// class private ********
+void Drawer::set_transform_uniforms() const {
+    glm::mat4 projection;
+    glm::mat4 view;
+    if (!m_camera) {
+        // set default identity mat
+        projection = math::IDENTITY;
+        view = math::IDENTITY;
+    } else {
+        // set camera mats
+        projection = m_camera->projection(m_width, m_height);
+        view = m_camera->view();
+    }
+    m_shader->set_view(glm::value_ptr(view));
+    m_shader->set_projection(glm::value_ptr(projection));
 }

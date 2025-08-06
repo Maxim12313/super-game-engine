@@ -1,5 +1,6 @@
 #pragma once
 #include "shader.hpp"
+class Color;
 
 class WorldShader : public Shader {
 public:
@@ -9,4 +10,5 @@ public:
     void set_model(const float *value) const;
     void set_view(const float *value) const;
     void set_projection(const float *value) const;
+    void set_color(Color color) const;
 };

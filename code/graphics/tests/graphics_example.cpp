@@ -1,9 +1,7 @@
-#include "../src/core/clock.hpp"
 #include "graphics/color.hpp"
 #include "graphics/window.hpp"
-#include "../src/core/shader.hpp"
-#include "../src/core/buffer_handler.hpp"
-#include "../src/core/constants.hpp"
+#include "graphics/camera2d.hpp"
+#include "../src/core/drawer.hpp"
 #include "utils/macros.hpp"
 
 #include <cmath>
@@ -38,9 +36,19 @@ void handle_input(Window &window, double dt) {
 
 void runner() {
     Window window;
-    window.set_background(CYAN);
+    Camera2D camera;
+    Drawer drawer(window.width(), window.height());
+    drawer.set_background_color(CYAN);
+
+    // drawer.begin_camera(std::make_shared<Camera2D>(camera));
     while (!window.should_close()) {
         double dt = window.begin_update();
+        drawer.clear();
+
+        drawer.queue_rectangle(0, 0, 100, 100, PURPLE);
+        drawer.execute_draw();
+
         window.end_update();
     }
+    drawer.end_camera();
 }

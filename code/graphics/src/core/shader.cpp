@@ -74,6 +74,8 @@ Shader::Shader(const std::string &vertex_path,
     compile_program(m_id);
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
+
+    use();
 }
 
 void Shader::use() const {
@@ -92,4 +94,14 @@ void Shader::set_bool(const std::string &name, bool value) const {
 void Shader::set_mat4(const std::string &name, const float *value) const {
     glUniformMatrix4fv(glGetUniformLocation(m_id, name.c_str()), 1, GL_FALSE,
                        value);
+}
+
+void Shader::set_vec4(const std::string &name, float a, float b, float c,
+                      float d) const {
+    glUniform4f(glGetUniformLocation(m_id, name.c_str()), a, b, c, d);
+}
+
+void Shader::set_vec3(const std::string &name, float a, float b,
+                      float c) const {
+    glUniform3f(glGetUniformLocation(m_id, name.c_str()), a, b, c);
 }

@@ -6,10 +6,10 @@
 #include "graphics/window.hpp"
 #include "../core/callback_handler.hpp"
 #include "../core/clock.hpp"
-#include "../core/shader.hpp"
+#include "../core/world_shader.hpp"
 #include "../core/constants.hpp"
 #include "../core/drawer.hpp"
-#include "../core/camera2d.hpp"
+#include "graphics/camera2d.hpp"
 #include "graphics/color.hpp"
 
 // helpers **********
@@ -50,16 +50,12 @@ Window::~Window() {
 }
 
 // window dimensions *********
-double Window::width() const {
+const double &Window::width() const {
     return m_width;
 }
 
-double Window::height() const {
+const double &Window::height() const {
     return m_height;
-}
-
-double Window::aspect_ratio() const {
-    return m_width / m_height;
 }
 
 // game loop ********
@@ -67,7 +63,6 @@ double Window::aspect_ratio() const {
 // also returns dt
 double Window::begin_update() {
     double dt = m_clock->update_dt();
-    m_drawer->clear();
     return dt;
 }
 
@@ -108,13 +103,4 @@ void Window::add_key_callback(KeyCallback callback) {
 // clock ********
 double Window::avg_fps() const {
     return m_clock->avg_fps();
-}
-
-// drawing ********
-void Window::set_background(Color color) const {
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-}
-
-void Window::draw_rectangle(int x, int y, int w, int h) const {
-    // m_drawer->draw_rectangle(x, y, w, h, camera)
 }

@@ -13,9 +13,6 @@ class GLFWwindow;
 class CallbackHandler;
 class Clock;
 class Color;
-class Shader;
-class Drawer;
-class Camera2D;
 enum class Direction;
 
 class Window {
@@ -25,9 +22,8 @@ public:
     ~Window();
 
     // window dimensions
-    double width() const;
-    double height() const;
-    double aspect_ratio() const;
+    const double &width() const;
+    const double &height() const;
 
     // game loop
     double begin_update();
@@ -47,14 +43,9 @@ public:
     // clock
     double avg_fps() const;
 
-    // drawing
-    void set_background(Color color) const;
-
 private:
     double m_width, m_height;
     GLFWwindow *m_window;
     std::unique_ptr<CallbackHandler> m_callback_handler;
     std::unique_ptr<Clock> m_clock;
-    std::unique_ptr<Drawer> m_drawer;
-    std::unique_ptr<Camera2D> m_camera;
 };

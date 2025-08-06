@@ -3,7 +3,6 @@
 
 // class public **********
 CallbackHandler::CallbackHandler(GLFWwindow *window) {
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     // let this input handler be part of the windows context
     glfwSetWindowUserPointer(window, this);
