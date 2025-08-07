@@ -3,6 +3,7 @@
 #include <glm/ext/matrix_float4x4.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <iostream>
 #include "utils/macros.hpp"
 #include "shapes.hpp"
 #include "drawer.hpp"
@@ -12,8 +13,10 @@
 
 // helpers ********
 glm::mat4 calculate_model_rect(int x, int y, int w, int h) {
-    glm::mat4 model = glm::translate(math::IDENTITY, glm::vec3{x, y, 0});
-    return glm::scale(model, glm::vec3{w, h, 1});
+    glm::mat4 model = math::IDENTITY;
+    model = glm::translate(model, glm::vec3{x, y, 0});
+    model = glm::scale(model, glm::vec3{w, h, 1});
+    return model;
 }
 
 // class public ********
@@ -49,54 +52,33 @@ void Drawer::clear() const {
 
 void Drawer::queue_rectangle(double x, double y, double w, double h,
                              Color color) {
-    m_rects.push(Rect{x, y, w, h});
+    m_rects.push(Rect{x, y, w, h, color});
 }
 
 void Drawer::execute_draw() {
+    ASSERT(m_camera && "camera must be set");
     m_shader->use();
-
     set_transform_uniforms();
-    m_shader->set_color(PURPLE);
 
-    int x = 1;
-    int y = 1;
-    int w = 1;
-    int h = 1;
-    glm::mat4 model = calculate_model_rect(x, y, w, h);
-    m_shader->set_model(glm::value_ptr(model));
-
+    // draw rects
     glBindVertexArray(m_square_vao);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    glBindVertexArray(0);
+    while (!m_rects.empty()) {
+        auto [x, y, w, h, color] = m_rects.front();
+        m_rects.pop();
 
-    //
-    // // draw rects
-    // glBindVertexArray(m_square_vao);
-    // while (!m_rects.empty()) {
-    //     auto [x, y, w, h, color] = m_rects.top();
-    //     m_rects.pop();
-    //
-    //     glm::mat4 model = calculate_model_rect(x, y, w, h);
-    //     m_shader->set_model(glm::value_ptr(model));
-    //     m_shader->set_color(color);
-    //     glDrawArrays(GL_TRIANGLES, 0, 6);
-    // }
-    // glBindVertexArray(0);
+        glm::mat4 model = calculate_model_rect(x, y, w, h);
+        m_shader->set_model(glm::value_ptr(model));
+        m_shader->set_color(color);
+
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+    }
+    glBindVertexArray(0);
 }
 
 // class private ********
 void Drawer::set_transform_uniforms() const {
-    glm::mat4 projection;
-    glm::mat4 view;
-    if (!m_camera) {
-        // set default identity mat
-        projection = math::IDENTITY;
-        view = math::IDENTITY;
-    } else {
-        // set camera mats
-        projection = m_camera->projection(m_width, m_height);
-        view = m_camera->view();
-    }
+    glm::mat4 projection = m_camera->projection(m_width, m_height);
+    glm::mat4 view = m_camera->view();
     m_shader->set_view(glm::value_ptr(view));
     m_shader->set_projection(glm::value_ptr(projection));
 }

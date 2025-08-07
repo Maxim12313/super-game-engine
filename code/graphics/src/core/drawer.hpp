@@ -4,7 +4,7 @@
 #include "../core/world_shader.hpp"
 #include <iterator>
 #include <memory>
-#include <stack>
+#include <queue>
 #include "graphics/color.hpp"
 
 class Window;
@@ -40,5 +40,5 @@ private:
     uint32_t m_square_vao;
     std::unique_ptr<WorldShader> m_shader;
     std::shared_ptr<Camera2D> m_camera;
-    std::stack<Rect> m_rects;
+    std::queue<Rect> m_rects;
 };

@@ -8,7 +8,7 @@ enum class Direction { UP, RIGHT, FORWARD, DOWN, LEFT, BACKWARD };
 
 class Camera2D {
 public:
-    Camera2D();
+    Camera2D(double z_near = 0, double z_far = 1);
     void move_direction(Direction dir, double amount);
     glm::mat4 view() const;
     glm::mat4 projection(double width, double height) const;
@@ -23,4 +23,6 @@ protected:
     glm::vec3 m_camera_front;
     glm::vec3 m_camera_up;
     glm::vec3 m_camera_right;
+    double m_z_near;
+    double m_z_far;
 };

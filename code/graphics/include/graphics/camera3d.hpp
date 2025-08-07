@@ -19,6 +19,4 @@ private:
     double m_prev_x; // default
     double m_prev_y; // default
     double m_fov;
-    double m_z_near;
-    double m_z_far;
 };

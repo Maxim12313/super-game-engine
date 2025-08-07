@@ -40,12 +40,13 @@ void runner() {
     Drawer drawer(window.width(), window.height());
     drawer.set_background_color(CYAN);
 
-    // drawer.begin_camera(std::make_shared<Camera2D>(camera));
+    drawer.begin_camera(std::make_shared<Camera2D>(camera));
     while (!window.should_close()) {
         double dt = window.begin_update();
         drawer.clear();
 
-        drawer.queue_rectangle(0, 0, 100, 100, PURPLE);
+        drawer.queue_rectangle(100, 300, 50, 100, BLUE);
+        drawer.queue_rectangle(10, 10, 100, 100, PURPLE);
         drawer.execute_draw();
 
         window.end_update();

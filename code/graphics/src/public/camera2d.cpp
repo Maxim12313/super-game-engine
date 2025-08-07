@@ -8,9 +8,10 @@
 #include <glm/glm.hpp>
 
 // class public *********
-Camera2D::Camera2D()
-    : m_camera_pos(0, 0, 3), m_camera_front(0, 0, -1), m_camera_up(0, 1, 0),
-      m_camera_right(glm::normalize(glm::cross(m_camera_front, m_camera_up))) {
+Camera2D::Camera2D(double z_near, double z_far)
+    : m_camera_pos(0, 0, 0), m_camera_front(0, 0, -1), m_camera_up(0, 1, 0),
+      m_camera_right(glm::normalize(glm::cross(m_camera_front, m_camera_up))),
+      m_z_near(z_near), m_z_far(z_far) {
 }
 
 void Camera2D::move_direction(Direction dir, double amount) {
@@ -42,7 +43,7 @@ glm::mat4 Camera2D::view() const {
 }
 
 glm::mat4 Camera2D::projection(double width, double height) const {
-    return glm::ortho(0.0, width, 0.0, height);
+    return glm::ortho(0.0, width, 0.0, height, m_z_near, m_z_far);
 }
 
 // class private *********

@@ -41,8 +41,8 @@ glm::vec3 calculate_camera_right(glm::vec3 camera_front, glm::vec3 camera_up) {
 
 // class public *********
 Camera3D::Camera3D(double fov, double z_near, double z_far)
-    : Camera2D(), m_yaw(-90), m_pitch(0), m_first_mouse(true), m_fov(fov),
-      m_z_near(z_near), m_z_far(z_far) {
+    : Camera2D(z_near, z_far), m_yaw(-90), m_pitch(0), m_first_mouse(true),
+      m_fov(fov) {
 }
 
 void Camera3D::change_fov(double amount) {
