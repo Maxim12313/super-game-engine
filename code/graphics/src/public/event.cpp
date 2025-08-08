@@ -1,4 +1,4 @@
-#include "event.hpp"
+#include "graphics/event.hpp"
 
 Event cursor_position_event(double x, double y) {
     Event e;

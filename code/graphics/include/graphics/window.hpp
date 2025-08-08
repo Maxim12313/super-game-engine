@@ -40,16 +40,26 @@ public:
     // events
     // returns event with EventType::None if none
     Event poll_event();
+    bool toggle_listen_resize();
+    bool toggle_listen_cursor_position();
+    bool toggle_listen_key();
 
     // clock
     double avg_fps() const;
 
 private:
     static void resize_callback(GLFWwindow *window, int width, int height);
+    static void cursor_position_callback(GLFWwindow *window, double x,
+                                         double y);
+    static void key_callback(GLFWwindow *window, int key, int scancode,
+                             int action, int mods);
 
 private:
     int m_width;
     int m_height;
+    bool m_listen_resize;
+    bool m_listen_cursor_position;
+    bool m_listen_key;
     GLFWwindow *m_window;
     std::unique_ptr<Clock> m_clock;
     std::queue<Event> m_events;
