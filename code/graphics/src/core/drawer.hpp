@@ -21,7 +21,7 @@ struct Rect {
 
 class Drawer {
 public:
-    Drawer(const double &width, const double &height);
+    Drawer(const int &width, const int &height);
     void begin_camera(std::shared_ptr<Camera2D> camera);
     void end_camera();
     void set_background_color(Color color) const;
@@ -33,8 +33,8 @@ private:
     void set_transform_uniforms() const;
 
 private:
-    const double &m_width;
-    const double &m_height;
+    const int &m_width;
+    const int &m_height;
 
     uint32_t m_clear_bits;
     uint32_t m_square_vao;

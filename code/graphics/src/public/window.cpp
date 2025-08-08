@@ -4,18 +4,13 @@
 #include <glm/ext/vector_float2.hpp>
 #include <stdexcept>
 #include "graphics/window.hpp"
-#include "../core/callback_handler.hpp"
+#include "../core/event.hpp"
 #include "../core/clock.hpp"
 #include "../core/world_shader.hpp"
 #include "../core/constants.hpp"
 #include "../core/drawer.hpp"
 #include "graphics/camera2d.hpp"
 #include "graphics/color.hpp"
-
-// helpers **********
-void size_callback(GLFWwindow *window, int width, int height) {
-    glViewport(0, 0, width, height);
-}
 
 // class public **********
 Window::Window(int width, int height, const char *title, int target_fps)
@@ -36,11 +31,11 @@ Window::Window(int width, int height, const char *title, int target_fps)
         throw new std::runtime_error("Failed to initialize glad");
     }
 
-    glfwSetFramebufferSizeCallback(m_window, size_callback);
-    size_callback(m_window, width, height);
+    // for resizing
+    glfwSetWindowUserPointer(m_window, this);
+    glfwSetFramebufferSizeCallback(m_window, resize_callback);
 
     m_clock = std::make_unique<Clock>(target_fps);
-    m_callback_handler = std::make_unique<CallbackHandler>(m_window);
 }
 
 Window::~Window() {
@@ -50,11 +45,11 @@ Window::~Window() {
 }
 
 // window dimensions *********
-const double &Window::width() const {
+const int &Window::width() const {
     return m_width;
 }
 
-const double &Window::height() const {
+const int &Window::height() const {
     return m_height;
 }
 
@@ -92,15 +87,25 @@ glm::vec2 Window::cursor_pos() const {
     return pos;
 }
 
-// callbacks ********
-void Window::add_mouse_pos_callback(MousePosCallback callback) {
-    m_callback_handler->add_mouse_pos_callback(callback);
-}
-void Window::add_key_callback(KeyCallback callback) {
-    m_callback_handler->add_key_callback(callback);
+// events ********
+// TODO: switch to custom ringbuffer?
+Event Window::poll_event() {
+    if (m_events.empty())
+        return Event{};
+    Event curr = m_events.front();
+    m_events.pop();
+    return curr;
 }
 
 // clock ********
 double Window::avg_fps() const {
     return m_clock->avg_fps();
+}
+
+// class private ********
+void Window::resize_callback(GLFWwindow *window, int width, int height) {
+    Window *curr = static_cast<Window *>(glfwGetWindowUserPointer(window));
+    curr->m_width = width;
+    curr->m_height = height;
+    glViewport(0, 0, width, height);
 }

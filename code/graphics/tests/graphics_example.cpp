@@ -46,6 +46,7 @@ void runner() {
         drawer.clear();
 
         drawer.queue_rectangle(100, 300, 50, 100, BLUE);
+        drawer.queue_rectangle(100, 300, 50, 100, BLUE);
         drawer.queue_rectangle(10, 10, 100, 100, PURPLE);
         drawer.execute_draw();
 

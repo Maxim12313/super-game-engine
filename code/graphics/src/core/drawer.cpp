@@ -20,7 +20,7 @@ glm::mat4 calculate_model_rect(int x, int y, int w, int h) {
 }
 
 // class public ********
-Drawer::Drawer(const double &width, const double &height)
+Drawer::Drawer(const int &width, const int &height)
     : m_width(width), m_height(height) {
     m_shader = std::make_unique<WorldShader>(
         paths::SHADER_DIR / "color_vertex.glsl",

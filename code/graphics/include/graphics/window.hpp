@@ -4,15 +4,16 @@
 #include <functional>
 #include <glm/ext/vector_float2.hpp>
 #include <memory>
+#include <queue>
 
 using MousePosCallback = std::function<void(double x, double y)>;
 using KeyCallback =
     std::function<void(int key, int scancode, int action, int mods)>;
 
 class GLFWwindow;
-class CallbackHandler;
 class Clock;
 class Color;
+class Event;
 enum class Direction;
 
 class Window {
@@ -22,8 +23,8 @@ public:
     ~Window();
 
     // window dimensions
-    const double &width() const;
-    const double &height() const;
+    const int &width() const;
+    const int &height() const;
 
     // game loop
     double begin_update();
@@ -36,16 +37,20 @@ public:
     bool is_key_pressed(int key) const;
     glm::vec2 cursor_pos() const;
 
-    // callbacks
-    void add_mouse_pos_callback(MousePosCallback callback);
-    void add_key_callback(KeyCallback callback);
+    // events
+    // returns event with EventType::None if none
+    Event poll_event();
 
     // clock
     double avg_fps() const;
 
 private:
-    double m_width, m_height;
+    static void resize_callback(GLFWwindow *window, int width, int height);
+
+private:
+    int m_width;
+    int m_height;
     GLFWwindow *m_window;
-    std::unique_ptr<CallbackHandler> m_callback_handler;
     std::unique_ptr<Clock> m_clock;
+    std::queue<Event> m_events;
 };
