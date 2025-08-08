@@ -4,14 +4,14 @@
 
 class Window;
 
-enum class Direction { UP, RIGHT, FORWARD, DOWN, LEFT, BACKWARD };
+enum class Direction { Up, Right, Forward, Down, Left, Backward };
 
 class Camera2D {
 public:
     Camera2D(double z_near = 0, double z_far = 1);
     void move_direction(Direction dir, double amount);
     glm::mat4 view() const;
-    glm::mat4 projection(double width, double height) const;
+    virtual glm::mat4 projection(double width, double height) const;
 
 private:
     void move_z(float amount);

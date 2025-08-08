@@ -22,7 +22,7 @@ struct Rect {
 class Drawer {
 public:
     Drawer(const int &width, const int &height);
-    void begin_camera(std::shared_ptr<Camera2D> camera);
+    void begin_camera(const Camera2D &camera);
     void end_camera();
     void set_background_color(Color color) const;
     void clear() const;
@@ -39,6 +39,6 @@ private:
     uint32_t m_clear_bits;
     uint32_t m_square_vao;
     std::unique_ptr<WorldShader> m_shader;
-    std::shared_ptr<Camera2D> m_camera;
+    const Camera2D *m_camera;
     std::queue<Rect> m_rects;
 };

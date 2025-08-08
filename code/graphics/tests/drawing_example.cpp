@@ -40,7 +40,7 @@ void runner() {
     Drawer drawer(window.width(), window.height());
     drawer.set_background_color(CYAN);
 
-    drawer.begin_camera(std::make_shared<Camera2D>(camera));
+    drawer.begin_camera(&camera);
     while (!window.should_close()) {
         double dt = window.begin_update();
         drawer.clear();

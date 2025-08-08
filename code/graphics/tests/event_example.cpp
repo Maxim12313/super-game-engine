@@ -28,12 +28,6 @@ int main() {
     }
 }
 
-void handle_input(Window &window, double dt) {
-    if (window.key_status(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        window.set_should_close();
-    }
-}
-
 void runner() {
     Window window;
     Camera2D camera;
@@ -42,6 +36,7 @@ void runner() {
 
     window.toggle_listen_key();
 
+    drawer.begin_camera(&camera);
     while (!window.should_close()) {
         double dt = window.begin_update();
         drawer.clear();
@@ -51,14 +46,24 @@ void runner() {
             if (e.type == EventType::None)
                 break;
             switch (e.type) {
-                case EventType::Key:
+                case EventType::Key: {
                     KeyEvent data = e.data.key;
-                    LOG_INFO("{}, {}, {}", data.key, data.scancode, data.action,
-                             data.mods);
+                    float speed = 500;
+                    if (data.key == GLFW_KEY_A) {
+                        camera.move_direction(Direction::Right, speed * dt);
+                    }
+                    if (data.key == GLFW_KEY_D) {
+                        camera.move_direction(Direction::Left, speed * dt);
+                    }
                     break;
+                }
             }
         }
 
+        drawer.queue_rectangle(0, 0, 100, 100, RED);
+        drawer.execute_draw();
+
         window.end_update();
     }
+    drawer.end_camera();
 }

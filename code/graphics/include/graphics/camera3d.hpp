@@ -10,7 +10,7 @@ public:
     Camera3D(double fov = 45, double z_near = 0.1, double z_far = 1000);
     void move_cursor(double x, double y, double amount);
     void change_fov(double amount);
-    glm::mat4 projection(double width, double height) const;
+    glm::mat4 projection(double width, double height) const override;
 
 private:
     bool m_first_mouse;

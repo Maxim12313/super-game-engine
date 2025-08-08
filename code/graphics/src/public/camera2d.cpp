@@ -17,22 +17,22 @@ Camera2D::Camera2D(double z_near, double z_far)
 
 void Camera2D::move_direction(Direction dir, double amount) {
     switch (dir) {
-        case Direction::UP:
+        case Direction::Up:
             move_y(amount);
             break;
-        case Direction::RIGHT:
+        case Direction::Right:
             move_x(amount);
             break;
-        case Direction::FORWARD:
+        case Direction::Forward:
             move_z(amount);
             break;
-        case Direction::DOWN:
+        case Direction::Down:
             move_y(-amount);
             break;
-        case Direction::LEFT:
+        case Direction::Left:
             move_x(-amount);
             break;
-        case Direction::BACKWARD:
+        case Direction::Backward:
             move_z(-amount);
             break;
     }

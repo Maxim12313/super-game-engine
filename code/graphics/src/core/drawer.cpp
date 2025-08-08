@@ -21,7 +21,7 @@ glm::mat4 calculate_model_rect(int x, int y, int w, int h) {
 
 // class public ********
 Drawer::Drawer(const int &width, const int &height)
-    : m_width(width), m_height(height) {
+    : m_width(width), m_height(height), m_camera(nullptr) {
     m_shader = std::make_unique<WorldShader>(
         paths::SHADER_DIR / "color_vertex.glsl",
         paths::SHADER_DIR / "color_fragment.glsl");
@@ -34,12 +34,12 @@ Drawer::Drawer(const int &width, const int &height)
                                  internal::SQUARE_VERTICES.size());
 }
 
-void Drawer::begin_camera(std::shared_ptr<Camera2D> camera) {
+void Drawer::begin_camera(const Camera2D &camera) {
     ASSERT(!m_camera && "already existing camera context");
-    m_camera = camera;
+    m_camera = &camera;
 }
 void Drawer::end_camera() {
-    m_camera.reset();
+    m_camera = nullptr;
 }
 
 void Drawer::set_background_color(Color color) const {
@@ -56,7 +56,6 @@ void Drawer::queue_rectangle(double x, double y, double w, double h,
 }
 
 void Drawer::execute_draw() {
-    ASSERT(m_camera && "camera must be set");
     m_shader->use();
     set_transform_uniforms();
 
@@ -77,6 +76,7 @@ void Drawer::execute_draw() {
 
 // class private ********
 void Drawer::set_transform_uniforms() const {
+    ASSERT(m_camera && "camera must be set");
     glm::mat4 projection = m_camera->projection(m_width, m_height);
     glm::mat4 view = m_camera->view();
     m_shader->set_view(glm::value_ptr(view));
