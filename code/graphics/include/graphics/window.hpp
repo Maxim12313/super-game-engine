@@ -13,8 +13,8 @@ using KeyCallback =
 class GLFWwindow;
 class Clock;
 class Color;
-class Event;
 enum class Direction;
+class Event;
 
 class Window {
 public:

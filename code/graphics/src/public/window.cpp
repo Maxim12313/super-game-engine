@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/ext/vector_float2.hpp>
 #include <stdexcept>
+#include "graphics/event.hpp"
 #include "graphics/window.hpp"
 #include "graphics/event.hpp"
 #include "../core/clock.hpp"

@@ -1,9 +1,8 @@
 #include "graphics/color.hpp"
 #include "graphics/window.hpp"
 #include "graphics/camera2d.hpp"
-#include "../src/core/drawer.hpp"
+#include "graphics/drawer.hpp"
 #include "utils/macros.hpp"
-
 #include <cmath>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -40,7 +39,7 @@ void runner() {
     Drawer drawer(window.width(), window.height());
     drawer.set_background_color(CYAN);
 
-    drawer.begin_camera(&camera);
+    drawer.begin_camera(camera);
     while (!window.should_close()) {
         double dt = window.begin_update();
         drawer.clear();

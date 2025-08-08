@@ -4,12 +4,13 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include "../core/world_shader.hpp"
 #include "utils/macros.hpp"
-#include "shapes.hpp"
-#include "drawer.hpp"
-#include "buffer_handler.hpp"
-#include "constants.hpp"
+#include "../core/shapes.hpp"
+#include "../core/buffer_handler.hpp"
+#include "../core/constants.hpp"
 #include "graphics/camera2d.hpp"
+#include "graphics/drawer.hpp"
 
 // helpers ********
 glm::mat4 calculate_model_rect(int x, int y, int w, int h) {
@@ -33,6 +34,7 @@ Drawer::Drawer(const int &width, const int &height)
     m_square_vao = configure_vao(internal::SQUARE_VERTICES.begin(),
                                  internal::SQUARE_VERTICES.size());
 }
+Drawer::~Drawer() = default;
 
 void Drawer::begin_camera(const Camera2D &camera) {
     ASSERT(!m_camera && "already existing camera context");

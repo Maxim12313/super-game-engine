@@ -1,7 +1,7 @@
 #include "graphics/color.hpp"
 #include "graphics/window.hpp"
 #include "graphics/camera2d.hpp"
-#include "../src/core/drawer.hpp"
+#include "graphics/drawer.hpp"
 #include "graphics/event.hpp"
 #include "utils/macros.hpp"
 #include <cmath>
@@ -36,7 +36,7 @@ void runner() {
 
     window.toggle_listen_key();
 
-    drawer.begin_camera(&camera);
+    drawer.begin_camera(camera);
     while (!window.should_close()) {
         double dt = window.begin_update();
         drawer.clear();
@@ -54,6 +54,12 @@ void runner() {
                     }
                     if (data.key == GLFW_KEY_D) {
                         camera.move_direction(Direction::Left, speed * dt);
+                    }
+                    if (data.key == GLFW_KEY_W) {
+                        camera.move_direction(Direction::Down, speed * dt);
+                    }
+                    if (data.key == GLFW_KEY_S) {
+                        camera.move_direction(Direction::Up, speed * dt);
                     }
                     break;
                 }

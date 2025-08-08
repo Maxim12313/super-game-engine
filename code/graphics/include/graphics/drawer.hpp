@@ -1,7 +1,6 @@
 #pragma once
 #include <glm/ext/matrix_float4x4.hpp>
 #include <glm/ext/vector_float2.hpp>
-#include "../core/world_shader.hpp"
 #include <iterator>
 #include <memory>
 #include <queue>
@@ -10,6 +9,7 @@
 class Window;
 class Color;
 class Camera2D;
+class WorldShader;
 
 struct Rect {
     double x;
@@ -22,6 +22,7 @@ struct Rect {
 class Drawer {
 public:
     Drawer(const int &width, const int &height);
+    ~Drawer();
     void begin_camera(const Camera2D &camera);
     void end_camera();
     void set_background_color(Color color) const;
