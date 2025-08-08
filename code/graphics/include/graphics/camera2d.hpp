@@ -8,9 +8,11 @@ enum class Direction { Up, Right, Forward, Down, Left, Backward };
 
 class Camera2D {
 public:
-    Camera2D(double z_near = 0, double z_far = 1);
+    Camera2D(double x = 0, double y = 0, double z = 0, double z_near = 0,
+             double z_far = 1);
     void move_direction(Direction dir, double amount);
     glm::mat4 view() const;
+    const glm::vec3 &pos() const;
     virtual glm::mat4 projection(double width, double height) const;
 
 private:

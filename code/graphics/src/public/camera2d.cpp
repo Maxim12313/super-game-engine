@@ -9,8 +9,8 @@
 #include <iostream>
 
 // class public *********
-Camera2D::Camera2D(double z_near, double z_far)
-    : m_camera_pos(0, 0, 0), m_camera_front(0, 0, -1), m_camera_up(0, 1, 0),
+Camera2D::Camera2D(double x, double y, double z, double z_near, double z_far)
+    : m_camera_pos(x, y, z), m_camera_front(0, 0, -1), m_camera_up(0, 1, 0),
       m_camera_right(glm::normalize(glm::cross(m_camera_front, m_camera_up))),
       m_z_near(z_near), m_z_far(z_far) {
 }
@@ -36,6 +36,10 @@ void Camera2D::move_direction(Direction dir, double amount) {
             move_z(-amount);
             break;
     }
+}
+
+const glm::vec3 &Camera2D::pos() const {
+    return m_camera_pos;
 }
 
 glm::mat4 Camera2D::view() const {

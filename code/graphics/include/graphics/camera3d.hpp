@@ -7,7 +7,8 @@ class Window;
 
 class Camera3D : public Camera2D {
 public:
-    Camera3D(double fov = 45, double z_near = 0.1, double z_far = 1000);
+    Camera3D(double x = 0, double y = 0, double z = 0, double fov = 45,
+             double z_near = 0.1, double z_far = 1000);
     void move_cursor(double x, double y, double amount);
     void change_fov(double amount);
     glm::mat4 projection(double width, double height) const override;

@@ -9,7 +9,6 @@
 #include "../core/clock.hpp"
 #include "../core/world_shader.hpp"
 #include "../core/constants.hpp"
-#include "../core/drawer.hpp"
 #include "graphics/camera2d.hpp"
 #include "graphics/color.hpp"
 
