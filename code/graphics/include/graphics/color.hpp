@@ -13,3 +13,4 @@ constexpr Color PURPLE = {0.5, 1, 0};
 constexpr Color RED = {1, 0, 0};
 constexpr Color GREEN = {0, 1, 0};
 constexpr Color BLUE = {0, 0, 1};
+constexpr Color GRAY = {0.5, 0.5, 0.5};

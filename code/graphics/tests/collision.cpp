@@ -1,3 +1,4 @@
+#include "graphics/collisions.hpp"
 #include "graphics/color.hpp"
 #include "graphics/window.hpp"
 #include "graphics/camera2d.hpp"
@@ -27,17 +28,25 @@ int main() {
     }
 }
 
-void handle_input(Window &window, double dt) {
-    if (window.key_status(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        window.set_should_close();
-    }
-}
+struct Player {
+    glm::vec3 position;
+    glm::vec2 dimensions;
+    Color color;
+};
 
 void runner() {
     Window window;
     Camera2D camera;
     Drawer drawer(window.width(), window.height());
     drawer.set_background_color(CYAN);
+
+    Player player;
+    player.dimensions.x = 100;
+    player.dimensions.y = 100;
+
+    std::vector<Rect> rectangles = {{100, 300, 50, 100, BLUE},
+                                    {200, 300, 50, 200, GRAY},
+                                    {1000, 500, 788, 90, PURPLE}};
 
     drawer.begin_camera(camera);
     while (!window.should_close()) {
@@ -58,13 +67,28 @@ void runner() {
             camera.move_direction(Direction::Down, speed);
         }
 
-        drawer.queue_rectangle(camera.pos().x + window.width() / 2,
-                               camera.pos().y + window.height() / 2, 100, 100,
-                               RED);
+        player.position =
+            glm::vec3{window.width() / 2, window.height() / 2, 0} +
+            camera.pos();
 
-        drawer.queue_rectangle(100, 300, 50, 100, BLUE);
-        drawer.queue_rectangle(100, 300, 50, 100, BLUE);
-        drawer.queue_rectangle(10, 10, 100, 100, PURPLE);
+        player.color = GREEN;
+        for (auto [x, y, w, h, color] : rectangles) {
+            if (rect_colliding(player.position.x, player.position.y,
+                               player.dimensions.x, player.dimensions.y, x, y,
+                               w, h)) {
+                player.color = RED;
+                break;
+            }
+        }
+
+        drawer.queue_rectangle(player.position.x, player.position.y,
+                               player.dimensions.x, player.dimensions.y,
+                               player.color);
+
+        for (auto [x, y, w, h, color] : rectangles) {
+            drawer.queue_rectangle(x, y, w, h, color);
+        }
+
         drawer.execute_draw();
 
         window.end_update();
