@@ -1,4 +1,4 @@
-project(multiplayer)
+project(networking)
 
 # make library
 file(GLOB_RECURSE source_files "${PROJECT_SOURCE_DIR}/src/*.cpp")
