@@ -4,6 +4,7 @@
 #include <functional>
 #include <glm/ext/vector_float2.hpp>
 #include <memory>
+#include "event.hpp"
 #include <queue>
 
 using MousePosCallback = std::function<void(double x, double y)>;
@@ -12,9 +13,7 @@ using KeyCallback =
 
 class GLFWwindow;
 class Clock;
-class Color;
 enum class Direction;
-class Event;
 
 class Window {
 public:

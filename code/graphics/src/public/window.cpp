@@ -3,9 +3,8 @@
 #include <GLFW/glfw3.h>
 #include <glm/ext/vector_float2.hpp>
 #include <stdexcept>
-#include "graphics/event.hpp"
 #include "graphics/window.hpp"
-#include "graphics/event.hpp"
+#include "graphics/color.hpp"
 #include "../core/clock.hpp"
 #include "../core/world_shader.hpp"
 #include "../core/constants.hpp"
