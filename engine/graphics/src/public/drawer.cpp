@@ -69,8 +69,8 @@ void Drawer::execute_draw() {
 
         glm::mat4 model = calculate_model_rect(x, y, w, h);
         m_shader->set_model(glm::value_ptr(model));
-        m_shader->set_color(color);
 
+        m_shader->set_color(color);
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }
     glBindVertexArray(0);

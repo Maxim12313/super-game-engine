@@ -25,12 +25,10 @@ double Clock::update_dt() {
     auto duration = curr_frame - m_prev_frame;
     int ms =
         std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
-    double dt = ms / 1000.0;
-
-    m_fps_stats.push(to_fps(dt));
+    double sec = ms / 1000.0;
+    m_fps_stats.push(to_fps(sec));
     m_prev_frame = curr_frame;
-
-    return dt;
+    return sec;
 }
 
 double Clock::get_dt_now() const {

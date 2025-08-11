@@ -41,6 +41,8 @@ uint32_t configure_vao(const float vertices[], size_t count) {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void *)0);
     glEnableVertexAttribArray(0);
 
+    // TODO: necessary?
+    glBindVertexArray(0);
     return vao;
 }
 

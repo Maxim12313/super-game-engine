@@ -27,16 +27,11 @@ int main() {
     }
 }
 
-void handle_input(Window &window, double dt) {
-    if (window.key_status(GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        window.set_should_close();
-    }
-}
-
 void runner() {
     Window window;
     Camera2D camera;
     Drawer drawer(window.width(), window.height());
+
     drawer.set_background_color(CYAN);
 
     drawer.begin_camera(camera);

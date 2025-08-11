@@ -90,7 +90,6 @@ void runner() {
         }
 
         drawer.execute_draw();
-
         window.end_update();
     }
     drawer.end_camera();

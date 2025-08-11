@@ -75,6 +75,7 @@ Shader::Shader(const std::string &vertex_path,
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
 
+    // TODO: decide if necessary
     use();
 }
 
