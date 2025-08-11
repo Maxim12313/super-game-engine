@@ -9,48 +9,41 @@
 #define LOG_LEVEL_TRACE 3
 
 // colors
-namespace internal {
-[[maybe_unused]] static const char *COLOR_RESET = "\033[0m";
-[[maybe_unused]] static const char *COLOR_GRAY = "\033[90m";
-[[maybe_unused]] static const char *COLOR_CYAN = "\033[36m";
-[[maybe_unused]] static const char *COLOR_GREEN = "\033[32m";
-[[maybe_unused]] static const char *COLOR_RED = "\033[31m";
-} // namespace internal
+#define LOG_COLOR_RESET "\033[0m"
+#define LOG_COLOR_GRAY "\033[90m"
+#define LOG_COLOR_CYAN "\033[36m"
+#define LOG_COLOR_GREEN "\033[32m"
+#define LOG_COLOR_RED "\033[31m"
 
 // HELPERS
 #define __FILENAME__                                                           \
     (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
 #define LOG(prefix, color, fmt, ...)                                           \
-    std::println("{}[{}]{} [{} {}:{}]: " fmt, color, prefix,                   \
-                 internal::COLOR_RESET, __FILENAME__, __func__, __LINE__,      \
-                 ##__VA_ARGS__)
+    std::println("{}[{}]{} [{} {}:{}]: " fmt, color, prefix, LOG_COLOR_RESET,  \
+                 __FILENAME__, __func__, __LINE__, ##__VA_ARGS__)
 
 // log ../macros
 #if LOG_LEVEL >= LOG_LEVEL_ERROR
-#define LOG_ERROR(fmt, ...)                                                    \
-    LOG("ERROR", internal::COLOR_RED, fmt, ##__VA_ARGS__)
+#define LOG_ERROR(fmt, ...) LOG("ERROR", LOG_COLOR_RED, fmt, ##__VA_ARGS__)
 #else
 #define LOG_ERROR(fmt, ...) ((void)0)
 #endif
 
 #if LOG_LEVEL >= LOG_LEVEL_INFO
-#define LOG_INFO(fmt, ...)                                                     \
-    LOG("INFO ", internal::COLOR_GREEN, fmt, ##__VA_ARGS__)
+#define LOG_INFO(fmt, ...) LOG("INFO ", LOG_COLOR_GREEN, fmt, ##__VA_ARGS__)
 #else
 #define LOG_INFO(fmt, ...) ((void)0)
 #endif
 
 #if LOG_LEVEL >= LOG_LEVEL_DEBUG
-#define LOG_DEBUG(fmt, ...)                                                    \
-    LOG("DEBUG", internal::COLOR_CYAN, fmt, ##__VA_ARGS__)
+#define LOG_DEBUG(fmt, ...) LOG("DEBUG", LOG_COLOR_CYAN, fmt, ##__VA_ARGS__)
 #else
 #define LOG_DEBUG(fmt, ...) ((void)0)
 #endif
 
 #if LOG_LEVEL >= LOG_LEVEL_TRACE
-#define LOG_TRACE(fmt, ...)                                                    \
-    LOG("TRACE", internal::COLOR_GRAY, fmt, ##__VA_ARGS__)
+#define LOG_TRACE(fmt, ...) LOG("TRACE", LOG_COLOR_GRAY, fmt, ##__VA_ARGS__)
 #else
 #define LOG_TRACE(fmt, ...) ((void)0)
 #endif

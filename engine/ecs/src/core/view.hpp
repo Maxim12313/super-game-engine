@@ -1,8 +1,10 @@
 #pragma once
-#include "common.hpp"
+#include "ecs/common.hpp"
 #include "component_manager.hpp"
 #include "sparse_set.hpp"
 #include <vector>
+
+namespace ecs::internal {
 
 std::vector<Entity> get_view_helper(ComponentManager &manager,
                                     std::vector<ISparseSet *> &packed_arrays);
@@ -22,3 +24,4 @@ std::vector<Entity> get_view(ComponentManager &manager) {
  * do less signature checks
  *
  */
+} // namespace ecs::internal

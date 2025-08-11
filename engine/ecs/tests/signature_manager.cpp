@@ -1,4 +1,4 @@
-#include "ecs/signature_manager.hpp"
+#include "../src/core/signature_manager.hpp"
 #include "utils/macros.hpp"
 using namespace std;
 
@@ -7,14 +7,14 @@ struct Type2 {};
 struct Type3 {};
 
 void test1() {
-    Entity one = 1;
-    SignatureManager manager;
+    ecs::Entity one = 1;
+    ecs::internal::SignatureManager manager;
 
     manager.set(one);
-    Signature sig = manager[one];
+    ecs::Signature sig = manager[one];
     ASSERT_EQUAL(sig, 0);
 
-    Entity two = 2;
+    ecs::Entity two = 2;
     manager.assign(two, 0b10);
     sig = manager[two];
     ASSERT_EQUAL(sig, 0b10);
@@ -32,22 +32,22 @@ void test1() {
 }
 
 void test2() {
-    SignatureManager manager;
+    ecs::internal::SignatureManager manager;
 
-    Entity first = 0;
+    ecs::Entity first = 0;
     manager.set_bit<Type3>(first);
     ASSERT_EQUAL(manager[first], 0b100);
 
-    Entity second = 1;
+    ecs::Entity second = 1;
     manager.set_bit<Type2>(second);
     ASSERT_EQUAL(manager[second], 0b10);
 }
 
 int main() {
     // to set for consistency
-    utils::get_component_id<Type1>();
-    utils::get_component_id<Type2>();
-    utils::get_component_id<Type3>();
+    ecs::internal::utils::get_component_id<Type1>();
+    ecs::internal::utils::get_component_id<Type2>();
+    ecs::internal::utils::get_component_id<Type3>();
 
     test1();
     test2();

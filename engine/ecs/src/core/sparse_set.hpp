@@ -1,9 +1,11 @@
 #pragma once
 #include "utils/macros.hpp"
-#include "common.hpp"
+#include "ecs/common.hpp"
 #include <array>
 #include <vector>
 #include <unordered_map>
+
+namespace ecs::internal {
 
 /**
  * @class ISparseSet
@@ -16,8 +18,7 @@ protected:
     std::vector<Entity> to_entity;
 
 public:
-    virtual ~ISparseSet() {
-    }
+    virtual ~ISparseSet() = default;
     /**
      * @brief Erases the data entry for the given entity
      *
@@ -28,16 +29,26 @@ public:
     /**
      * @brief Clear the array, resetting size to 0
      */
-    void clear();
+    void clear() {
+        to_idx.clear();
+        to_entity.clear();
+    }
 
     /**
      * @return Returns if entity is registered with this packed array
      */
-    bool contains(Entity entity);
+    bool contains(Entity entity) {
 
-    size_t size();
+        return to_idx.count(entity);
+    }
 
-    const std::vector<Entity> &entities();
+    size_t size() {
+        return to_entity.size();
+    }
+
+    const std::vector<Entity> &entities() {
+        return to_entity;
+    }
 };
 
 /**
@@ -62,8 +73,7 @@ private:
     }
 
 public:
-    SparseSet() {
-    }
+    SparseSet() = default;
 
     /**
      * @brief Will default init if entity not contained in the array
@@ -118,3 +128,4 @@ public:
         return std::end(data);
     }
 };
+} // namespace ecs::internal

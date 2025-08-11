@@ -1,9 +1,11 @@
 #pragma once
-#include "common.hpp"
+#include "ecs/common.hpp"
 #include "signature_manager.hpp"
 #include "utils.hpp"
 #include "sparse_set.hpp"
 #include <unordered_map>
+
+namespace ecs::internal {
 
 using Group = SparseSet<Entity>;
 
@@ -32,3 +34,4 @@ public:
 
     void update(Entity entity, Signature signature);
 };
+} // namespace ecs::internal

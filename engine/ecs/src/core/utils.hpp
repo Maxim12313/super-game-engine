@@ -1,7 +1,8 @@
 #pragma once
-#include "common.hpp"
+#include "ecs/common.hpp"
 
-namespace utils {
+namespace ecs::internal::utils {
+
 static Component_ID curr_component = 0;
 template <typename T>
 Component_ID get_component_id() {
@@ -51,4 +52,5 @@ Signature set_signature() {
     ((signature |= set_bit<Component>(signature)), ...);
     return signature;
 }
-}; // namespace utils
+
+}; // namespace ecs::internal::utils

@@ -6,6 +6,8 @@
 #include <vector>
 #include <memory>
 
+namespace ecs::internal {
+
 /**
  * @class PackedArrayManager
  * @brief Manages registered packed arrays which can hold different types
@@ -85,3 +87,4 @@ public:
         return arr;
     }
 };
+} // namespace ecs::internal

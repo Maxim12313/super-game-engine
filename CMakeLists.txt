@@ -23,8 +23,8 @@ add_compile_options(-g -O0 -Wshadow -Wunused -Wshadow ${SANITIZE_FLAGS})
 enable_testing()
 
 # subdirs
-add_subdirectory(code/utils)
-add_subdirectory(code/glad)
-add_subdirectory(code/ecs)
-add_subdirectory(code/graphics)
-add_subdirectory(code/networking)
+add_subdirectory(engine/utils)
+add_subdirectory(engine/glad)
+add_subdirectory(engine/ecs)
+add_subdirectory(engine/graphics)
+add_subdirectory(engine/networking)

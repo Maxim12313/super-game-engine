@@ -1,5 +1,5 @@
-#include <ecs/component_manager.hpp>
-#include <ecs/entity_manager.hpp>
+#include "../src/core/component_manager.hpp"
+#include "../src/core/entity_manager.hpp"
 #include <utils/macros.hpp>
 
 using namespace std;
@@ -20,16 +20,16 @@ struct Type2 {
 };
 
 void test1() {
-    ComponentManager arrays;
-    EntityManager entities;
+    ecs::internal::ComponentManager arrays;
+    ecs::internal::EntityManager entities;
 
     arrays.register_type<Type1>();
     arrays.register_type<Type2>();
 
-    Entity first = entities.create_entity();
+    ecs::Entity first = entities.create_entity();
     arrays.assign(first, Type1{1});
 
-    Entity second = entities.create_entity();
+    ecs::Entity second = entities.create_entity();
     arrays.assign(second, Type2{2});
 
     auto arr = arrays.get_array<Type1>();

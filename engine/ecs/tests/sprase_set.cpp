@@ -1,11 +1,11 @@
-#include "ecs/sparse_set.hpp"
+#include "../src/core/sparse_set.hpp"
 #include "utils/macros.hpp"
 using namespace std;
 
 constexpr int n = 30; // MUST BE n >= 10
 
 void test2() {
-    SparseSet<int> array;
+    ecs::internal::SparseSet<int> array;
     for (int i = 0; i < n; i++)
         array[i] = i;
 
@@ -23,7 +23,7 @@ void test2() {
 }
 
 void test1() {
-    SparseSet<int> array;
+    ecs::internal::SparseSet<int> array;
     for (int i = 0; i < n; i++)
         array[i] = i;
 

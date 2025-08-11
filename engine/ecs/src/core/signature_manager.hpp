@@ -2,6 +2,8 @@
 #include "utils.hpp"
 #include "sparse_set.hpp"
 
+namespace ecs::internal {
+
 /**
  * @class SignatureManager
  * @brief Wrapper over packed array specific for maintaing and setting
@@ -79,3 +81,4 @@ public:
         curr = utils::reset_bit<T>(curr);
     }
 };
+} // namespace ecs::internal

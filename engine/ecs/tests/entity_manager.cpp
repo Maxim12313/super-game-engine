@@ -1,4 +1,4 @@
-#include "ecs/entity_manager.hpp"
+#include "../src/core/entity_manager.hpp"
 #include "utils/macros.hpp"
 #include "unordered_set"
 
@@ -7,15 +7,15 @@ using namespace std;
 constexpr int n = 100;
 
 void test_destroy_create() {
-    EntityManager manager;
-    unordered_set<Entity> seen;
+    ecs::internal::EntityManager manager;
+    unordered_set<ecs::Entity> seen;
     for (int i = 0; i < n; i++) {
         if (!seen.empty() && rand() > RAND_MAX / 2) {
-            Entity lose = *begin(seen);
+            ecs::Entity lose = *begin(seen);
             manager.destroy_entity(lose);
             seen.erase(lose);
         } else {
-            Entity adding = manager.create_entity();
+            ecs::Entity adding = manager.create_entity();
             ASSERT(!seen.count(adding));
             seen.insert(adding);
         }
@@ -23,7 +23,7 @@ void test_destroy_create() {
 }
 
 void test_component_entity_tracking() {
-    EntityManager manager;
+    ecs::internal::EntityManager manager;
 }
 
 int main() {

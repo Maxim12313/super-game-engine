@@ -1,10 +1,12 @@
 #pragma once
 #include "utils/macros.hpp"
 #include "common.hpp"
-#include "component_manager.hpp"
-#include "group_manager.hpp"
-#include "entity_manager.hpp"
-#include "signature_manager.hpp"
+#include "../src/core/component_manager.hpp"
+#include "../src/core/group_manager.hpp"
+#include "../src/core/entity_manager.hpp"
+#include "../src/core/signature_manager.hpp"
+
+namespace ecs {
 
 /**
  * @class Coordinator
@@ -13,23 +15,31 @@
  */
 class Coordinator {
 private:
-    SignatureManager entity_signatures;
-    EntityManager entity_manager;
-    ComponentManager component_manager;
-    GroupManager group_manager;
+    internal::SignatureManager entity_signatures;
+    internal::EntityManager entity_manager;
+    internal::ComponentManager component_manager;
+    internal::GroupManager group_manager;
 
 public:
-    Coordinator();
+    Coordinator() = default;
 
     /**
      * @brief Create a new entity
      */
-    Entity create_entity();
+    Entity create_entity() {
+        Entity entity = entity_manager.create_entity();
+        entity_signatures.assign(entity, 0);
+        return entity;
+    }
 
     /**
      * @brief Erase entity or do nothing if it does not exist
      */
-    void erase_entity(Entity entity);
+    void erase_entity(Entity entity) {
+        component_manager.erase_entity(entity);
+        entity_signatures.erase(entity);
+        entity_manager.destroy_entity(entity);
+    }
 
     /**
      * @brief Register T component [requires not already registered]
@@ -78,3 +88,4 @@ public:
         entity_signatures.reset_bit<T>(entity);
     }
 };
+} // namespace ecs

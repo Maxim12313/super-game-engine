@@ -1,7 +1,9 @@
 #include "view.hpp"
-#include "common.hpp"
+#include "ecs/common.hpp"
 #include "component_manager.hpp"
 #include "sparse_set.hpp"
+
+namespace ecs::internal {
 
 void filter_intersection(std::vector<Entity> &entities, ISparseSet *array) {
     for (int i = 0; i < entities.size(); i++) {
@@ -33,3 +35,4 @@ std::vector<Entity> get_view_helper(ComponentManager &manager,
 
     return entities;
 }
+} // namespace ecs::internal

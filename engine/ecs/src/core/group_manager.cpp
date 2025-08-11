@@ -1,5 +1,6 @@
 #include "group_manager.hpp"
 
+namespace ecs::internal {
 void GroupManager::update(Entity entity, Signature signature) {
     for (int i = 0; i < groups.size(); i++) {
         Group &group_ents = groups[i];
@@ -17,3 +18,4 @@ void GroupManager::update(Entity entity, Signature signature) {
         }
     }
 }
+} // namespace ecs::internal

@@ -1,12 +1,14 @@
 #pragma once
-#include "common.hpp"
+#include "ecs/common.hpp"
 #include "sparse_set.hpp"
 #include "utils/macros.hpp"
 #include <stack>
 #include <vector>
 
+namespace ecs::internal {
+
 /**
- * @class EntityManager
+ * @class internal::EntityManager
  * @brief Ensures unique entity ids are provisioned and
  * tracks entities for subscribed to each component
  */
@@ -24,3 +26,4 @@ public:
     /// Destroy this entity and reclaim the id
     void destroy_entity(Entity entity);
 };
+} // namespace ecs::internal

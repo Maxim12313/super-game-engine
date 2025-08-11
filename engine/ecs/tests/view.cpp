@@ -1,13 +1,13 @@
-#include "ecs/view.hpp"
+#include "../src/core/view.hpp"
 #include "utils/macros.hpp"
 using namespace std;
 
 void test_filter_intersection() {
-    SparseSet<int> arr;
+    ecs::internal::SparseSet<int> arr;
     for (int i = 0; i < 20; i += 2) {
         arr[i] = -i;
     }
-    vector<Entity> entities;
+    vector<ecs::Entity> entities;
     for (int i = 0; i < 20; i += 2) {
         entities.push_back(i + 1);
     }
