@@ -1,6 +1,7 @@
 #include <array>
 #pragma once
 
+namespace graphics {
 // clang-format off
 namespace internal {
 constexpr std::array<float, 18> SQUARE_VERTICES = {
@@ -14,3 +15,4 @@ constexpr std::array<float, 18> SQUARE_VERTICES = {
     };
 }
 // clang-format on
+} // namespace graphics

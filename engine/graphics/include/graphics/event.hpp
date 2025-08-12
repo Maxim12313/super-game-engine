@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <vector>
+namespace graphics {
 
 struct CursorPositionEvent {
     double x;
@@ -41,3 +42,5 @@ struct Event {
 Event cursor_position_event(double x, double y);
 Event key_event(int key, int scancode, int action, int mods);
 Event resize_event(double width, double height);
+
+} // namespace graphics

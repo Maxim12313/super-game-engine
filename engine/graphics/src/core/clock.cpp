@@ -2,8 +2,8 @@
 #include <chrono>
 #include <thread>
 
+namespace graphics {
 // helpers **********
-
 // where dt in sec
 double to_fps(double dt) {
     return 1 / dt;
@@ -57,3 +57,4 @@ double Clock::last_fps() const {
 double Clock::avg_fps() const {
     return m_fps_stats.avg();
 }
+} // namespace graphics

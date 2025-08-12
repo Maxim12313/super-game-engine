@@ -1,5 +1,7 @@
 #pragma once
 
+namespace graphics {
+
 // ranging [0, 1] for all
 struct Color {
     float red;
@@ -14,3 +16,5 @@ constexpr Color RED = {1, 0, 0};
 constexpr Color GREEN = {0, 1, 0};
 constexpr Color BLUE = {0, 0, 1};
 constexpr Color GRAY = {0.5, 0.5, 0.5};
+
+} // namespace graphics

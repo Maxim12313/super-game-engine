@@ -2,6 +2,8 @@
 #include <glm/ext/matrix_float4x4.hpp>
 #include <glm/ext/vector_float3.hpp>
 
+namespace graphics {
+
 class Window;
 
 enum class Direction { Up, Right, Forward, Down, Left, Backward };
@@ -28,3 +30,5 @@ protected:
     double m_z_near;
     double m_z_far;
 };
+
+}; // namespace graphics

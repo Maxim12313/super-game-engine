@@ -7,11 +7,14 @@
 #include "event.hpp"
 #include <queue>
 
+class GLFWwindow;
+
+namespace graphics {
+
 using MousePosCallback = std::function<void(double x, double y)>;
 using KeyCallback =
     std::function<void(int key, int scancode, int action, int mods)>;
 
-class GLFWwindow;
 class Clock;
 enum class Direction;
 
@@ -63,3 +66,4 @@ private:
     std::unique_ptr<Clock> m_clock;
     std::queue<Event> m_events;
 };
+} // namespace graphics

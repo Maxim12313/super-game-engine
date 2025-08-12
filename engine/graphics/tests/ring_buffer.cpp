@@ -2,6 +2,8 @@
 #include <queue>
 #include "../src/core/ring_buffer.hpp"
 
+using namespace graphics;
+
 int main() {
     RingBuffer<int, 10> actual;
     std::queue<int> expected;

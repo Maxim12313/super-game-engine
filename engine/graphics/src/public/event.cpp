@@ -1,5 +1,6 @@
 #include "graphics/event.hpp"
 
+namespace graphics {
 Event cursor_position_event(double x, double y) {
     Event e;
     e.type = EventType::CursorPosition;
@@ -20,3 +21,4 @@ Event resize_event(double width, double height) {
     e.data.resize = {width, height};
     return e;
 }
+} // namespace graphics

@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <utility>
 
+namespace graphics {
 template <typename T, size_t capacity>
 class RingBuffer {
 private:
@@ -52,3 +53,4 @@ private:
     size_t m_head;
     size_t m_tail;
 };
+} // namespace graphics

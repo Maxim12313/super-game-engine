@@ -3,6 +3,7 @@
 #include <glm/ext/vector_float3.hpp>
 #include "graphics/camera2d.hpp"
 
+namespace graphics {
 class Window;
 
 class Camera3D : public Camera2D {
@@ -21,3 +22,4 @@ private:
     double m_prev_y; // default
     double m_fov;
 };
+} // namespace graphics

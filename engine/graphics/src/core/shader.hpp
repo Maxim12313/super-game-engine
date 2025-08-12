@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <string>
 
+namespace graphics {
 class Shader {
 public:
     Shader(const std::string &vertex_path, const std::string &fragment_path);
@@ -20,3 +21,4 @@ public:
 private:
     uint32_t m_id;
 };
+} // namespace graphics

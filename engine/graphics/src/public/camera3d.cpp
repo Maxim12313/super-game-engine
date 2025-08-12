@@ -7,6 +7,8 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/glm.hpp>
 
+namespace graphics {
+
 // constants *********
 constexpr double PITCH_LOW = -89;
 constexpr double PITCH_HIGH = 89;
@@ -75,3 +77,4 @@ glm::mat4 Camera3D::projection(double width, double height) const {
     return glm::perspective(glm::radians(m_fov), aspect_ratio, m_z_near,
                             m_z_far);
 }
+} // namespace graphics

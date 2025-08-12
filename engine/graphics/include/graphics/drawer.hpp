@@ -6,6 +6,8 @@
 #include <queue>
 #include "graphics/color.hpp"
 
+namespace graphics {
+
 class Window;
 class Color;
 class Camera2D;
@@ -43,3 +45,4 @@ private:
     const Camera2D *m_camera;
     std::queue<Rect> m_rects;
 };
+} // namespace graphics
