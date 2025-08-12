@@ -3,6 +3,7 @@
 #include "ring_buffer.hpp"
 #include <cstddef>
 
+namespace graphics {
 // T must be a numeric type, we expect to take sum,avg
 template <typename T, size_t capacity = 32>
 class StatWindow {
@@ -37,3 +38,4 @@ private:
     long double m_sum;
     RingBuffer<T, capacity> m_window;
 };
+} // namespace graphics

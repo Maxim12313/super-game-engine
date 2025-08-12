@@ -15,6 +15,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <utils/stb_image.h>
 
+using namespace graphics;
+
 void runner();
 
 int main() {

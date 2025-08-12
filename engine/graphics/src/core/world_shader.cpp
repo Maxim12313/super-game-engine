@@ -3,6 +3,7 @@
 #include "constants.hpp"
 #include <glm/gtc/type_ptr.hpp>
 
+namespace graphics {
 WorldShader::WorldShader(const std::string &vertex_path,
                          const std::string &fragment_path)
     : Shader(vertex_path, fragment_path) {
@@ -26,3 +27,4 @@ void WorldShader::set_projection(const float *value) const {
 void WorldShader::set_color(Color color) const {
     set_vec3("color", color.red, color.blue, color.green);
 }
+} // namespace graphics

@@ -11,6 +11,8 @@
 #include "graphics/camera2d.hpp"
 #include "graphics/color.hpp"
 
+namespace graphics {
+
 // class public **********
 Window::Window(int width, int height, const char *title, int target_fps)
     : m_width(width), m_height(height), m_listen_resize(false),
@@ -143,3 +145,4 @@ void Window::key_callback(GLFWwindow *window, int key, int scancode, int action,
         return;
     curr->m_events.push(key_event(key, scancode, action, mods));
 }
+} // namespace graphics

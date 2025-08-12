@@ -2,6 +2,9 @@
 
 #include "stat_window.hpp"
 #include <chrono>
+
+namespace graphics {
+
 class Clock {
 public:
     // if target_fps == -1, then ignore adjust_fps
@@ -27,3 +30,4 @@ private:
     StatWindow<double> m_fps_stats;
     std::chrono::time_point<std::chrono::high_resolution_clock> m_prev_frame;
 };
+} // namespace graphics

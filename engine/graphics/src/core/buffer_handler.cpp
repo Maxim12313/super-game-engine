@@ -6,6 +6,8 @@
 #include "buffer_handler.hpp"
 #include <filesystem>
 
+namespace graphics {
+
 // helpers ********
 uint32_t gen_buffer() {
     uint32_t buffer;
@@ -87,3 +89,4 @@ uint32_t configure_texture(std::filesystem::path file_path, uint32_t format) {
     stbi_image_free(data);
     return texture;
 }
+} // namespace graphics

@@ -12,6 +12,7 @@
 #include "graphics/camera2d.hpp"
 #include "graphics/drawer.hpp"
 
+namespace graphics {
 // helpers ********
 glm::mat4 calculate_model_rect(int x, int y, int w, int h) {
     glm::mat4 model = math::IDENTITY;
@@ -84,3 +85,4 @@ void Drawer::set_transform_uniforms() const {
     m_shader->set_view(glm::value_ptr(view));
     m_shader->set_projection(glm::value_ptr(projection));
 }
+} // namespace graphics

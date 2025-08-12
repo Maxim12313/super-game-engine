@@ -9,6 +9,7 @@
 #include <print>
 #include <sstream>
 
+namespace graphics {
 // helpers ********
 std::string read_file(const std::string &path) {
     std::ifstream file;
@@ -106,3 +107,4 @@ void Shader::set_vec3(const std::string &name, float a, float b,
                       float c) const {
     glUniform3f(glGetUniformLocation(m_id, name.c_str()), a, b, c);
 }
+} // namespace graphics

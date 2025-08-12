@@ -8,6 +8,8 @@
 #include <glm/glm.hpp>
 #include <iostream>
 
+namespace graphics {
+
 // class public *********
 Camera2D::Camera2D(double x, double y, double z, double z_near, double z_far)
     : m_camera_pos(x, y, z), m_camera_front(0, 0, -1), m_camera_up(0, 1, 0),
@@ -63,3 +65,4 @@ void Camera2D::move_x(float amount) {
 void Camera2D::move_y(float amount) {
     m_camera_pos += amount * m_camera_up;
 }
+} // namespace graphics

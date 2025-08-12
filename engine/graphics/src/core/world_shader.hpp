@@ -1,7 +1,8 @@
 #pragma once
 #include "shader.hpp"
-class Color;
 
+namespace graphics {
+class Color;
 class WorldShader : public Shader {
 public:
     WorldShader(const std::string &vertex_path,
@@ -12,3 +13,5 @@ public:
     void set_projection(const float *value) const;
     void set_color(Color color) const;
 };
+
+} // namespace graphics
