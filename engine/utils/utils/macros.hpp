@@ -48,21 +48,6 @@
 #define LOG_TRACE(fmt, ...) ((void)0)
 #endif
 
-// assert helper
-template <typename Iterable>
-std::string iter_to_string(Iterable data) {
-    std::string res = "{ ";
-    for (auto val : data) {
-        res += to_string(val) + ",";
-    }
-    res += " }";
-    return res;
-}
-template <typename Iterable>
-bool iter_equal(Iterable a, Iterable b) {
-    return std::equal(std::begin(a), std::end(a), std::begin(b), std::end(b));
-}
-
 #ifdef DEBUG
 #define ASSERT(cond)                                                           \
     do {                                                                       \

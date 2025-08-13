@@ -4,7 +4,7 @@
 namespace ecs::internal {
 
 EntityManager::EntityManager() {
-    for (int id = 0; id < MAX_ENTITIES; id++) {
+    for (int id = MAX_ENTITIES - 1; id >= 0; id--) {
         m_available.push(Entity(id));
     }
 }
