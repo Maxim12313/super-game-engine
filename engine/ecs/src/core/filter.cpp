@@ -1,4 +1,4 @@
-#include "view.hpp"
+#include "filter.hpp"
 #include "ecs/common.hpp"
 #include "component_manager.hpp"
 #include "sparse_set.hpp"

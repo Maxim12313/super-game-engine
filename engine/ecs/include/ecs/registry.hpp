@@ -19,11 +19,11 @@ public:
     Registry() = default;
 
     // Create a new entity
-    Entity create_entity();
+    Entity create();
 
     // Erase entity or do nothing if it does not exist
     // Clears from component arrays
-    void erase_entity(Entity entity);
+    void destroy(Entity entity);
 
     // Create component array for this type
     // Requires not already registered]
@@ -46,14 +46,14 @@ public:
     void emplace_back(Entity entity, Args &&...args);
 
     // Erase entity's component if exist, otherwise do nothing
-    template <typename Component>
-    void erase_component(Entity entity);
+    template <typename... Components>
+    void remove(Entity entity);
 
 private:
-    internal::SignatureManager m_entity_signature;
-    internal::EntityManager m_entity_manager;
-    internal::ComponentManager m_component_manager;
-    internal::GroupManager m_group_manager;
+    internal::SignatureManager m_signatures;
+    internal::EntityManager m_entities;
+    internal::ComponentManager m_components;
+    internal::GroupManager m_groups;
 };
 
 }; // namespace ecs
@@ -61,29 +61,29 @@ private:
 namespace ecs {
 
 // inline definitions ********
-inline Entity Registry::create_entity() {
-    Entity entity = m_entity_manager.create_entity();
-    m_entity_signature.push_back(entity);
+inline Entity Registry::create() {
+    Entity entity = m_entities.create_entity();
+    m_signatures.push_back(entity);
     return entity;
 }
 
-inline void Registry::erase_entity(Entity entity) {
-    m_component_manager.erase_entity(entity);
-    m_entity_signature.erase(entity);
-    m_entity_manager.destroy_entity(entity);
+inline void Registry::destroy(Entity entity) {
+    m_components.erase_entity(entity);
+    m_signatures.erase(entity);
+    m_entities.destroy_entity(entity);
 }
 
 // templated definitions ********
 template <typename... Components>
 void Registry::register_component() {
-    (m_component_manager.register_type<Components>(), ...);
+    (m_components.register_type<Components>(), ...);
 }
 
 template <typename Component>
 Component &Registry::get(Entity entity) {
-    ASSERT(m_component_manager.contains<Component>(entity) &&
+    ASSERT(m_components.contains<Component>(entity) &&
            "entity does not have this component");
-    return m_component_manager.get<Component>(entity);
+    return m_components.get<Component>(entity);
 }
 
 template <typename Component>
@@ -92,13 +92,12 @@ void Registry::push_back(Entity entity, const Component &component) {
 
 template <typename Component, typename... Args>
 void Registry::emplace_back(Entity entity, Args &&...args) {
-    m_component_manager.emplace_back(entity, std::forward<Args>(args)...);
+    m_components.emplace_back(entity, std::forward<Args>(args)...);
 }
 
-template <typename Component>
-void Registry::erase_component(Entity entity) {
-    m_component_manager.erase_data<Component>(entity);
-    m_entity_signature.reset_bit<Component>(entity);
+template <typename... Components>
+void Registry::remove(Entity entity) {
+    (m_components.erase_data<Components>(entity), ...);
 }
 
 } // namespace ecs

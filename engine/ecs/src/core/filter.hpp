@@ -18,10 +18,4 @@ std::vector<Entity> get_view(ComponentManager &manager) {
     return get_view_helper(manager, packed_arrays);
 }
 
-/* Notes:
- * Start with smallest and make unions
- * It better to do nlogn sort for O(n) compares for intersections or better to
- * do less signature checks
- *
- */
 } // namespace ecs::internal
