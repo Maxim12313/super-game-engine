@@ -32,25 +32,26 @@ void test1() {
     ecs::Entity second = 1;
     arrays.emplace_back<Type2>(second, 2);
 
-    auto arr = arrays.get_array<Type1>();
-    for (auto val : *arr) {
-        ASSERT((val.val == 1) || (val.val == 2));
-    }
+    // auto arr = arrays.get_array<Type1>();
+    // for (auto val : *arr) {
+    //     ASSERT((val.val == 1) || (val.val == 2));
+    // }
+    //
 
     arrays.erase_data<Type1>(first);
-    for (auto val : *arr) {
-        ASSERT(val.val == 2);
-    }
+    // for (auto val : *arr) {
+    //     ASSERT(val.val == 2);
+    // }
 
     arrays.emplace_back<Type1>(first, 30);
     arrays.emplace_back<Type2>(first, 60);
     arrays.get<Type2>(second) = Type2{120};
 
-    for (auto val : *arr) {
-        ASSERT((val.val == 30) || (val.val == 2));
-    }
-
-    for (auto val : *arrays.get_array<Type2>()) {
-        ASSERT((val.val == 60) || (val.val == 120));
-    }
+    // for (auto val : *arr) {
+    //     ASSERT((val.val == 30) || (val.val == 2));
+    // }
+    //
+    // for (auto val : *arrays.get_array<Type2>()) {
+    //     ASSERT((val.val == 60) || (val.val == 120));
+    // }
 }

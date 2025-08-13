@@ -1,103 +1,126 @@
 #pragma once
+#include "../src/core/utils.hpp"
 #include "utils/macros.hpp"
-#include "common.hpp"
-#include "../src/core/component_manager.hpp"
-#include "../src/core/group_manager.hpp"
+#include "../src/core/sparse_set.hpp"
 #include "../src/core/entity_manager.hpp"
-#include "../src/core/signature_manager.hpp"
+#include <memory>
+#include <tuple>
 #include <utility>
+#include <vector>
+#include <memory>
 
 namespace ecs {
 
 /**
  * @class Registry
- * @brief All ECS data maangement
+ * @brief Manages ECS Data
  */
 class Registry {
-
 public:
     Registry() = default;
 
-    // Create a new entity
-    Entity create();
-
-    // Erase entity or do nothing if it does not exist
-    // Clears from component arrays
-    void destroy(Entity entity);
-
-    // Create component array for this type
-    // Requires not already registered]
-    template <typename... Components>
+    // register the components
+    template <typename Components>
     void register_component();
 
-    // Get reference to this entity's component
-    // Requires that the component be already registered for this
-    template <typename Component>
-    Component &get(Entity entity);
+    // Get data
+    template <typename T>
+    T &get(Entity entity);
 
-    // Copy this component in for entity
-    // Requires componnent not already registered for entity
-    template <typename Component>
-    void push_back(Entity entity, const Component &component);
+    // Copy init entity with val component
+    template <typename T>
+    void push_back(Entity entity, const T &val);
 
-    // Init this component in place for entity
-    // Requires component not already registered for entity
-    template <typename Component, typename... Args>
+    // In place init entity for component T with args
+    template <typename T, typename... Args>
     void emplace_back(Entity entity, Args &&...args);
 
-    // Erase entity's component if exist, otherwise do nothing
-    template <typename... Components>
+    // True if a T data type for entity is set
+    template <typename T>
+    bool contains(Entity entity) const;
+
+    // Erase the T data entry for entity if it exists, else does nothing
+    template <typename T>
     void remove(Entity entity);
 
-private:
-    internal::SignatureManager m_signatures;
-    internal::EntityManager m_entities;
-    internal::ComponentManager m_components;
-    internal::GroupManager m_groups;
-};
+    // Returns a new entity to use
+    Entity create();
 
-}; // namespace ecs
+    // Erase all data for the entity and destroy it
+    void destroy(Entity entity);
+
+private:
+    // Requires that the type be registered already
+    template <typename T>
+    internal::SparseSet<T> *get_array();
+
+private:
+    std::vector<std::unique_ptr<internal::ISparseSet>> m_components;
+    internal::EntityManager m_entities;
+};
+} // namespace ecs
 
 namespace ecs {
+// class public ********
+template <typename Component>
+void Registry::register_component() {
+    Component_ID id = internal::utils::get_component_id<Component>();
+    ASSERT_MSG(id >= m_components.size(), "Already registered {} for {}", id,
+               typeid(Component).name());
+    m_components.emplace_back(
+        std::make_unique<internal::SparseSet<Component>>());
+}
 
-// inline definitions ********
+template <typename T>
+T &Registry::get(Entity entity) {
+    internal::SparseSet<T> *arr = get_array<T>();
+    return (*arr)[entity];
+}
+
+template <typename T>
+void Registry::push_back(Entity entity, const T &val) {
+    internal::SparseSet<T> *arr = get_array<T>();
+    arr->push_back(entity, val);
+}
+
+template <typename T, typename... Args>
+void Registry::emplace_back(Entity entity, Args &&...args) {
+    internal::SparseSet<T> *arr = get_array<T>();
+    arr->emplace_back(entity, std::forward<Args>(args)...);
+}
+
+template <typename T>
+bool Registry::contains(Entity entity) const {
+    internal::SparseSet<T> *arr = get_array<T>();
+    return arr->contains(entity);
+}
+
+template <typename T>
+void Registry::remove(Entity entity) {
+    internal::SparseSet<T> *arr = get_array<T>();
+    arr->erase(entity);
+}
+
 inline Entity Registry::create() {
-    Entity entity = m_entities.create_entity();
-    m_signatures.push_back(entity);
-    return entity;
+    return m_entities.create_entity();
 }
 
 inline void Registry::destroy(Entity entity) {
-    m_components.erase_entity(entity);
-    m_signatures.erase(entity);
+    for (auto &array : m_components) {
+        array->erase(entity);
+    }
     m_entities.destroy_entity(entity);
 }
 
-// templated definitions ********
-template <typename... Components>
-void Registry::register_component() {
-    (m_components.register_type<Components>(), ...);
+// class private ********
+template <typename T>
+internal::SparseSet<T> *Registry::get_array() {
+    Component_ID id = internal::utils::get_component_id<T>();
+    ASSERT_MSG(id < m_components.size(), "Unregistered type {} for {}", id,
+               typeid(T).name());
+    auto unique = m_components[int(id)].get();
+    auto arr = static_cast<internal::SparseSet<T> *>(unique);
+    return arr;
 }
 
-template <typename Component>
-Component &Registry::get(Entity entity) {
-    ASSERT(m_components.contains<Component>(entity) &&
-           "entity does not have this component");
-    return m_components.get<Component>(entity);
-}
-
-template <typename Component>
-void Registry::push_back(Entity entity, const Component &component) {
-}
-
-template <typename Component, typename... Args>
-void Registry::emplace_back(Entity entity, Args &&...args) {
-    m_components.emplace_back(entity, std::forward<Args>(args)...);
-}
-
-template <typename... Components>
-void Registry::remove(Entity entity) {
-    (m_components.erase_data<Components>(entity), ...);
-}
-
-} // namespace ecs
+}; // namespace ecs
