@@ -5,6 +5,7 @@
 #include "../src/core/group_manager.hpp"
 #include "../src/core/entity_manager.hpp"
 #include "../src/core/signature_manager.hpp"
+#include <utility>
 
 namespace ecs {
 
@@ -18,34 +19,35 @@ class Coordinator {
 public:
     Coordinator() = default;
 
-    /**
-     * @brief Create a new entity
-     */
+    // Create a new entity
     Entity create_entity();
 
-    /**
-     * @brief Erase entity or do nothing if it does not exist
-     */
+    // Erase entity or do nothing if it does not exist
+    // Clears from component arrays
     void erase_entity(Entity entity);
 
-    /**
-     * @brief Register T component [requires not already registered]
-     */
-    template <typename... T>
+    // Create component array for this type
+    // Requires not already registered]
+    template <typename... Components>
     void register_component();
 
-    /**
-     * @brief Requires that the compoennt be already registered for this
-     * entity
-     * @return Returns the associated T data for entity
-     */
-    template <typename T>
-    T &get(Entity entity);
+    // Get reference to this entity's component
+    // Requires that the component be already registered for this
+    template <typename Component>
+    Component &get(Entity entity);
 
-    /**
-     * @brief Erase entity's T component if exist, otherwise do nothing
-     */
-    template <typename T>
+    // Copy this component in for entity
+    // Requires componnent not already registered for entity
+    template <typename Component>
+    void push_back(Entity entity, const Component &component);
+
+    // Init this component in place for entity
+    // Requires component not already registered for entity
+    template <typename Component, typename... Args>
+    void emplace_back(Entity entity, Args &&...args);
+
+    // Erase entity's component if exist, otherwise do nothing
+    template <typename Component>
     void erase_component(Entity entity);
 
 private:
@@ -73,22 +75,31 @@ inline void Coordinator::erase_entity(Entity entity) {
 }
 
 // templated definitions ********
-template <typename... T>
+template <typename... Components>
 void Coordinator::register_component() {
-    (m_component_manager.register_type<T>(), ...);
+    (m_component_manager.register_type<Components>(), ...);
 }
 
-template <typename T>
-T &Coordinator::get(Entity entity) {
-    ASSERT(m_component_manager.contains<T>(entity) &&
+template <typename Component>
+Component &Coordinator::get(Entity entity) {
+    ASSERT(m_component_manager.contains<Component>(entity) &&
            "entity does not have this component");
-    return m_component_manager.get<T>(entity);
+    return m_component_manager.get<Component>(entity);
 }
 
-template <typename T>
+template <typename Component>
+void Coordinator::push_back(Entity entity, const Component &component) {
+}
+
+template <typename Component, typename... Args>
+void Coordinator::emplace_back(Entity entity, Args &&...args) {
+    m_component_manager.emplace_back(entity, std::forward<Args>(args)...);
+}
+
+template <typename Component>
 void Coordinator::erase_component(Entity entity) {
-    m_component_manager.erase_data<T>(entity);
-    m_entity_signature.reset_bit<T>(entity);
+    m_component_manager.erase_data<Component>(entity);
+    m_entity_signature.reset_bit<Component>(entity);
 }
 
 } // namespace ecs
