@@ -5,6 +5,7 @@ project(super_game_engine)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_COLOR_DIAGNOSTICS ON) # for ninja
+set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
 
 # compile definition for log levels and debugging
 add_compile_definitions(LOG_LEVEL=LOG_LEVEL_TRACE DEBUG)
