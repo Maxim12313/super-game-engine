@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 #include <memory>
+#include "view.hpp"
 
 namespace ecs {
 
@@ -49,10 +50,16 @@ public:
     // Erase all data for the entity and destroy it
     void destroy(Entity entity);
 
+    template <typename... Components>
+    View view();
+
 private:
     // Requires that the type be registered already
     template <typename T>
     internal::SparseSet<T> *get_array();
+
+    template <typename Component>
+    void add_set(std::vector<internal::ISparseSet *> &sets);
 
 private:
     std::vector<std::unique_ptr<internal::ISparseSet>> m_components;
@@ -112,6 +119,13 @@ inline void Registry::destroy(Entity entity) {
     m_entities.destroy_entity(entity);
 }
 
+template <typename... Components>
+View Registry::view() {
+    std::vector<internal::ISparseSet *> sets;
+    (add_set<Components>(sets), ...);
+    return View(sets);
+}
+
 // class private ********
 template <typename T>
 internal::SparseSet<T> *Registry::get_array() {
@@ -121,6 +135,12 @@ internal::SparseSet<T> *Registry::get_array() {
     auto unique = m_components[int(id)].get();
     auto arr = static_cast<internal::SparseSet<T> *>(unique);
     return arr;
+}
+
+template <typename Component>
+void Registry::add_set(std::vector<internal::ISparseSet *> &sets) {
+    auto set = get_array<Component>();
+    sets.push_back(set);
 }
 
 }; // namespace ecs

@@ -34,16 +34,20 @@ public:
     /**
      * @return Returns if entity is registered with this packed array
      */
-    bool contains(Entity entity) {
+    bool contains(Entity entity) const {
         return m_to_idx.count(entity);
     }
 
-    size_t size() {
+    size_t size() const {
         return m_to_entity.size();
     }
 
-    const std::vector<Entity> &entities() {
-        return m_to_entity;
+    std::vector<Entity>::const_iterator begin() const {
+        return m_to_entity.begin();
+    }
+
+    std::vector<Entity>::const_iterator end() const {
+        return m_to_entity.end();
     }
 
 protected:
