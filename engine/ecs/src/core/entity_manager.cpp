@@ -5,18 +5,18 @@ namespace ecs::internal {
 
 EntityManager::EntityManager() {
     for (int id = 0; id < MAX_ENTITIES; id++) {
-        available.push(Entity(id));
+        m_available.push(Entity(id));
     }
 }
 
 Entity EntityManager::create_entity() {
-    ASSERT(!available.empty() && "full");
-    Entity res = available.top();
-    available.pop();
+    ASSERT(!m_available.empty() && "full");
+    Entity res = m_available.top();
+    m_available.pop();
     return res;
 }
 
 void EntityManager::destroy_entity(Entity entity) {
-    available.push(Entity(entity));
+    m_available.push(Entity(entity));
 }
 } // namespace ecs::internal

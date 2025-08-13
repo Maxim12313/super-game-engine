@@ -5,7 +5,7 @@ using namespace std;
 void test_filter_intersection() {
     ecs::internal::SparseSet<int> arr;
     for (int i = 0; i < 20; i += 2) {
-        arr[i] = -i;
+        arr.push_back(i, -i);
     }
     vector<ecs::Entity> entities;
     for (int i = 0; i < 20; i += 2) {

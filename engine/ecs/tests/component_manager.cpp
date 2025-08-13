@@ -26,11 +26,11 @@ void test1() {
     arrays.register_type<Type1>();
     arrays.register_type<Type2>();
 
-    ecs::Entity first = entities.create_entity();
-    arrays.assign(first, Type1{1});
+    ecs::Entity first = 0;
+    arrays.push_back(first, Type1{1});
 
-    ecs::Entity second = entities.create_entity();
-    arrays.assign(second, Type2{2});
+    ecs::Entity second = 1;
+    arrays.emplace_back<Type2>(second, 2);
 
     auto arr = arrays.get_array<Type1>();
     for (auto val : *arr) {
@@ -42,10 +42,9 @@ void test1() {
         ASSERT(val.val == 2);
     }
 
-    arrays.assign(first, Type1{30});
-
-    arrays.assign(first, Type2{60});
-    arrays.assign(second, Type2{120});
+    arrays.emplace_back<Type1>(first, 30);
+    arrays.emplace_back<Type2>(first, 60);
+    arrays.get<Type2>(second) = Type2{120};
 
     for (auto val : *arr) {
         ASSERT((val.val == 30) || (val.val == 2));

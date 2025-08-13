@@ -13,9 +13,6 @@ namespace ecs::internal {
  * tracks entities for subscribed to each component
  */
 class EntityManager {
-private:
-    std::stack<Entity> available;
-
 public:
     /// Initialize with [0, MAX_ENTITIES) available ids
     EntityManager();
@@ -25,5 +22,8 @@ public:
 
     /// Destroy this entity and reclaim the id
     void destroy_entity(Entity entity);
+
+private:
+    std::stack<Entity> m_available;
 };
 } // namespace ecs::internal
