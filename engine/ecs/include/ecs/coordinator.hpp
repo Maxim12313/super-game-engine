@@ -43,28 +43,16 @@ public:
     T &get(Entity entity);
 
     /**
-     * @return True if this entity has this component type registered
-     */
-    template <typename T>
-    bool has_component(Entity entity);
-
-    /**
-     * @brief Assign entity T component data to val
-     */
-    template <typename T>
-    void assign_component(Entity entity, T val);
-
-    /**
      * @brief Erase entity's T component if exist, otherwise do nothing
      */
     template <typename T>
     void erase_component(Entity entity);
 
 private:
-    internal::SignatureManager entity_signatures;
-    internal::EntityManager entity_manager;
-    internal::ComponentManager component_manager;
-    internal::GroupManager group_manager;
+    internal::SignatureManager m_entity_signature;
+    internal::EntityManager m_entity_manager;
+    internal::ComponentManager m_component_manager;
+    internal::GroupManager m_group_manager;
 };
 
 }; // namespace ecs
@@ -73,46 +61,34 @@ namespace ecs {
 
 // inline definitions ********
 inline Entity Coordinator::create_entity() {
-    Entity entity = entity_manager.create_entity();
-    entity_signatures.push_back(entity);
+    Entity entity = m_entity_manager.create_entity();
+    m_entity_signature.push_back(entity);
     return entity;
 }
 
 inline void Coordinator::erase_entity(Entity entity) {
-    component_manager.erase_entity(entity);
-    entity_signatures.erase(entity);
-    entity_manager.destroy_entity(entity);
+    m_component_manager.erase_entity(entity);
+    m_entity_signature.erase(entity);
+    m_entity_manager.destroy_entity(entity);
 }
 
 // templated definitions ********
 template <typename... T>
 void Coordinator::register_component() {
-    (component_manager.register_type<T>(), ...);
+    (m_component_manager.register_type<T>(), ...);
 }
 
 template <typename T>
 T &Coordinator::get(Entity entity) {
-    ASSERT(component_manager.contains<T>(entity) &&
+    ASSERT(m_component_manager.contains<T>(entity) &&
            "entity does not have this component");
-    return component_manager.get<T>(entity);
-}
-
-template <typename T>
-bool Coordinator::has_component(Entity entity) {
-    return component_manager.contains<T>(entity);
-}
-
-template <typename T>
-void Coordinator::assign_component(Entity entity, T val) {
-    component_manager.assign(entity, val);
-    entity_signatures.set_bit<T>(entity);
-    group_manager.update(entity, entity_signatures[entity]);
+    return m_component_manager.get<T>(entity);
 }
 
 template <typename T>
 void Coordinator::erase_component(Entity entity) {
-    component_manager.erase_data<T>(entity);
-    entity_signatures.reset_bit<T>(entity);
+    m_component_manager.erase_data<T>(entity);
+    m_entity_signature.reset_bit<T>(entity);
 }
 
 } // namespace ecs
