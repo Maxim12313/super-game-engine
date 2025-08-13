@@ -21,8 +21,8 @@ public:
     Registry() = default;
 
     // register the components
-    template <typename Components>
-    void register_component();
+    template <typename... Components>
+    void register_components();
 
     // Get data
     template <typename T>
@@ -61,6 +61,9 @@ private:
     template <typename Component>
     void add_set(std::vector<internal::ISparseSet *> &sets);
 
+    template <typename Component>
+    void register_component();
+
 private:
     std::vector<std::unique_ptr<internal::ISparseSet>> m_components;
     internal::EntityManager m_entities;
@@ -69,13 +72,10 @@ private:
 
 namespace ecs {
 // class public ********
-template <typename Component>
-void Registry::register_component() {
-    Component_ID id = internal::utils::get_component_id<Component>();
-    ASSERT_MSG(id >= m_components.size(), "Already registered {} for {}", id,
-               typeid(Component).name());
-    m_components.emplace_back(
-        std::make_unique<internal::SparseSet<Component>>());
+
+template <typename... Components>
+void Registry::register_components() {
+    (register_component<Components>(), ...);
 }
 
 template <typename T>
@@ -141,6 +141,15 @@ template <typename Component>
 void Registry::add_set(std::vector<internal::ISparseSet *> &sets) {
     auto set = get_array<Component>();
     sets.push_back(set);
+}
+
+template <typename Component>
+void Registry::register_component() {
+    Component_ID id = internal::utils::get_component_id<Component>();
+    ASSERT_MSG(id >= m_components.size(), "Already registered {} for {}", id,
+               typeid(Component).name());
+    m_components.emplace_back(
+        std::make_unique<internal::SparseSet<Component>>());
 }
 
 }; // namespace ecs
