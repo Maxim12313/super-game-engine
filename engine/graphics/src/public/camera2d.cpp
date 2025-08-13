@@ -40,6 +40,10 @@ void Camera2D::move_direction(Direction dir, double amount) {
     }
 }
 
+void Camera2D::move(glm::vec3 velocity) {
+    m_camera_pos += velocity;
+}
+
 const glm::vec3 &Camera2D::pos() const {
     return m_camera_pos;
 }
