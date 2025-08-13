@@ -74,7 +74,7 @@ namespace ecs {
 // inline definitions ********
 inline Entity Coordinator::create_entity() {
     Entity entity = entity_manager.create_entity();
-    entity_signatures.assign(entity, 0);
+    entity_signatures.push_back(entity);
     return entity;
 }
 

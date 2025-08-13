@@ -10,12 +10,12 @@ void test1() {
     ecs::Entity one = 1;
     ecs::internal::SignatureManager manager;
 
-    manager.set(one);
+    manager.push_back(one);
     ecs::Signature sig = manager[one];
     ASSERT_EQUAL(sig, 0);
 
     ecs::Entity two = 2;
-    manager.assign(two, 0b10);
+    manager.push_back(two, 0b10);
     sig = manager[two];
     ASSERT_EQUAL(sig, 0b10);
 

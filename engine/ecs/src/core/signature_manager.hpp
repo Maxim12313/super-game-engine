@@ -11,74 +11,54 @@ namespace ecs::internal {
  * mostly for debugging)
  */
 class SignatureManager {
-private:
-    SparseSet<Signature> signatures;
-
 public:
-    SignatureManager() {
+    SignatureManager() = default;
+
+    // Init signature for entity
+    void push_back(Entity entity, Signature signature = 0) {
+        m_signatures.push_back(entity, signature);
     }
 
-    /**
-     * @brief Init entity signature with signature value
-     */
-    void assign(Entity entity, Signature signature) {
-        signatures[entity] = signature;
-    }
-
-    /**
-     * @brief Default init entity signature to 0 empty
-     */
-    void set(Entity entity) {
-        signatures[entity];
-    }
-
-    /**
-     * @brief Erase the entity signature if it exists
-     */
+    // Erase the entity signature if it exists
     void erase(Entity entity) {
-        signatures.erase(entity);
+        m_signatures.erase(entity);
     }
 
-    /**
-     * @return Reference to the signature of entity
-     */
+    // return Reference to the signature of entity
     Signature &operator[](Entity entity) {
-        return signatures[entity];
+        return m_signatures[entity];
     }
 
-    /**
-     * @return True if the bit corresponding to the T type is set in
-     * entity's signature
-     */
+    // of course must exist
+    // returns True if the bit corresponding to the T type is set in
     template <typename T>
     bool has_bit(Entity entity) {
-        Signature curr = signatures[entity];
+        Signature curr = m_signatures[entity];
         return has_bit<T>(curr);
     }
 
-    /**
-     * @return True if a signature is set for entity
-     */
     bool contains(Entity entity) {
-        return signatures.contains(entity);
+        return m_signatures.contains(entity);
     }
 
-    /**
-     * @brief Sets the T type bit in entity's signature
-     */
+    // Default inits entity signature
+    // Sets the T type bit in entity's signature, requires that
     template <typename T>
     void set_bit(Entity entity) {
-        Signature &curr = signatures[entity];
+        if (!contains(entity))
+            push_back(entity);
+        Signature &curr = m_signatures[entity];
         curr = utils::set_bit<T>(curr);
     }
 
-    /**
-     * @brief Resets the T type bit in entity's signature
-     */
+    // Resets the T type bit in entity's signature
     template <typename T>
     void reset_bit(Entity entity) {
-        Signature &curr = signatures[entity];
+        Signature &curr = m_signatures[entity];
         curr = utils::reset_bit<T>(curr);
     }
+
+private:
+    SparseSet<Signature> m_signatures;
 };
 } // namespace ecs::internal
