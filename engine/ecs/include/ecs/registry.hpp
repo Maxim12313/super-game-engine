@@ -10,14 +10,13 @@
 namespace ecs {
 
 /**
- * @class Coordinator
- * @brief All ECS data and behavior maangement should be through the
- * coordinaator
+ * @class Registry
+ * @brief All ECS data maangement
  */
-class Coordinator {
+class Registry {
 
 public:
-    Coordinator() = default;
+    Registry() = default;
 
     // Create a new entity
     Entity create_entity();
@@ -62,13 +61,13 @@ private:
 namespace ecs {
 
 // inline definitions ********
-inline Entity Coordinator::create_entity() {
+inline Entity Registry::create_entity() {
     Entity entity = m_entity_manager.create_entity();
     m_entity_signature.push_back(entity);
     return entity;
 }
 
-inline void Coordinator::erase_entity(Entity entity) {
+inline void Registry::erase_entity(Entity entity) {
     m_component_manager.erase_entity(entity);
     m_entity_signature.erase(entity);
     m_entity_manager.destroy_entity(entity);
@@ -76,28 +75,28 @@ inline void Coordinator::erase_entity(Entity entity) {
 
 // templated definitions ********
 template <typename... Components>
-void Coordinator::register_component() {
+void Registry::register_component() {
     (m_component_manager.register_type<Components>(), ...);
 }
 
 template <typename Component>
-Component &Coordinator::get(Entity entity) {
+Component &Registry::get(Entity entity) {
     ASSERT(m_component_manager.contains<Component>(entity) &&
            "entity does not have this component");
     return m_component_manager.get<Component>(entity);
 }
 
 template <typename Component>
-void Coordinator::push_back(Entity entity, const Component &component) {
+void Registry::push_back(Entity entity, const Component &component) {
 }
 
 template <typename Component, typename... Args>
-void Coordinator::emplace_back(Entity entity, Args &&...args) {
+void Registry::emplace_back(Entity entity, Args &&...args) {
     m_component_manager.emplace_back(entity, std::forward<Args>(args)...);
 }
 
 template <typename Component>
-void Coordinator::erase_component(Entity entity) {
+void Registry::erase_component(Entity entity) {
     m_component_manager.erase_data<Component>(entity);
     m_entity_signature.reset_bit<Component>(entity);
 }
