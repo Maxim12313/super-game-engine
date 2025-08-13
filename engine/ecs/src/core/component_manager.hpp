@@ -3,6 +3,7 @@
 #include "utils/macros.hpp"
 #include "sparse_set.hpp"
 #include <memory>
+#include <tuple>
 #include <utility>
 #include <vector>
 #include <memory>
@@ -17,64 +18,40 @@ class ComponentManager {
 public:
     ComponentManager() = default;
 
+    // register the commponents
     template <typename T>
     void register_type();
 
-    /**
-     * @brief Will default init T data for entity if not set
-     * @return Reference to the T data set for entity
-     */
+    // Get data
     template <typename T>
     T &get(Entity entity);
 
-    /**
-     * @brief Assign entity T value to val
-     */
-    template <typename T>
-    void assign(Entity entity, T val);
-
-    /**
-     * @brief Copy init entity with val component
-     * @tparam T
-     * @param entity
-     * @param val
-     */
+    // Copy init entity with val component
     template <typename T>
     void push_back(Entity entity, const T &val);
 
-    /**
-     * @brief In place init entity for component T with args
-     * @tparam T
-     * @tparam Args
-     * @param entity
-     * @param args
-     */
+    // In place init entity for component T with args
     template <typename T, typename... Args>
     void emplace_back(Entity entity, Args &&...args);
 
-    /**
-     * @return True if a T data type for entity is set
-     */
+    // True if a T data type for entity is set
     template <typename T>
     bool contains(Entity entity);
 
-    /**
-     * @brief Erase the T data entry for entity if it exists, else does nothing
-     */
+    // Erase the T data entry for entity if it exists, else does nothing
     template <typename T>
     void erase_data(Entity entity);
 
-    /**
-     * @brief Erase all data for the entity and unset
-     */
+    // Erase all data for the entity and unset
     void erase_entity(Entity entity);
 
-    /**
-     * @brief Requires that the type be registered already
-     * @return The packed array associeted with type T
-     */
+    // Requires that the type be registered already
     template <typename T>
     SparseSet<T> *get_array();
+
+    template <typename... Components>
+    std::tuple<Components...> get_view() {
+    }
 
 private:
     std::vector<std::unique_ptr<ISparseSet>> m_arrays;
@@ -96,11 +73,6 @@ template <typename T>
 T &ComponentManager::get(Entity entity) {
     SparseSet<T> *arr = get_array<T>();
     return (*arr)[entity];
-}
-
-template <typename T>
-void ComponentManager::assign(Entity entity, T val) {
-    get<T>(entity) = val;
 }
 
 template <typename T>
