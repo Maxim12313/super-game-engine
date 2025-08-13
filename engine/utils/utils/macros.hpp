@@ -21,7 +21,7 @@
 
 #define LOG(prefix, color, fmt, ...)                                           \
     std::println("{}[{}]{} [{} {}:{}]: " fmt, color, prefix, LOG_COLOR_RESET,  \
-                 __FILENAME__, __func__, __LINE__, ##__VA_ARGS__)
+                 __FILENAME__, __func__, __LINE__ __VA_OPT__(, )##__VA_ARGS__)
 
 // log ../macros
 #if LOG_LEVEL >= LOG_LEVEL_ERROR
@@ -63,7 +63,6 @@ bool iter_equal(Iterable a, Iterable b) {
     return std::equal(std::begin(a), std::end(a), std::begin(b), std::end(b));
 }
 
-// assert ../macros
 #ifdef DEBUG
 #define ASSERT(cond)                                                           \
     do {                                                                       \
@@ -74,6 +73,19 @@ bool iter_equal(Iterable a, Iterable b) {
     } while (0);
 #else
 #define ASSERT(cond) ((void)(0))
+#endif
+
+#ifdef DEBUG
+#define ASSERT_MSG(cond, format, ...)                                          \
+    do {                                                                       \
+        if (!(cond)) {                                                         \
+            LOG_ERROR("Assertion failed: {} | " format,                        \
+                      #cond __VA_OPT__(, ) __VA_ARGS__);                       \
+            exit(1);                                                           \
+        }                                                                      \
+    } while (0);
+#else
+#define ASSERT_MSG(cond) ((void)(0))
 #endif
 
 #ifdef DEBUG

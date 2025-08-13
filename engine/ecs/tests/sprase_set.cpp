@@ -7,12 +7,13 @@ constexpr int n = 30; // MUST BE n >= 10
 void test2() {
     ecs::internal::SparseSet<int> array;
     for (int i = 0; i < n; i++)
-        array[i] = i;
+        array.push_back(i, i);
 
     array.erase(0);
     array.erase(1);
-    array[n] = n;
-    array[n + 1] = n + 1;
+
+    array.push_back(n, n);
+    array.push_back(n + 1, n + 1);
     vector<bool> seen(n, false);
 
     for (int val : array)
@@ -25,7 +26,7 @@ void test2() {
 void test1() {
     ecs::internal::SparseSet<int> array;
     for (int i = 0; i < n; i++)
-        array[i] = i;
+        array.push_back(i, i);
 
     for (int i = 0; i < n; i++)
         ASSERT_EQUAL(array[i], i);

@@ -2,6 +2,7 @@
 #include "utils/macros.hpp"
 #include "ecs/common.hpp"
 #include <array>
+#include <utility>
 #include <vector>
 #include <unordered_map>
 
@@ -38,7 +39,6 @@ public:
      * @return Returns if entity is registered with this packed array
      */
     bool contains(Entity entity) {
-
         return to_idx.count(entity);
     }
 
@@ -62,10 +62,25 @@ public:
     SparseSet() = default;
 
     /**
-     * @brief Will default init if entity not contained in the array
+     * @brief Access entity's val. Requires that val exists
      * @return Returns a reference to the T data entry for entity
      */
     T &operator[](Entity entity);
+
+    /**
+     * @brief Registeres val for entity, requires that entity not yet registered
+     * anything
+     * @param val
+     */
+    void push_back(Entity entity, const T &val);
+
+    /**
+     * @brief Creates val in place for entity
+     * @tparam Args
+     * @param args
+     */
+    template <typename... Args>
+    void emplace_back(Entity entity, Args &&...args);
 
     /**
      * @brief Will erase the entity from the array if it exists and
@@ -84,27 +99,34 @@ public:
 
 private:
     // @brief If not already registered, default init T datatype for entity
-    void register_entity(Entity entity) {
-        ASSERT(to_idx.count(entity) == 0 && "already registered");
-        to_idx[entity] = to_entity.size();
-
-        // default init
-        data.emplace_back();
-        to_entity.push_back(entity);
-    }
+    void register_entity(Entity entity);
 
 private:
-    std::vector<T> data;
+    std::vector<T> m_data;
 };
 } // namespace ecs::internal
 
 namespace ecs::internal {
 
+// TODO: make api unfiorm, change this to get<T>
 template <typename T>
 T &SparseSet<T>::operator[](Entity entity) {
-    if (!contains(entity))
-        register_entity(entity);
-    return data[to_idx[entity]];
+    ASSERT_MSG(contains(entity), "entity {} is not registered", entity);
+    return m_data[to_idx[entity]];
+}
+
+// TODO: operator notation looks terrible too
+template <typename T>
+void SparseSet<T>::push_back(Entity entity, const T &val) {
+    register_entity(entity);
+    operator[](entity) = val;
+}
+
+template <typename T>
+template <typename... Args>
+void SparseSet<T>::emplace_back(Entity entity, Args &&...args) {
+    register_entity(entity);
+    operator[](entity) = T(std::forward<Args>(args)...);
 }
 
 template <typename T>
@@ -122,7 +144,7 @@ void SparseSet<T>::erase(Entity entity) {
     if (left_entity != right_entity) {
         // move left data to right side to pop
         std::swap(to_entity[left_entity], to_entity[right_entity]);
-        std::swap(data[left_idx], data[right_idx]);
+        std::swap(m_data[left_idx], m_data[right_idx]);
 
         // remap right ent to left
         to_idx[right_entity] = left_idx;
@@ -131,17 +153,27 @@ void SparseSet<T>::erase(Entity entity) {
     // cleanup all left side info
     to_idx.erase(left_entity);
     to_entity.pop_back();
-    data.pop_back();
+    m_data.pop_back();
 }
 
 template <typename T>
 std::vector<T>::iterator SparseSet<T>::begin() {
-    return std::begin(data);
+    return std::begin(m_data);
 }
 
 template <typename T>
 std::vector<T>::iterator SparseSet<T>::end() {
-    return std::end(data);
+    return std::end(m_data);
+}
+
+template <typename T>
+void SparseSet<T>::register_entity(Entity entity) {
+    ASSERT_MSG(to_idx.count(entity) == 0, "already registered {}", entity);
+    to_idx[entity] = to_entity.size();
+
+    // default init
+    m_data.emplace_back();
+    to_entity.push_back(entity);
 }
 
 }; // namespace ecs::internal

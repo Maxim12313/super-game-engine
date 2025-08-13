@@ -57,7 +57,7 @@ public:
     SparseSet<T> *get_array();
 
 private:
-    std::vector<std::unique_ptr<ISparseSet>> arrays;
+    std::vector<std::unique_ptr<ISparseSet>> m_arrays;
 };
 } // namespace ecs::internal
 
@@ -68,8 +68,8 @@ template <typename T>
 void ComponentManager::register_type() {
     Component_ID id = utils::get_component_id<T>();
     LOG_TRACE("{}", typeid(T).name());
-    ASSERT(id >= arrays.size() && "Already registered");
-    arrays.emplace_back(std::make_unique<SparseSet<T>>());
+    ASSERT(id >= m_arrays.size() && "Already registered");
+    m_arrays.emplace_back(std::make_unique<SparseSet<T>>());
 }
 
 template <typename T>
@@ -96,7 +96,7 @@ void ComponentManager::erase_data(Entity entity) {
 }
 
 inline void ComponentManager::erase_entity(Entity entity) {
-    for (auto &array : arrays) {
+    for (auto &array : m_arrays) {
         array->erase(entity);
     }
 }
@@ -105,8 +105,8 @@ template <typename T>
 SparseSet<T> *ComponentManager::get_array() {
     Component_ID id = utils::get_component_id<T>();
     LOG_TRACE("{}", typeid(T).name());
-    ASSERT(id < arrays.size() && "unregistered type");
-    auto unique = arrays[int(id)].get();
+    ASSERT(id < m_arrays.size() && "unregistered type");
+    auto unique = m_arrays[int(id)].get();
     auto arr = static_cast<SparseSet<T> *>(unique);
     return arr;
 }

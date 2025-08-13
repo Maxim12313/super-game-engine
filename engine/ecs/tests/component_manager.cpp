@@ -26,10 +26,10 @@ void test1() {
     arrays.register_type<Type1>();
     arrays.register_type<Type2>();
 
-    ecs::Entity first = entities.create_entity();
+    ecs::Entity first = 0;
     arrays.assign(first, Type1{1});
 
-    ecs::Entity second = entities.create_entity();
+    ecs::Entity second = 1;
     arrays.assign(second, Type2{2});
 
     auto arr = arrays.get_array<Type1>();
