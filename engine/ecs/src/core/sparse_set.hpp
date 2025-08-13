@@ -111,7 +111,8 @@ namespace ecs::internal {
 // TODO: make api unfiorm, change this to get<T>
 template <typename T>
 T &SparseSet<T>::operator[](Entity entity) {
-    ASSERT_MSG(contains(entity), "entity {} is not registered", entity);
+    ASSERT_MSG(contains(entity), "entity {} is not registered for type {}",
+               entity, typeid(T).name());
     return m_data[to_idx[entity]];
 }
 
@@ -168,7 +169,8 @@ std::vector<T>::iterator SparseSet<T>::end() {
 
 template <typename T>
 void SparseSet<T>::register_entity(Entity entity) {
-    ASSERT_MSG(to_idx.count(entity) == 0, "already registered {}", entity);
+    ASSERT_MSG(to_idx.count(entity) == 0, "already registered {} for type {}",
+               entity, typeid(T).name());
     to_idx[entity] = to_entity.size();
 
     // default init
