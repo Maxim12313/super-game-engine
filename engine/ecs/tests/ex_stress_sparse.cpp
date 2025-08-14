@@ -11,7 +11,7 @@ int main() {
     registry.register_components<int, char, double>();
 
     get_micro_since();
-    int n = int(1e5);
+    int n = int(1e4);
     int m = 6;
 
     // for (int j = 0; j < m; j++) {
