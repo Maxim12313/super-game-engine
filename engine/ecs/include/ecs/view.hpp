@@ -37,7 +37,8 @@ public:
         Iterator(iterator_type curr_it, iterator_type end_it,
                  std::vector<internal::ISparseSet *> &sets)
             : m_curr_it(curr_it), m_end_it(end_it), m_sets(sets) {
-            if (!is_valid())
+
+            if (m_curr_it != m_end_it && !is_valid())
                 search_next();
         }
 

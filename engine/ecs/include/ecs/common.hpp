@@ -14,8 +14,6 @@ using Signature = uint32_t;
 using Component_ID = uint32_t;
 using System_ID = uint32_t;
 
-constexpr int MAX_ENTITIES = 30;
-constexpr int MAX_COMPONENTS = 30;
-constexpr int MAX_SYSTEMS = 30;
+constexpr int MAX_ENTITIES = int(1e9);
 
 } // namespace ecs

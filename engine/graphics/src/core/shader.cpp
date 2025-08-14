@@ -23,6 +23,7 @@ std::string read_file(const std::string &path) {
     } catch (std::ifstream::failure e) {
         LOG_ERROR("could not read path: {}", path);
         ASSERT(false);
+        return "";
     }
 }
 

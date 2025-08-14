@@ -90,9 +90,6 @@ public:
     std::vector<T>::iterator end();
 
 private:
-    // @brief If not already registered, default init T datatype for entity
-    void register_entity(Entity entity);
-
     // Access entity's val. Requires that val exists
     T &get(Entity entity);
 
@@ -109,18 +106,23 @@ T &SparseSet<T>::operator[](Entity entity) {
     return get(entity);
 }
 
-// TODO: operator notation looks terrible too
 template <typename T>
 void SparseSet<T>::push_back(Entity entity, const T &val) {
-    register_entity(entity);
-    get(entity) = val;
+    ASSERT_MSG(m_to_idx.count(entity) == 0, "already registered {} for type {}",
+               entity, typeid(T).name());
+    m_to_idx[entity] = m_to_entity.size();
+    m_data.push_back(val);
+    m_to_entity.push_back(entity);
 }
 
 template <typename T>
 template <typename... Args>
 void SparseSet<T>::emplace_back(Entity entity, Args &&...args) {
-    register_entity(entity);
-    get(entity) = T(std::forward<Args>(args)...);
+    ASSERT_MSG(m_to_idx.count(entity) == 0, "already registered {} for type {}",
+               entity, typeid(T).name());
+    m_to_idx[entity] = m_to_entity.size();
+    m_data.emplace_back(args...);
+    m_to_entity.push_back(entity);
 }
 
 template <typename T>
@@ -166,17 +168,6 @@ T &SparseSet<T>::get(Entity entity) {
     ASSERT_MSG(contains(entity), "entity {} is not registered for type {}",
                entity, typeid(T).name());
     return m_data[m_to_idx[entity]];
-}
-
-template <typename T>
-void SparseSet<T>::register_entity(Entity entity) {
-    ASSERT_MSG(m_to_idx.count(entity) == 0, "already registered {} for type {}",
-               entity, typeid(T).name());
-    m_to_idx[entity] = m_to_entity.size();
-
-    // default init
-    m_data.emplace_back();
-    m_to_entity.push_back(entity);
 }
 
 }; // namespace ecs::internal

@@ -70,7 +70,7 @@
         }                                                                      \
     } while (0);
 #else
-#define ASSERT_MSG(cond) ((void)(0))
+#define ASSERT_MSG(cond, format, ...) ((void)(0))
 #endif
 
 #ifdef DEBUG
