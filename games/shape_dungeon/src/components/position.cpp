@@ -1,9 +1,7 @@
-// position.cpp
-
-#include "Position.hpp"
+#include "position.hpp"
 
 namespace Component {
-Position::Position(const double x, const double y) noexcept : m_x{x}, m_y{y} {
+Position::Position(const float x, const float y) noexcept : m_x{x}, m_y{y} {
 }
 
 Position::Position(Position &&p) noexcept {

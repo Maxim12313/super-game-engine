@@ -1,14 +1,12 @@
-// sprite.cpp
-
 #include "sprite.hpp"
 #include <glm/glm.hpp>
 
 namespace Component {
-Sprite::Sprite(const int w, const int h, glm::vec4 color) noexcept
+Sprite::Sprite(const float w, const float h, glm::vec4 color) noexcept
     : m_width{w}, m_height{h}, m_color{color}, m_radius{0} {
 }
 
-Sprite::Sprite(const int radius, glm::vec4 color) noexcept
+Sprite::Sprite(const float radius, glm::vec4 color) noexcept
     : m_radius{radius}, m_color{color}, m_width{0}, m_height{0} {
 }
 

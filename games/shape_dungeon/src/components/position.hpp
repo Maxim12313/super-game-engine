@@ -1,7 +1,4 @@
-// position.hpp
-
-#ifndef SHAPE_DUNGEON_COMPONENTS_POSITION_HPP_
-#define SHAPE_DUNGEON_COMPONENTS_POSITION_HPP_
+#pragma once
 
 namespace Component {
 ///
@@ -15,7 +12,7 @@ public:
     /// \param x The starting x-pos on screen.
     /// \param y The starting y-pos on screen.
     ///
-    Position(const double x, const double y) noexcept;
+    Position(const float x, const float y) noexcept;
 
     ///
     /// Move constructor.
@@ -36,13 +33,11 @@ public:
     ///
     /// x pos on screen.
     ///
-    double m_x;
+    float m_x;
 
     ///
     /// y pos on screen.
     ///
-    double m_y;
+    float m_y;
 };
 } // namespace Component
-
-#endif
