@@ -1,7 +1,4 @@
-// sprite.hpp
-
-#ifndef SHAPE_DUNGEON_COMPONENTS_SPRITE_HPP_
-#define SHAPE_DUNGEON_COMPONENTS_SPRITE_HPP_
+#pragma once
 #include <glm/ext/vector_float4.hpp>
 
 namespace Component {
@@ -18,7 +15,7 @@ public:
     /// \param h Height of the sprite.
     /// \param col The color you want the sprite to be (RGBA, 0 - 255).
     ///
-    Sprite(const int w, const int h, glm::vec4 color) noexcept;
+    Sprite(const float w, const float h, glm::vec4 color) noexcept;
 
     ///
     /// Circle Constructor.
@@ -26,7 +23,7 @@ public:
     /// \param radius Radius of the circle to draw.
     /// \param col The colour you want the sprite to be (RGBA, 0 - 255).
     ///
-    Sprite(const int radius, glm::vec4 color) noexcept;
+    Sprite(const float radius, glm::vec4 color) noexcept;
 
     ///
     /// Move constructor.
@@ -47,17 +44,17 @@ public:
     ///
     /// Stores how wide the rectangle is.
     ///
-    int m_width;
+    float m_width;
 
     ///
     /// Stores how high the rectangle is.
     ///
-    int m_height;
+    float m_height;
 
     ///
     /// Stores the radius of a circle.
     ///
-    int m_radius;
+    float m_radius;
 
     ///
     /// Stores the colour of the sprite.
@@ -65,5 +62,3 @@ public:
     glm::vec4 m_color;
 };
 } // namespace Component
-
-#endif
