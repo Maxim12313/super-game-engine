@@ -1,4 +1,5 @@
 #include "entity_manager.hpp"
+#include "ecs/common.hpp"
 #include "utils/macros.hpp"
 
 namespace ecs::internal {
@@ -14,7 +15,7 @@ Entity EntityManager::create_entity() {
         res = m_destroyed.top();
         m_destroyed.pop();
     } else {
-        ASSERT_MSG(m_top < MAX_ENTITIS || m_destroyed.size() > 0,
+        ASSERT_MSG(m_top < MAX_ENTITIES || m_destroyed.size() > 0,
                    "no more entity space");
         res = MAX_ENTITIES;
     }
