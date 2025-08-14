@@ -3,7 +3,7 @@
 #include "sparse_set.hpp"
 #include "utils/macros.hpp"
 #include <stack>
-#include <vector>
+#include <stack>
 
 namespace ecs::internal {
 
@@ -13,6 +13,7 @@ namespace ecs::internal {
  * tracks entities for subscribed to each component
  */
 class EntityManager {
+
 public:
     /// Initialize with [0, MAX_ENTITIES) available ids
     EntityManager();
@@ -24,6 +25,7 @@ public:
     void destroy_entity(Entity entity);
 
 private:
-    std::stack<Entity> m_available;
+    std::stack<Entity> m_destroyed;
+    Entity m_top;
 };
 } // namespace ecs::internal

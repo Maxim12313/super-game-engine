@@ -3,20 +3,25 @@
 
 namespace ecs::internal {
 
-EntityManager::EntityManager() {
-    for (int id = MAX_ENTITIES - 1; id >= 0; id--) {
-        m_available.push(Entity(id));
-    }
+EntityManager::EntityManager() : m_top(0) {
 }
 
 Entity EntityManager::create_entity() {
-    ASSERT(!m_available.empty() && "full");
-    Entity res = m_available.top();
-    m_available.pop();
+    Entity res;
+    if (m_top < MAX_ENTITIES) {
+        res = m_top++;
+    } else if (m_destroyed.size() > 0) {
+        res = m_destroyed.top();
+        m_destroyed.pop();
+    } else {
+        ASSERT_MSG(m_top < MAX_ENTITIS || m_destroyed.size() > 0,
+                   "no more entity space");
+        res = MAX_ENTITIES;
+    }
     return res;
 }
 
 void EntityManager::destroy_entity(Entity entity) {
-    m_available.push(Entity(entity));
+    m_destroyed.push(entity);
 }
 } // namespace ecs::internal
