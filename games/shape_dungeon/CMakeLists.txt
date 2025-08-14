@@ -7,6 +7,14 @@ add_library(${project_lib} ${source_files})
 target_link_libraries(${project_lib} PUBLIC engine)
 target_include_directories(${project_lib} PUBLIC "${PROJECT_SOURCE_DIR}/src")
 
+# link library 
+find_package(glm CONFIG REQUIRED)
+
+target_link_libraries(
+  ${PROJECT_NAME}
+  PUBLIC glm::glm
+)
+
 file(GLOB tests ${PROJECT_SOURCE_DIR}/tests/*.cpp)
 foreach(src IN LISTS tests)
   get_filename_component(name ${src} NAME_WE)
