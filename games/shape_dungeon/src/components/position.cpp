@@ -1,6 +1,5 @@
 #include "position.hpp"
 
-namespace Component {
 Position::Position(const float x, const float y) noexcept : m_x{x}, m_y{y} {
 }
 
@@ -17,4 +16,3 @@ Position &Position::operator=(Position &&p) noexcept {
 
     return *this;
 }
-} // namespace Component

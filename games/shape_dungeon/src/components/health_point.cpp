@@ -1,6 +1,5 @@
 #include "health_point.hpp"
 
-namespace Component {
 Health_Point::Health_Point(const int hp) noexcept : m_hp(hp) {
 }
 
@@ -15,4 +14,3 @@ Health_Point &Health_Point::operator=(Health_Point &&hp) noexcept {
 
     return *this;
 }
-} // namespace Component

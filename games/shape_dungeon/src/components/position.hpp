@@ -1,6 +1,5 @@
 #pragma once
 
-namespace Component {
 ///
 /// A component that describes the position of something on the screen.
 ///
@@ -40,4 +39,3 @@ public:
     ///
     float m_y;
 };
-} // namespace Component

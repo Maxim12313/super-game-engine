@@ -1,7 +1,6 @@
 #include "sprite.hpp"
 #include <glm/glm.hpp>
 
-namespace Component {
 Sprite::Sprite(const float w, const float h, glm::vec4 color) noexcept
     : m_width{w}, m_height{h}, m_color{color}, m_radius{0} {
 }
@@ -27,4 +26,3 @@ Sprite &Sprite::operator=(Sprite &&s) noexcept {
 
     return *this;
 }
-} // namespace Component

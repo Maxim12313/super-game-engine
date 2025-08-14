@@ -1,8 +1,7 @@
 #pragma once
 
-namespace Component {
 ///
-/// A component that describes the position of something on the screen.
+/// A component to represent the health point of an entity.
 ///
 class Health_Point final {
 public:
@@ -34,4 +33,3 @@ public:
     ///
     int m_hp;
 };
-} // namespace Component
