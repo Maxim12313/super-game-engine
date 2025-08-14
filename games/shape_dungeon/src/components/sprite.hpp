@@ -1,7 +1,6 @@
 #pragma once
 #include <glm/ext/vector_float4.hpp>
 
-namespace Component {
 ///
 /// A component that describes a sprite or texture.
 /// In this case our 'sprites' are coloured rectangles and circles.
@@ -61,4 +60,3 @@ public:
     ///
     glm::vec4 m_color;
 };
-} // namespace Component
