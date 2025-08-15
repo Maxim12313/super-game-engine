@@ -8,7 +8,7 @@ namespace graphics {
 template <typename T, size_t capacity = 32>
 class StatWindow {
 public:
-    StatWindow() : m_sum(0) {
+    StatWindow() : m_sum(0), m_last(0), m_window({}) {
     }
     void push(T val) {
         if (m_window.size() == capacity) {
