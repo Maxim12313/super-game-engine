@@ -13,12 +13,15 @@ class Registry;
 // will be invalidated
 // WARNING: Views depend on the lifetime of the registry and will store dangling
 // pointers otherwise
+
+template <typename... Components>
 class View {
 public:
     // NOTE: lazy min_idx check on construction
     View(std::vector<internal::ISparseSet *> &sets) : m_sets(std::move(sets)) {
         ASSERT_MSG(m_sets.size() > 0, "view has no sets");
 
+        // setup min_idx
         int min_idx = 0;
         for (int i = 0; i < m_sets.size(); i++) {
             if (m_sets[min_idx]->size() > m_sets[i]->size()) {
@@ -29,6 +32,7 @@ public:
     }
 
     class Iterator {
+    public:
         using iterator_category = std::forward_iterator_tag;
         using value_type = Entity;
         using iterator_type = std::vector<Entity>::const_iterator;
@@ -71,11 +75,69 @@ public:
             } while (!is_valid() && m_curr_it != m_end_it);
         }
 
-    private:
+    protected:
         iterator_type m_curr_it;
         const iterator_type m_end_it;
         const std::vector<internal::ISparseSet *> &m_sets;
     };
+
+    template <typename... Ts>
+    class EachIterator : public Iterator {
+    public:
+        using iterator_category = Iterator::iterator_category;
+        using value_type = std::tuple<Entity, Ts &...>;
+        using iterator_type = std::vector<Entity>::const_iterator;
+
+    public:
+        EachIterator(iterator_type curr_it, iterator_type end_it,
+                     std::vector<internal::ISparseSet *> &sets)
+            : Iterator(curr_it, end_it, sets) {
+        }
+
+        value_type operator*() const {
+            int idx = 0;
+            Entity entity = *this->m_curr_it;
+            return std::tuple<Entity, Ts &...>(
+                {entity, fetch_val<Ts>(entity, idx)...});
+        }
+
+    private:
+        template <typename T>
+        T &fetch_val(Entity entity, int &idx) const {
+            auto &sets = this->m_sets;
+            auto *concrete = static_cast<internal::SparseSet<T> *>(sets[idx]);
+            idx++;
+            return (*concrete)[entity];
+        }
+    };
+
+    template <typename... Ts>
+    class EachRange {
+    public:
+        EachRange(EachIterator<Ts...> &begin_it, EachIterator<Ts...> &end_it)
+            : m_begin(std::move(begin_it)), m_end(std::move(end_it)) {
+        }
+
+        EachIterator<Ts...> begin() const {
+            return m_begin;
+        }
+        EachIterator<Ts...> end() const {
+            return m_end;
+        }
+
+    private:
+        EachIterator<Ts...> m_begin;
+        EachIterator<Ts...> m_end;
+    };
+
+    EachRange<Components...> each() {
+        const auto &min_set = m_sets[m_min_idx];
+        EachIterator<Components...> begin_it(min_set->begin(), min_set->end(),
+                                             m_sets);
+        EachIterator<Components...> end_it(min_set->end(), min_set->end(),
+                                           m_sets);
+        return EachRange<Components...>(begin_it, end_it);
+    }
 
     // use lazy smallest
     Iterator begin() {
