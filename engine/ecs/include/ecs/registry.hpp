@@ -51,18 +51,18 @@ public:
     void destroy(Entity entity);
 
     template <typename... Components>
-    View view();
+    View<Components...> view();
 
 private:
     // Requires that the type be registered already
-    template <typename T>
-    internal::SparseSet<T> *get_array();
+    template <typename Components>
+    internal::SparseSet<Components> *get_array();
 
     template <typename Component>
-    void add_set(std::vector<internal::ISparseSet *> &sets);
+    int add_set(std::vector<internal::ISparseSet *> &sets);
 
     template <typename Component>
-    void register_component();
+    int register_component();
 
 private:
     std::vector<std::unique_ptr<internal::ISparseSet>> m_components;
@@ -75,7 +75,9 @@ namespace ecs {
 
 template <typename... Components>
 void Registry::register_components() {
-    (register_component<Components>(), ...);
+    // ensure left to right order
+    int a[]{register_component<Components>()...};
+    (void)sizeof(a);
 }
 
 template <typename Component>
@@ -120,36 +122,44 @@ inline void Registry::destroy(Entity entity) {
 }
 
 template <typename... Components>
-View Registry::view() {
+View<Components...> Registry::view() {
     std::vector<internal::ISparseSet *> sets;
-    (add_set<Components>(sets), ...);
-    return View(sets);
+
+    // ensure left to right order
+    int a[]{add_set<Components>(sets)...};
+    (void)sizeof(a);
+
+    return View<Components...>(sets);
 }
 
 // class private ********
-template <typename T>
-internal::SparseSet<T> *Registry::get_array() {
-    Component_ID id = internal::utils::get_component_id<T>();
+template <typename Component>
+internal::SparseSet<Component> *Registry::get_array() {
+    Component_ID id = internal::utils::get_component_id<Component>();
     ASSERT_MSG(id < m_components.size(), "Unregistered type {} for {}", id,
-               typeid(T).name());
+               typeid(Component).name());
     auto unique = m_components[int(id)].get();
-    auto arr = static_cast<internal::SparseSet<T> *>(unique);
+    auto arr = static_cast<internal::SparseSet<Component> *>(unique);
     return arr;
 }
 
+// return 0 for hack
 template <typename Component>
-void Registry::add_set(std::vector<internal::ISparseSet *> &sets) {
+int Registry::add_set(std::vector<internal::ISparseSet *> &sets) {
     auto set = get_array<Component>();
     sets.push_back(set);
+    return 0;
 }
 
+// return 0 for hack
 template <typename Component>
-void Registry::register_component() {
+int Registry::register_component() {
     Component_ID id = internal::utils::get_component_id<Component>();
     ASSERT_MSG(id >= m_components.size(), "Already registered {} for {}", id,
                typeid(Component).name());
     m_components.emplace_back(
         std::make_unique<internal::SparseSet<Component>>());
+    return 0;
 }
 
 }; // namespace ecs
