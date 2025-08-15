@@ -72,7 +72,7 @@ public:
         void search_next() {
             do {
                 m_curr_it++;
-            } while (!is_valid() && m_curr_it != m_end_it);
+            } while (m_curr_it != m_end_it && !is_valid());
         }
 
     protected:
