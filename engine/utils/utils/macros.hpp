@@ -57,9 +57,11 @@
         }                                                                      \
     } while (0);
 #else
-#define ASSERT(cond) ((void)(0))
+#define ASSERT(cond) ((void)sizeof(cond))
+// clang-format off
+#define ASSERT(cond) ((void)sizeof(cond))
+// clang-format on
 #endif
-
 #ifdef DEBUG
 #define ASSERT_MSG(cond, format, ...)                                          \
     do {                                                                       \
@@ -70,7 +72,9 @@
         }                                                                      \
     } while (0);
 #else
-#define ASSERT_MSG(cond, format, ...) ((void)(0))
+// clang-format off
+#define ASSERT_MSG(cond, format, ...) ((void)sizeof(cond))
+// clang-format on
 #endif
 
 #ifdef DEBUG
@@ -84,5 +88,7 @@
         }                                                                      \
     } while (0)
 #else
-#define ASSERT_EQUAL(actual, expected) ((void)0)
+// clang-format off
+#define ASSERT_EQUAL(actual, expected) ((void)sizeof(actual),(void)sizeof(expected))
+// clang-format on
 #endif

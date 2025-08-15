@@ -47,6 +47,7 @@ void runner() {
             Event e = window.poll_event();
             if (e.type == EventType::None)
                 break;
+
             switch (e.type) {
                 case EventType::Key: {
                     KeyEvent data = e.data.key;
@@ -65,6 +66,8 @@ void runner() {
                     }
                     break;
                 }
+                default:
+                    break;
             }
         }
 

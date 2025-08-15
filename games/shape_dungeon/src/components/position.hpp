@@ -19,6 +19,11 @@ public:
     Position(Position &&) noexcept;
 
     ///
+    /// Default destructor.
+    ///
+    ~Position() noexcept = default;
+
+    ///
     /// Move assignment overload.
     ///
     Position &operator=(Position &&) noexcept;

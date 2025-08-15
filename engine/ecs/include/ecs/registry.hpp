@@ -25,23 +25,23 @@ public:
     void register_components();
 
     // Get data
-    template <typename T>
-    T &get(Entity entity);
+    template <typename Component>
+    Component &get(Entity entity);
 
     // Copy init entity with val component
-    template <typename T>
-    void push_back(Entity entity, const T &val);
+    template <typename Component>
+    void push_back(Entity entity, const Component &val);
 
     // In place init entity for component T with args
-    template <typename T, typename... Args>
+    template <typename Component, typename... Args>
     void emplace_back(Entity entity, Args &&...args);
 
     // True if a T data type for entity is set
-    template <typename T>
+    template <typename Component>
     bool contains(Entity entity) const;
 
     // Erase the T data entry for entity if it exists, else does nothing
-    template <typename T>
+    template <typename Component>
     void remove(Entity entity);
 
     // Returns a new entity to use
@@ -78,33 +78,33 @@ void Registry::register_components() {
     (register_component<Components>(), ...);
 }
 
-template <typename T>
-T &Registry::get(Entity entity) {
-    internal::SparseSet<T> *arr = get_array<T>();
+template <typename Component>
+Component &Registry::get(Entity entity) {
+    internal::SparseSet<Component> *arr = get_array<Component>();
     return (*arr)[entity];
 }
 
-template <typename T>
-void Registry::push_back(Entity entity, const T &val) {
-    internal::SparseSet<T> *arr = get_array<T>();
+template <typename Component>
+void Registry::push_back(Entity entity, const Component &val) {
+    internal::SparseSet<Component> *arr = get_array<Component>();
     arr->push_back(entity, val);
 }
 
-template <typename T, typename... Args>
+template <typename Component, typename... Args>
 void Registry::emplace_back(Entity entity, Args &&...args) {
-    internal::SparseSet<T> *arr = get_array<T>();
+    internal::SparseSet<Component> *arr = get_array<Component>();
     arr->emplace_back(entity, std::forward<Args>(args)...);
 }
 
-template <typename T>
+template <typename Component>
 bool Registry::contains(Entity entity) const {
-    internal::SparseSet<T> *arr = get_array<T>();
+    internal::SparseSet<Component> *arr = get_array<Component>();
     return arr->contains(entity);
 }
 
-template <typename T>
+template <typename Component>
 void Registry::remove(Entity entity) {
-    internal::SparseSet<T> *arr = get_array<T>();
+    internal::SparseSet<Component> *arr = get_array<Component>();
     arr->erase(entity);
 }
 

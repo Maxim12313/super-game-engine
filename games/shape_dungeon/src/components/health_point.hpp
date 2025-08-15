@@ -12,7 +12,6 @@ public:
     /// \param hp Starting hp
     ///
     HealthPoint(const uint8_t) noexcept;
-
 public:
     ///
     ///  health point can only be positive.
