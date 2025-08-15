@@ -3,7 +3,7 @@
 
 ///
 /// A component that describes a sprite or texture.
-/// In this case our 'sprites' are coloured rectangles and circles.
+/// In this case our 'sprites' are colored rectangles and circles.
 ///
 class Sprite final {
 public:
@@ -20,7 +20,7 @@ public:
     /// Circle Constructor.
     ///
     /// \param radius Radius of the circle to draw.
-    /// \param col The colour you want the sprite to be (RGBA, 0 - 255).
+    /// \param col The color you want the sprite to be (RGBA, 0 - 255).
     ///
     Sprite(const float radius, glm::vec4 color) noexcept;
 
@@ -28,11 +28,6 @@ public:
     /// Move constructor.
     ///
     Sprite(Sprite &&) noexcept;
-
-    ///
-    /// Default destructor.
-    ///
-    ~Sprite() noexcept = default;
 
     ///
     /// Move assignment overload.
@@ -56,7 +51,7 @@ public:
     float m_radius;
 
     ///
-    /// Stores the colour of the sprite.
+    /// Stores the color of the sprite.
     ///
     glm::vec4 m_color;
 };
