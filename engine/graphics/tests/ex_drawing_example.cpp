@@ -39,6 +39,8 @@ void runner() {
     drawer.begin_camera(camera);
     while (!window.should_close()) {
         double dt = window.begin_update();
+        (void)sizeof(dt); // NOLINT
+
         drawer.clear();
 
         drawer.queue_rectangle(100, 300, 50, 100, BLUE);
