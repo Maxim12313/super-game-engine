@@ -9,8 +9,8 @@ void test2() {
     for (int i = 0; i < n; i++)
         array.push_back(i, i);
 
-    array.erase(0);
-    array.erase(1);
+    array.remove(0);
+    array.remove(1);
 
     array.push_back(n, n);
     array.push_back(n + 1, n + 1);

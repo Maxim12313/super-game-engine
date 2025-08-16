@@ -1,20 +1,32 @@
 # Game Engine
 
-## Entity Component System
-Cache friendly data management architecture promoting code reusibility
+### Entity Component System
+Cache friendly data management architecture promoting code reusibility.
+Sparse set system focused design following [EnTT's](https://github.com/skypjack/entt) 
+architecture
 
-## Graphics Rendering
+### Graphics Rendering
 Building ontop of opengl to provide conveient interface for 3d and 2d rendering, camera class, and other utilities
 
-## Extra
+### Multiplayer Networking
+In Progress
+
+### Extra
 Work [Board](https://trello.com/b/ECVEo80Q)
 
 ## Sources
-[ECS idea](https://austinmorlan.com/posts/entity_component_system/)
+### ECS
+[Archetype ECS](https://austinmorlan.com/posts/entity_component_system/)
 
-[ECS code](https://github.com/skypjack/entt)
+[System Focused ECS](https://github.com/skypjack/entt)
 
-[OpenGL](https://learnopengl.com/)
+[EnTT blog](https://skypjack.github.io/2019-04-12-entt-tips-and-tricks-part-1/)
+
+### OpenGL
+[Guide](https://learnopengl.com/)
+
+### Networking
+[Beej's guide](https://beej.us/guide/bgnet/pdf/bgnet_usl_c_1.pdf)
 
 
 

@@ -13,7 +13,6 @@ class Registry;
 // will be invalidated
 // WARNING: Views depend on the lifetime of the registry and will store dangling
 // pointers otherwise
-
 template <typename... Components>
 class View {
 public:

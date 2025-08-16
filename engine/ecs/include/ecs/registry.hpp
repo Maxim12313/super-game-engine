@@ -50,8 +50,11 @@ public:
     // Erase all data for the entity and destroy it
     void destroy(Entity entity);
 
+    // Returns a view to iterate over entities with the specified components
     template <typename... Components>
     View<Components...> view();
+
+    void group();
 
 private:
     // Requires that the type be registered already
@@ -115,9 +118,9 @@ inline Entity Registry::create() {
 }
 
 inline void Registry::destroy(Entity entity) {
-    for (auto &array : m_components) {
-        array->erase(entity);
-    }
+    for (auto &array : m_components)
+        array->remove(entity);
+
     m_entities.destroy_entity(entity);
 }
 

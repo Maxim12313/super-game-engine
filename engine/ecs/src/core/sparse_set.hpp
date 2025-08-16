@@ -1,4 +1,5 @@
 #pragma once
+#include "isparse_set.hpp"
 #include "utils/macros.hpp"
 #include "ecs/common.hpp"
 #include <array>
@@ -7,53 +8,6 @@
 #include <unordered_map>
 
 namespace ecs::internal {
-
-/**
- * @class ISparseSet
- * @brief Interface placeholder for type erasing in packed array manager
- *
- */
-class ISparseSet {
-public:
-    virtual ~ISparseSet() = default;
-    /**
-     * @brief Erases the data entry for the given entity
-     *
-     * @param entity The entity whos data will be erased for this type
-     */
-    virtual void erase(Entity entity) = 0;
-
-    /**
-     * @brief Clear the array, resetting size to 0
-     */
-    void clear() {
-        m_to_idx.clear();
-        m_to_entity.clear();
-    }
-
-    /**
-     * @return Returns if entity is registered with this packed array
-     */
-    bool contains(Entity entity) const {
-        return m_to_idx.count(entity);
-    }
-
-    size_t size() const {
-        return m_to_entity.size();
-    }
-
-    std::vector<Entity>::const_iterator begin() const {
-        return m_to_entity.begin();
-    }
-
-    std::vector<Entity>::const_iterator end() const {
-        return m_to_entity.end();
-    }
-
-protected:
-    std::unordered_map<Entity, int> m_to_idx;
-    std::vector<Entity> m_to_entity;
-};
 
 /**
  * @class SparseSet
@@ -78,16 +32,7 @@ public:
 
     // Will erase the entity from the array if it exists and otherwise do
     // nothing
-    void erase(Entity entity) override;
-
-    /**
-     * @brief Iterator to first element
-     */
-    std::vector<T>::iterator begin();
-    /**
-     * @brief Iterator to 1 beyond the last valid element
-     */
-    std::vector<T>::iterator end();
+    void remove(Entity entity) override;
 
 private:
     // Access entity's val. Requires that val exists
@@ -126,7 +71,7 @@ void SparseSet<T>::emplace_back(Entity entity, Args &&...args) {
 }
 
 template <typename T>
-void SparseSet<T>::erase(Entity entity) {
+void SparseSet<T>::remove(Entity entity) {
     if (!contains(entity))
         return;
 
@@ -150,16 +95,6 @@ void SparseSet<T>::erase(Entity entity) {
     m_to_idx.erase(left_entity);
     m_to_entity.pop_back();
     m_data.pop_back();
-}
-
-template <typename T>
-std::vector<T>::iterator SparseSet<T>::begin() {
-    return std::begin(m_data);
-}
-
-template <typename T>
-std::vector<T>::iterator SparseSet<T>::end() {
-    return std::end(m_data);
 }
 
 // private methods ********

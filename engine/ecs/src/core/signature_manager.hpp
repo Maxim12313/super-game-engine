@@ -21,7 +21,7 @@ public:
 
     // Erase the entity signature if it exists
     void erase(Entity entity) {
-        m_signatures.erase(entity);
+        m_signatures.remove(entity);
     }
 
     // return Reference to the signature of entity
