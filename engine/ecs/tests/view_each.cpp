@@ -35,9 +35,18 @@ int main() {
         for (auto [entity, x, y, z] : view.each()) {
             actual.emplace(entity, x, y, z);
         }
-        auto t = std::make_tuple<int, char, float>(1, 'a', 3.5);
-        std::cout << t << "\n";
+        ASSERT_EQUAL(str_list(expected), str_list(actual));
+    }
 
-        // ASSERT_EQUAL(str_list(expected), (actual));
+    {
+        std::set<std::tuple<ecs::Entity, char, int>> expected = {
+            std::make_tuple(a, 'a', 1), {c, 'c', 3}, {d, 'd', 4}};
+
+        std::set<std::tuple<ecs::Entity, char, int>> actual;
+        auto view = registry.view<char, int>();
+        for (auto [entity, x, y] : view.each()) {
+            actual.emplace(entity, x, y);
+        }
+        ASSERT_EQUAL(str_list(expected), str_list(actual));
     }
 }
