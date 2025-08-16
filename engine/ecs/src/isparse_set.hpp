@@ -1,10 +1,10 @@
 #pragma once
 #include "ecs/common.hpp"
+#include "ecs/group.hpp"
 #include <vector>
 #include <unordered_map>
 
 namespace ecs::internal {
-class Group;
 
 /**
  * ISparseSet
@@ -13,6 +13,8 @@ class Group;
 class ISparseSet {
 public:
     virtual ~ISparseSet() = default;
+
+    ISparseSet();
 
     // Erases the data entry for the given entity
     virtual void remove(Entity entity) = 0;

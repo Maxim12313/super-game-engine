@@ -4,11 +4,11 @@
 #include "../src/sparse_set.hpp"
 #include "../src/entity_manager.hpp"
 #include <memory>
-#include <tuple>
 #include <utility>
 #include <vector>
 #include <memory>
 #include "view.hpp"
+#include "group.hpp"
 
 namespace ecs {
 
@@ -54,7 +54,9 @@ public:
     template <typename... Components>
     View<Components...> view();
 
-    void group();
+    // Returns a group that manages the ordering of the specified components
+    template <typename... Components>
+    const Group &group();
 
 private:
     // Requires that the type be registered already
@@ -67,8 +69,12 @@ private:
     template <typename Component>
     int register_component();
 
+    template <typename... Components>
+    std::vector<internal::ISparseSet *> get_sets();
+
 private:
     std::vector<std::unique_ptr<internal::ISparseSet>> m_components;
+    std::vector<std::unique_ptr<Group>> m_groups;
     internal::EntityManager m_entities;
 };
 } // namespace ecs
@@ -126,13 +132,15 @@ inline void Registry::destroy(Entity entity) {
 
 template <typename... Components>
 View<Components...> Registry::view() {
-    std::vector<internal::ISparseSet *> sets;
-
-    // ensure left to right order
-    int a[]{add_set<Components>(sets)...};
-    (void)sizeof(a);
-
+    auto sets = get_sets<Components...>();
     return View<Components...>(sets);
+}
+
+template <typename... Components>
+const Group &Registry::group() {
+    auto sets = get_sets<Components...>();
+    m_groups.emplace_back(std::make_unique<Group>(sets));
+    return *m_groups.back();
 }
 
 // class private ********
@@ -146,7 +154,7 @@ internal::SparseSet<Component> *Registry::get_array() {
     return arr;
 }
 
-// return 0 for hack
+// return 0 for init list ordering
 template <typename Component>
 int Registry::add_set(std::vector<internal::ISparseSet *> &sets) {
     auto set = get_array<Component>();
@@ -154,7 +162,7 @@ int Registry::add_set(std::vector<internal::ISparseSet *> &sets) {
     return 0;
 }
 
-// return 0 for hack
+// return 0 for init list ordering
 template <typename Component>
 int Registry::register_component() {
     Component_ID id = internal::utils::get_component_id<Component>();
@@ -163,6 +171,17 @@ int Registry::register_component() {
     m_components.emplace_back(
         std::make_unique<internal::SparseSet<Component>>());
     return 0;
+}
+
+template <typename... Components>
+std::vector<internal::ISparseSet *> Registry::get_sets() {
+    std::vector<internal::ISparseSet *> sets;
+
+    // ensure left to right order
+    int a[]{add_set<Components>(sets)...};
+    (void)sizeof(a);
+
+    return sets;
 }
 
 }; // namespace ecs

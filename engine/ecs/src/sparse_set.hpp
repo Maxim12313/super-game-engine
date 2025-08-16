@@ -1,5 +1,5 @@
 #pragma once
-#include "group.hpp"
+#include "ecs/group.hpp"
 #include "isparse_set.hpp"
 #include "utils/macros.hpp"
 #include "ecs/common.hpp"
@@ -35,6 +35,10 @@ public:
     // nothing
     void remove(Entity entity) override;
 
+    // Swap positions of a, b in m_data, also updating to_idx and to_entity
+    // Returns true if a != b and swapped
+    bool swap(Entity a, Entity b);
+
 private:
     // Access entity's val. Requires that val exists
     T &get(Entity entity);
@@ -60,8 +64,9 @@ void SparseSet<T>::push_back(Entity entity, const T &val) {
     m_data.push_back(val);
     m_to_entity.push_back(entity);
 
-    // if (m_group)
-    //     m_group->update(entity);
+    // group observer
+    if (m_group)
+        m_group->add_update(entity);
 }
 
 template <typename T>
@@ -73,8 +78,9 @@ void SparseSet<T>::emplace_back(Entity entity, Args &&...args) {
     m_data.emplace_back(args...);
     m_to_entity.push_back(entity);
 
-    // if (m_group)
-    //     m_group->update(entity);
+    // group observer
+    if (m_group)
+        m_group->add_update(entity);
 }
 
 template <typename T>
@@ -82,29 +88,38 @@ void SparseSet<T>::remove(Entity entity) {
     if (!contains(entity))
         return;
 
-    Entity &left_entity = entity;
+    Entity a = entity;
+    Entity b = m_to_entity.back();
 
-    int left_idx = m_to_idx[left_entity];
-    int right_idx = m_to_entity.size() - 1;
-
-    Entity right_entity = m_to_entity[right_idx];
-
-    if (left_entity != right_entity) {
-        // move left data to right side to pop
-        std::swap(m_to_entity[left_entity], m_to_entity[right_entity]);
-        std::swap(m_data[left_idx], m_data[right_idx]);
-
-        // remap right ent to left
-        m_to_idx[right_entity] = left_idx;
+    // swap with the end
+    bool swapped = swap(a, b);
+    if (swapped) {
+        // pop off the back entry
+        m_to_idx.erase(a);
+        m_to_entity.pop_back();
+        m_data.pop_back();
     }
 
-    // cleanup all left side info
-    m_to_idx.erase(left_entity);
-    m_to_entity.pop_back();
-    m_data.pop_back();
+    // group observer
+    if (m_group)
+        m_group->remove_update(entity);
+}
 
-    // if (m_group)
-    //     m_group->update(entity);
+template <typename T>
+bool SparseSet<T>::swap(Entity a, Entity b) {
+    // do nothing
+    if (a == b)
+        return false;
+
+    int a_idx = m_to_idx[a];
+    int b_idx = m_to_idx[b];
+
+    // swap everything
+    std::swap(m_data[a_idx], m_data[b_idx]);
+    std::swap(m_to_entity[a_idx], m_to_entity[b_idx]);
+    std::swap(m_to_idx[a], m_to_idx[b]);
+
+    return true;
 }
 
 // private methods ********
