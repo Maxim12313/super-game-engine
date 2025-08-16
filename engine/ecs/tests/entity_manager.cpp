@@ -1,4 +1,4 @@
-#include "../src/core/entity_manager.hpp"
+#include "../src/entity_manager.hpp"
 #include "utils/macros.hpp"
 #include "unordered_set"
 

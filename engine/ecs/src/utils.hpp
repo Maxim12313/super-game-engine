@@ -11,14 +11,6 @@ Component_ID get_component_id() {
     return id;
 }
 
-static System_ID curr_system = 0;
-template <typename T>
-System_ID get_system_id() {
-    // static id init exactly once for each type, otherwise just ret existing
-    static System_ID id = curr_system++;
-    return id;
-}
-
 /**
  * @brief Set T component bit or do nothing if already set
  */
