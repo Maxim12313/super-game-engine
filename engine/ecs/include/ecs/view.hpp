@@ -5,6 +5,7 @@
 #include <vector>
 #include "common.hpp"
 #include "../src/sparse_set.hpp"
+#include "../src/projections.hpp"
 
 namespace ecs {
 class Registry;
@@ -15,6 +16,7 @@ class Registry;
 // pointers otherwise
 template <typename... Components>
 class View {
+public:
 public:
     // NOTE: lazy min_idx check on construction
     View(std::vector<internal::ISparseSet *> &sets) : m_sets(std::move(sets)) {
@@ -30,10 +32,10 @@ public:
         m_min_idx = min_idx;
     }
 
+    template <typename projection>
     class Iterator {
     public:
         using iterator_category = std::forward_iterator_tag;
-        using value_type = Entity;
         using iterator_type = std::vector<Entity>::const_iterator;
 
     public:
@@ -49,9 +51,10 @@ public:
             search_next();
             return *this;
         }
-        value_type operator*() const {
-            return *m_curr_it;
+        projection::value_type operator*() const {
+            return m_proj(*m_curr_it, m_sets);
         }
+
         bool operator==(const Iterator &o) const {
             return m_curr_it == o.m_curr_it;
         }
@@ -74,79 +77,53 @@ public:
             } while (m_curr_it != m_end_it && !is_valid());
         }
 
-    protected:
+    private:
+        projection m_proj;
         iterator_type m_curr_it;
         const iterator_type m_end_it;
         const std::vector<internal::ISparseSet *> &m_sets;
     };
 
-    template <typename... Ts>
-    class EachIterator : public Iterator {
-    public:
-        using iterator_category = Iterator::iterator_category;
-        using value_type = std::tuple<Entity, Ts &...>;
-        using iterator_type = std::vector<Entity>::const_iterator;
+public:
+    using each_iterator = Iterator<internal::each_projection<Components...>>;
+    using entity_iterator = Iterator<internal::entity_projection>;
 
-    public:
-        EachIterator(iterator_type curr_it, iterator_type end_it,
-                     std::vector<internal::ISparseSet *> &sets)
-            : Iterator(curr_it, end_it, sets) {
-        }
-
-        value_type operator*() const {
-            int idx = 0;
-            Entity entity = *this->m_curr_it;
-            return std::tuple<Entity, Ts &...>(
-                {entity, fetch_val<Ts>(entity, idx)...});
-        }
-
-    private:
-        template <typename T>
-        T &fetch_val(Entity entity, int &idx) const {
-            auto &sets = this->m_sets;
-            auto *concrete = static_cast<internal::SparseSet<T> *>(sets[idx]);
-            idx++;
-            return (*concrete)[entity];
-        }
-    };
-
-    template <typename... Ts>
     class EachRange {
     public:
-        EachRange(EachIterator<Ts...> &begin_it, EachIterator<Ts...> &end_it)
+        EachRange(each_iterator &begin_it, each_iterator &end_it)
             : m_begin(std::move(begin_it)), m_end(std::move(end_it)) {
         }
 
-        EachIterator<Ts...> begin() const {
+        each_iterator begin() {
             return m_begin;
         }
-        EachIterator<Ts...> end() const {
+        each_iterator end() {
             return m_end;
         }
 
     private:
-        EachIterator<Ts...> m_begin;
-        EachIterator<Ts...> m_end;
+        each_iterator m_begin;
+        each_iterator m_end;
     };
 
-    EachRange<Components...> each() {
+public:
+    EachRange each() {
         const auto &min_set = m_sets[m_min_idx];
-        EachIterator<Components...> begin_it(min_set->begin(), min_set->end(),
-                                             m_sets);
-        EachIterator<Components...> end_it(min_set->end(), min_set->end(),
-                                           m_sets);
-        return EachRange<Components...>(begin_it, end_it);
+        each_iterator begin_it(min_set->begin(), min_set->end(), m_sets);
+
+        each_iterator end_it(min_set->end(), min_set->end(), m_sets);
+        return EachRange{begin_it, end_it};
     }
 
     // use lazy smallest
-    Iterator begin() {
+    entity_iterator begin() {
         const auto &min_set = m_sets[m_min_idx];
-        return Iterator(min_set->begin(), min_set->end(), m_sets);
+        return entity_iterator(min_set->begin(), min_set->end(), m_sets);
     }
 
-    Iterator end() {
+    entity_iterator end() {
         const auto &min_set = m_sets[m_min_idx];
-        return Iterator(min_set->end(), min_set->end(), m_sets);
+        return entity_iterator(min_set->end(), min_set->end(), m_sets);
     }
 
 private:
