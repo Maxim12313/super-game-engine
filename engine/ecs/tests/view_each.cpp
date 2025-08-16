@@ -1,5 +1,9 @@
+#include "utils/str_converter.hpp"
 #include "ecs/view.hpp"
 #include "ecs/registry.hpp"
+#include <iostream>
+#include <set>
+#include <tuple>
 
 int main() {
     ecs::Registry registry;
@@ -22,8 +26,18 @@ int main() {
     registry.emplace_back<int>(d, 4);
     registry.emplace_back<float>(d, 11.5);
 
-    auto view = registry.view<char, int, float>();
-    for (auto [entity, x, y, z] : view.each()) {
-        LOG_INFO("{} {} {} {}", entity, x, y, z);
+    {
+        std::set<std::tuple<ecs::Entity, char, int, float>> expected = {
+            std::make_tuple(a, 'a', 1, 10.5), {d, 'd', 4, 11.5}};
+
+        std::set<std::tuple<ecs::Entity, char, int, float>> actual;
+        auto view = registry.view<char, int, float>();
+        for (auto [entity, x, y, z] : view.each()) {
+            actual.emplace(entity, x, y, z);
+        }
+        auto t = std::make_tuple<int, char, float>(1, 'a', 3.5);
+        std::cout << t << "\n";
+
+        // ASSERT_EQUAL(str_list(expected), (actual));
     }
 }

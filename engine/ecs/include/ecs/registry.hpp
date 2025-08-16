@@ -1,8 +1,8 @@
 #pragma once
-#include "../src/core/utils.hpp"
+#include "../src/utils.hpp"
 #include "utils/macros.hpp"
-#include "../src/core/sparse_set.hpp"
-#include "../src/core/entity_manager.hpp"
+#include "../src/sparse_set.hpp"
+#include "../src/entity_manager.hpp"
 #include <memory>
 #include <tuple>
 #include <utility>

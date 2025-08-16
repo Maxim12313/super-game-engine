@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <vector>
 #include "common.hpp"
-#include "../src/core/sparse_set.hpp"
+#include "../src/sparse_set.hpp"
 
 namespace ecs {
 class Registry;

@@ -4,7 +4,7 @@
 #include <unordered_map>
 
 namespace ecs::internal {
-class IGroup;
+class Group;
 
 /**
  * ISparseSet
@@ -33,12 +33,12 @@ public:
     std::vector<Entity>::const_iterator end() const;
 
     // Set group observer
-    void set_group(IGroup *m_group);
+    void set_group(Group *m_group);
 
 protected:
     std::unordered_map<Entity, int> m_to_idx;
     std::vector<Entity> m_to_entity;
-    IGroup *m_group;
+    Group *m_group;
 };
 
 } // namespace ecs::internal

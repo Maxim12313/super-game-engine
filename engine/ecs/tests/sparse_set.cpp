@@ -1,4 +1,4 @@
-#include "../src/core/sparse_set.hpp"
+#include "../src/sparse_set.hpp"
 #include "utils/macros.hpp"
 using namespace std;
 

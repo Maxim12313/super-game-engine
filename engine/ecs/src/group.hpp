@@ -2,14 +2,13 @@
 #include <vector>
 #include "ecs/common.hpp"
 
+// NOTE: Lifetime of ordering is tied to the group
 namespace ecs::internal {
 class ISparseSet;
 
-class IGroup {
+class Group {
 public:
-    virtual ~IGroup() = default;
-
-    IGroup(std::vector<ISparseSet *> &sets);
+    Group(std::vector<ISparseSet *> &sets);
 
     // Callback on entity update watching in each sparse set
     void update(Entity entity);
