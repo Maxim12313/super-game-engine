@@ -1,4 +1,5 @@
 #pragma once
+#include "igroup.hpp"
 #include "isparse_set.hpp"
 #include "utils/macros.hpp"
 #include "ecs/common.hpp"
@@ -58,6 +59,9 @@ void SparseSet<T>::push_back(Entity entity, const T &val) {
     m_to_idx[entity] = m_to_entity.size();
     m_data.push_back(val);
     m_to_entity.push_back(entity);
+
+    if (m_group)
+        m_group->update(entity);
 }
 
 template <typename T>
@@ -68,6 +72,9 @@ void SparseSet<T>::emplace_back(Entity entity, Args &&...args) {
     m_to_idx[entity] = m_to_entity.size();
     m_data.emplace_back(args...);
     m_to_entity.push_back(entity);
+
+    if (m_group)
+        m_group->update(entity);
 }
 
 template <typename T>
@@ -95,6 +102,9 @@ void SparseSet<T>::remove(Entity entity) {
     m_to_idx.erase(left_entity);
     m_to_entity.pop_back();
     m_data.pop_back();
+
+    if (m_group)
+        m_group->update(entity);
 }
 
 // private methods ********

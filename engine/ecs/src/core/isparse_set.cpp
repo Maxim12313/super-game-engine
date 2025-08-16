@@ -1,7 +1,9 @@
 #include "isparse_set.hpp"
+#include "utils/macros.hpp"
 
 namespace ecs::internal {
 
+// class public ********
 void ISparseSet::clear() {
     m_to_idx.clear();
     m_to_entity.clear();
@@ -22,5 +24,10 @@ std::vector<Entity>::const_iterator ISparseSet::begin() const {
 
 std::vector<Entity>::const_iterator ISparseSet::end() const {
     return m_to_entity.end();
+}
+
+void ISparseSet::set_group(IGroup *group) {
+    ASSERT_MSG(!m_group, "Replacing an existing group is not allowed");
+    m_group = group;
 }
 } // namespace ecs::internal

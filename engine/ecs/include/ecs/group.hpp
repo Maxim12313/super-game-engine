@@ -1,14 +1,10 @@
 #pragma once
-
-namespace ecs::internal {
-class IGroup {
-    virtual ~IGroup() = default;
-};
-
-}; // namespace ecs::internal
+#include "common.hpp"
+#include <vector>
+#include "../src/core/igroup.hpp"
 
 namespace ecs {
 template <typename... Components>
-class Group {};
+class Group : public internal::IGroup {};
 
 }; // namespace ecs
