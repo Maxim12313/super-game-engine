@@ -37,6 +37,8 @@ public:
     // Set group observer
     void set_group(Group *m_group);
 
+    virtual bool swap_ent_idx(Entity entity, int idx) = 0;
+
 protected:
     std::unordered_map<Entity, int> m_to_idx;
     std::vector<Entity> m_to_entity;

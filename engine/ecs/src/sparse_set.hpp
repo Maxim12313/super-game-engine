@@ -35,13 +35,17 @@ public:
     // nothing
     void remove(Entity entity) override;
 
-    // Swap positions of a, b in m_data, also updating to_idx and to_entity
-    // Returns true if a != b and swapped
-    bool swap(Entity a, Entity b);
+    // Swap entire positions between obj id'd by entity and obj id'd by idx
+    // Returns if succeeded (only doesnt if both refer same obj)
+    bool swap_ent_idx(Entity entity, int idx) override;
 
 private:
     // Access entity's val. Requires that val exists
     T &get(Entity entity);
+
+    // Swap positions of a, b in m_data, also updating to_idx and to_entity
+    // Returns true if a != b and swapped
+    bool swap_ent_ent(Entity a, Entity b);
 
 private:
     std::vector<T> m_data;
@@ -92,7 +96,7 @@ void SparseSet<T>::remove(Entity entity) {
     Entity b = m_to_entity.back();
 
     // swap with the end
-    bool swapped = swap(a, b);
+    bool swapped = swap_ent_ent(a, b);
     if (swapped) {
         // pop off the back entry
         m_to_idx.erase(a);
@@ -106,7 +110,22 @@ void SparseSet<T>::remove(Entity entity) {
 }
 
 template <typename T>
-bool SparseSet<T>::swap(Entity a, Entity b) {
+bool SparseSet<T>::swap_ent_idx(Entity entity, int idx) {
+    Entity a = entity;
+    Entity b = m_to_entity[idx];
+    return swap_ent_ent(a, b);
+}
+
+// private methods ********
+template <typename T>
+T &SparseSet<T>::get(Entity entity) {
+    ASSERT_MSG(contains(entity), "entity {} is not registered for type {}",
+               entity, typeid(T).name());
+    return m_data[m_to_idx[entity]];
+}
+
+template <typename T>
+bool SparseSet<T>::swap_ent_ent(Entity a, Entity b) {
     // do nothing
     if (a == b)
         return false;
@@ -120,14 +139,6 @@ bool SparseSet<T>::swap(Entity a, Entity b) {
     std::swap(m_to_idx[a], m_to_idx[b]);
 
     return true;
-}
-
-// private methods ********
-template <typename T>
-T &SparseSet<T>::get(Entity entity) {
-    ASSERT_MSG(contains(entity), "entity {} is not registered for type {}",
-               entity, typeid(T).name());
-    return m_data[m_to_idx[entity]];
 }
 
 }; // namespace ecs::internal

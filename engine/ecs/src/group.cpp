@@ -15,9 +15,13 @@ void Group::add_update(Entity entity) {
     if (!should_add(entity))
         return;
 
-    // make changes if necessary
-    for (auto &set : m_sets) {
-    }
+    int idx = m_entities.size();
+    // swap entity into the first [0, idx]
+    for (auto &set : m_sets)
+        set->swap_ent_idx(entity, idx);
+
+    // include entity
+    m_entities.insert(entity);
 }
 
 void Group::remove_update(Entity entity) {
@@ -25,9 +29,14 @@ void Group::remove_update(Entity entity) {
     if (!should_remove(entity))
         return;
 
-    // make changes if necessary
+    int idx = m_entities.size() - 1;
+    // swap entity into last position of [0, idx]
     for (auto &set : m_sets) {
+        set->swap_ent_idx(entity, idx);
     }
+
+    // kickout entity
+    m_entities.erase(entity);
 }
 // class private ********
 
