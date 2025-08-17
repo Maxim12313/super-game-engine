@@ -3,6 +3,7 @@
 #include "ecs/common.hpp"
 #include <vector>
 
+// forwarding
 namespace ecs::internal {
 class ISparseSet;
 
