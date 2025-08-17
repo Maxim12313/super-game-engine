@@ -4,10 +4,12 @@
 #include "graphics/camera2d.hpp"
 #include "graphics/color.hpp"
 #include "graphics/window.hpp"
+#include "utils/macros.hpp"
 #include <optional>
 #include "game.hpp"
 
-Game::Game(const char *title, const int w, const int h) : m_drawer(w, h) {
+Game::Game(const char *title, const int w, const int h)
+    : m_window(w, h, title), m_drawer(m_window.width(), m_window.height()) {
 
     /// Demo:
     ///
@@ -62,31 +64,17 @@ Game::Game(const char *title, const int w, const int h) : m_drawer(w, h) {
 
 const int Game::run() {
     graphics::Camera2D camera2D = graphics::Camera2D();
-    m_drawer.begin_camera(camera2D);
     m_drawer.set_background_color(graphics::GRAY);
+    m_drawer.begin_camera(camera2D);
     while (!m_window.should_close()) {
         m_window.begin_update();
         m_drawer.clear();
 
-        // events();
-        // render();
-
-        auto view = m_registry.view<Sprite, Position>();
-        for (auto [entity, spr, pos] : view.each()) {
-            if (spr.m_radius != 0) {
-                // noob has no function to draw circle still
-                // drawer.queue_circle(pos.m_x, pos.m_y, spr.radius,
-                // spr.m_color);
-            } else {
-                m_drawer.queue_rectangle(pos.m_x, pos.m_y, spr.m_width,
-                                         spr.m_height, spr.m_color);
-            }
-        }
-        m_drawer.execute_draw();
+        render();
 
         m_window.end_update();
     }
-
+    m_drawer.end_camera();
     return EXIT_SUCCESS;
 }
 
@@ -117,7 +105,5 @@ void Game::update(const double time) {
 
 void Game::render() {
     m_renderSystem.render(m_drawer, m_registry);
-
-    // Draw everything.
     m_drawer.execute_draw();
 }
