@@ -2,20 +2,20 @@
 #include <cstdint>
 
 ///
-/// A component to represents the reload time of a weapon
+/// A component to represents the amount of ammo the weapon have
 ///
 class Ammo final {
 public:
     ///
     /// Argument Constructor.
     ///
-    /// \param amount of time in second for weapon to reload
+    /// \param amount of starting ammo
     ///
     Ammo(const uint8_t) noexcept;
 
 public:
     ///
-    ///  time in second to reload the weapon
+    ///  amount of ammo
     ///
     uint8_t m_ammo;
 };

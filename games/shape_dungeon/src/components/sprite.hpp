@@ -1,4 +1,5 @@
 #pragma once
+#include "graphics/color.hpp"
 #include <glm/ext/vector_float4.hpp>
 
 ///
@@ -12,17 +13,17 @@ public:
     ///
     /// \param w Width of the sprite.
     /// \param h Height of the sprite.
-    /// \param col The color you want the sprite to be (RGBA, 0 - 255).
+    /// \param col The color you want the sprite to be (RBG 0.0-1.0)
     ///
-    Sprite(const float w, const float h, glm::vec4 color) noexcept;
+    Sprite(const float w, const float h, graphics::Color color) noexcept;
 
     ///
     /// Circle Constructor.
     ///
     /// \param radius Radius of the circle to draw.
-    /// \param col The color you want the sprite to be (RGBA, 0 - 255).
+    /// \param col The color you want the sprite to be (RGB 0.0-1.0)
     ///
-    Sprite(const float radius, glm::vec4 color) noexcept;
+    Sprite(const float radius, graphics::Color color) noexcept;
 
     ///
     /// Move constructor.
@@ -53,5 +54,5 @@ public:
     ///
     /// Stores the color of the sprite.
     ///
-    glm::vec4 m_color;
+    graphics::Color m_color;
 };

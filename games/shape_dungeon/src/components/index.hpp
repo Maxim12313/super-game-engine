@@ -8,4 +8,5 @@
 #include "position.hpp"
 #include "sprite.hpp"
 #include "velocity2d.hpp"
+#include "weapon_cooldown.hpp"
 #include "weapon_holder.hpp"
