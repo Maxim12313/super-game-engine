@@ -27,8 +27,9 @@ int main() {
     auto group = registry.group<char>();
     std::set<ecs::Entity> expected = {a, b, c, d};
     std::set<ecs::Entity> have;
-    for (auto it : group) {
-        have.insert(it);
+    for (auto [entity, val] : group.each()) {
+        LOG_INFO("{}, {}", entity, val);
+        have.insert(entity);
     }
     ASSERT_EQUAL(str_list(expected), str_list(have));
 }

@@ -11,6 +11,7 @@ class View<Components...>::Iterator {
 public:
     using iterator_category = std::forward_iterator_tag;
     using iterator_type = std::vector<Entity>::const_iterator;
+    using value_type = projection::value_type;
 
 public:
     Iterator(iterator_type curr_it, iterator_type end_it,
@@ -25,7 +26,7 @@ public:
         search_next();
         return *this;
     }
-    projection::value_type operator*() const {
+    value_type operator*() const {
         return m_proj(*m_curr_it, m_sets);
     }
     bool operator!=(const Iterator &o) const {

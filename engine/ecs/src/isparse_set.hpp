@@ -4,7 +4,7 @@
 #include <unordered_map>
 
 namespace ecs {
-class Group;
+class IGroup;
 };
 
 namespace ecs::internal {
@@ -37,13 +37,13 @@ public:
     std::vector<Entity>::const_iterator end() const;
 
     // Set group observer
-    void set_group(Group *m_group);
+    void set_group(IGroup *m_group);
 
     virtual bool swap_ent_idx(Entity entity, int idx) = 0;
 
 protected:
     std::unordered_map<Entity, int> m_to_idx;
     std::vector<Entity> m_to_entity;
-    Group *m_group;
+    IGroup *m_group;
 };
 }; // namespace ecs::internal

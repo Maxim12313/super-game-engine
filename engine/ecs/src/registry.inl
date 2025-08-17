@@ -68,10 +68,13 @@ View<Components...> Registry::view() {
 }
 
 template <typename... Components>
-const Group &Registry::group() {
+const Group<Components...> &Registry::group() {
     auto sets = get_sets<Components...>();
-    m_groups.emplace_back(std::make_unique<Group>(sets));
-    return *m_groups.back();
+
+    auto ptr = std::make_unique<Group<Components...>>(sets);
+    const auto &group_ref = *ptr;
+    m_groups.emplace_back(std::move(ptr));
+    return group_ref;
 }
 
 // class private ********
