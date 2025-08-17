@@ -2,7 +2,13 @@
 #include <iterator>
 #include "ecs/common.hpp"
 #include <vector>
-#include "../src/sparse_set.hpp"
+
+namespace ecs::internal {
+class ISparseSet;
+
+template <typename T>
+class SparseSet;
+} // namespace ecs::internal
 
 namespace ecs::internal {
 

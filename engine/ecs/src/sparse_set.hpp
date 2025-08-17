@@ -1,5 +1,4 @@
 #pragma once
-#include "ecs/group.hpp"
 #include "isparse_set.hpp"
 #include "utils/macros.hpp"
 #include "ecs/common.hpp"
@@ -7,6 +6,7 @@
 #include <utility>
 #include <vector>
 #include <unordered_map>
+#include "ecs/group.hpp"
 
 namespace ecs::internal {
 
