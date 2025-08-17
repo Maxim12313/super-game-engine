@@ -1,14 +1,14 @@
 #pragma once
-#include "../src/core/utils.hpp"
+#include "../src/utils.hpp"
 #include "utils/macros.hpp"
-#include "../src/core/sparse_set.hpp"
-#include "../src/core/entity_manager.hpp"
+#include "../src/sparse_set.hpp"
+#include "../src/entity_manager.hpp"
 #include <memory>
-#include <tuple>
 #include <utility>
 #include <vector>
 #include <memory>
 #include "view.hpp"
+#include "group.hpp"
 
 namespace ecs {
 
@@ -50,22 +50,31 @@ public:
     // Erase all data for the entity and destroy it
     void destroy(Entity entity);
 
+    // Returns a view to iterate over entities with the specified components
     template <typename... Components>
-    View view();
+    View<Components...> view();
+
+    // Returns a group that manages the ordering of the specified components
+    template <typename... Components>
+    const Group &group();
 
 private:
     // Requires that the type be registered already
-    template <typename T>
-    internal::SparseSet<T> *get_array();
+    template <typename Components>
+    internal::SparseSet<Components> *get_array();
 
     template <typename Component>
-    void add_set(std::vector<internal::ISparseSet *> &sets);
+    int add_set(std::vector<internal::ISparseSet *> &sets);
 
     template <typename Component>
-    void register_component();
+    int register_component();
+
+    template <typename... Components>
+    std::vector<internal::ISparseSet *> get_sets();
 
 private:
     std::vector<std::unique_ptr<internal::ISparseSet>> m_components;
+    std::vector<std::unique_ptr<Group>> m_groups;
     internal::EntityManager m_entities;
 };
 } // namespace ecs
@@ -75,7 +84,9 @@ namespace ecs {
 
 template <typename... Components>
 void Registry::register_components() {
-    (register_component<Components>(), ...);
+    // ensure left to right order
+    int a[]{register_component<Components>()...};
+    (void)sizeof(a);
 }
 
 template <typename Component>
@@ -113,43 +124,64 @@ inline Entity Registry::create() {
 }
 
 inline void Registry::destroy(Entity entity) {
-    for (auto &array : m_components) {
-        array->erase(entity);
-    }
+    for (auto &array : m_components)
+        array->remove(entity);
+
     m_entities.destroy_entity(entity);
 }
 
 template <typename... Components>
-View Registry::view() {
-    std::vector<internal::ISparseSet *> sets;
-    (add_set<Components>(sets), ...);
-    return View(sets);
+View<Components...> Registry::view() {
+    auto sets = get_sets<Components...>();
+    return View<Components...>(sets);
+}
+
+template <typename... Components>
+const Group &Registry::group() {
+    auto sets = get_sets<Components...>();
+    m_groups.emplace_back(std::make_unique<Group>(sets));
+    return *m_groups.back();
 }
 
 // class private ********
-template <typename T>
-internal::SparseSet<T> *Registry::get_array() {
-    Component_ID id = internal::utils::get_component_id<T>();
+template <typename Component>
+internal::SparseSet<Component> *Registry::get_array() {
+    Component_ID id = internal::utils::get_component_id<Component>();
     ASSERT_MSG(id < m_components.size(), "Unregistered type {} for {}", id,
-               typeid(T).name());
+               typeid(Component).name());
     auto unique = m_components[int(id)].get();
-    auto arr = static_cast<internal::SparseSet<T> *>(unique);
+    auto arr = static_cast<internal::SparseSet<Component> *>(unique);
     return arr;
 }
 
+// return 0 for init list ordering
 template <typename Component>
-void Registry::add_set(std::vector<internal::ISparseSet *> &sets) {
+int Registry::add_set(std::vector<internal::ISparseSet *> &sets) {
     auto set = get_array<Component>();
     sets.push_back(set);
+    return 0;
 }
 
+// return 0 for init list ordering
 template <typename Component>
-void Registry::register_component() {
+int Registry::register_component() {
     Component_ID id = internal::utils::get_component_id<Component>();
     ASSERT_MSG(id >= m_components.size(), "Already registered {} for {}", id,
                typeid(Component).name());
     m_components.emplace_back(
         std::make_unique<internal::SparseSet<Component>>());
+    return 0;
+}
+
+template <typename... Components>
+std::vector<internal::ISparseSet *> Registry::get_sets() {
+    std::vector<internal::ISparseSet *> sets;
+
+    // ensure left to right order
+    int a[]{add_set<Components>(sets)...};
+    (void)sizeof(a);
+
+    return sets;
 }
 
 }; // namespace ecs

@@ -4,7 +4,8 @@
 #include <unordered_map>
 #include <vector>
 #include "common.hpp"
-#include "../src/core/sparse_set.hpp"
+#include "../src/sparse_set.hpp"
+#include "../src/projections.hpp"
 
 namespace ecs {
 class Registry;
@@ -13,12 +14,15 @@ class Registry;
 // will be invalidated
 // WARNING: Views depend on the lifetime of the registry and will store dangling
 // pointers otherwise
+template <typename... Components>
 class View {
+public:
 public:
     // NOTE: lazy min_idx check on construction
     View(std::vector<internal::ISparseSet *> &sets) : m_sets(std::move(sets)) {
         ASSERT_MSG(m_sets.size() > 0, "view has no sets");
 
+        // setup min_idx
         int min_idx = 0;
         for (int i = 0; i < m_sets.size(); i++) {
             if (m_sets[min_idx]->size() > m_sets[i]->size()) {
@@ -28,9 +32,10 @@ public:
         m_min_idx = min_idx;
     }
 
+    template <typename projection>
     class Iterator {
+    public:
         using iterator_category = std::forward_iterator_tag;
-        using value_type = Entity;
         using iterator_type = std::vector<Entity>::const_iterator;
 
     public:
@@ -46,9 +51,10 @@ public:
             search_next();
             return *this;
         }
-        value_type operator*() const {
-            return *m_curr_it;
+        projection::value_type operator*() const {
+            return m_proj(*m_curr_it, m_sets);
         }
+
         bool operator==(const Iterator &o) const {
             return m_curr_it == o.m_curr_it;
         }
@@ -68,24 +74,56 @@ public:
         void search_next() {
             do {
                 m_curr_it++;
-            } while (!is_valid() && m_curr_it != m_end_it);
+            } while (m_curr_it != m_end_it && !is_valid());
         }
 
     private:
+        projection m_proj;
         iterator_type m_curr_it;
         const iterator_type m_end_it;
         const std::vector<internal::ISparseSet *> &m_sets;
     };
 
-    // use lazy smallest
-    Iterator begin() {
+public:
+    using each_iterator = Iterator<internal::each_projection<Components...>>;
+    using entity_iterator = Iterator<internal::entity_projection>;
+
+    class EachRange {
+    public:
+        EachRange(each_iterator &begin_it, each_iterator &end_it)
+            : m_begin(std::move(begin_it)), m_end(std::move(end_it)) {
+        }
+
+        each_iterator begin() {
+            return m_begin;
+        }
+        each_iterator end() {
+            return m_end;
+        }
+
+    private:
+        each_iterator m_begin;
+        each_iterator m_end;
+    };
+
+public:
+    EachRange each() {
         const auto &min_set = m_sets[m_min_idx];
-        return Iterator(min_set->begin(), min_set->end(), m_sets);
+        each_iterator begin_it(min_set->begin(), min_set->end(), m_sets);
+
+        each_iterator end_it(min_set->end(), min_set->end(), m_sets);
+        return EachRange{begin_it, end_it};
     }
 
-    Iterator end() {
+    // use lazy smallest
+    entity_iterator begin() {
         const auto &min_set = m_sets[m_min_idx];
-        return Iterator(min_set->end(), min_set->end(), m_sets);
+        return entity_iterator(min_set->begin(), min_set->end(), m_sets);
+    }
+
+    entity_iterator end() {
+        const auto &min_set = m_sets[m_min_idx];
+        return entity_iterator(min_set->end(), min_set->end(), m_sets);
     }
 
 private:
