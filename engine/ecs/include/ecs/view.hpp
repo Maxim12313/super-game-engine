@@ -6,6 +6,7 @@
 #include "common.hpp"
 #include "../src/sparse_set.hpp"
 #include "../src/projections.hpp"
+#include "../src/each_range.hpp"
 
 namespace ecs {
 class Registry;
@@ -40,23 +41,19 @@ public:
 
     public:
         Iterator(iterator_type curr_it, iterator_type end_it,
-                 std::vector<internal::ISparseSet *> &sets)
+                 const std::vector<internal::ISparseSet *> &sets)
             : m_curr_it(curr_it), m_end_it(end_it), m_sets(sets) {
 
             if (m_curr_it != m_end_it && !is_valid())
                 search_next();
         }
 
-        Iterator operator++() {
+        Iterator &operator++() {
             search_next();
             return *this;
         }
         projection::value_type operator*() const {
             return m_proj(*m_curr_it, m_sets);
-        }
-
-        bool operator==(const Iterator &o) const {
-            return m_curr_it == o.m_curr_it;
         }
         bool operator!=(const Iterator &o) const {
             return m_curr_it != o.m_curr_it;
@@ -88,31 +85,13 @@ public:
     using each_iterator = Iterator<internal::each_projection<Components...>>;
     using entity_iterator = Iterator<internal::entity_projection>;
 
-    class EachRange {
-    public:
-        EachRange(each_iterator &begin_it, each_iterator &end_it)
-            : m_begin(std::move(begin_it)), m_end(std::move(end_it)) {
-        }
-
-        each_iterator begin() {
-            return m_begin;
-        }
-        each_iterator end() {
-            return m_end;
-        }
-
-    private:
-        each_iterator m_begin;
-        each_iterator m_end;
-    };
-
 public:
-    EachRange each() {
+    EachRange<each_iterator> each() {
         const auto &min_set = m_sets[m_min_idx];
         each_iterator begin_it(min_set->begin(), min_set->end(), m_sets);
 
         each_iterator end_it(min_set->end(), min_set->end(), m_sets);
-        return EachRange{begin_it, end_it};
+        return EachRange<each_iterator>(begin_it, end_it);
     }
 
     // use lazy smallest

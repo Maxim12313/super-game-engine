@@ -1,13 +1,34 @@
 #include "ecs/registry.hpp"
+#include "utils/macros.hpp"
+#include "utils/str_converter.hpp"
+#include <set>
 
 int main() {
-    ecs::Registry reg;
-    reg.register_components<int, float, char>();
+    ecs::Registry registry;
+    registry.register_components<int, float, char>();
 
     ecs::Entity a = 0;
-    reg.emplace_back<char>(a, 'a');
-    reg.emplace_back<int>(a, 1);
-    reg.emplace_back<float>(a, 10.5);
+    registry.emplace_back<char>(a, 'a');
+    registry.emplace_back<int>(a, 1);
+    registry.emplace_back<float>(a, 10.5);
 
-    auto group = reg.group<int, float>();
+    ecs::Entity b = 1;
+    registry.emplace_back<char>(b, 'b');
+
+    ecs::Entity c = 2;
+    registry.emplace_back<char>(c, 'c');
+    registry.emplace_back<int>(c, 3);
+
+    ecs::Entity d = 3;
+    registry.emplace_back<char>(d, 'd');
+    registry.emplace_back<int>(d, 4);
+    registry.emplace_back<float>(d, 11.5);
+
+    auto group = registry.group<char>();
+    std::set<ecs::Entity> expected = {a, b, c, d};
+    std::set<ecs::Entity> have;
+    for (auto it : group) {
+        have.insert(it);
+    }
+    ASSERT_EQUAL(str_list(expected), str_list(have));
 }

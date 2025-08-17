@@ -1,11 +1,13 @@
 #pragma once
 #include "ecs/common.hpp"
-#include "ecs/group.hpp"
 #include <vector>
 #include <unordered_map>
 
-namespace ecs::internal {
+namespace ecs {
+class Group;
+};
 
+namespace ecs::internal {
 /**
  * ISparseSet
  * Interface placeholder for type erasing in packed array manager
@@ -44,5 +46,4 @@ protected:
     std::vector<Entity> m_to_entity;
     Group *m_group;
 };
-
-} // namespace ecs::internal
+}; // namespace ecs::internal

@@ -1,9 +1,7 @@
 #include "ecs/group.hpp"
 #include "isparse_set.hpp"
-#include "utils/macros.hpp"
 
 namespace ecs::internal {
-
 // class public ********
 ISparseSet::ISparseSet() : m_group(nullptr) {
 }
