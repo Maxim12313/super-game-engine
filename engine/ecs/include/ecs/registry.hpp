@@ -17,8 +17,9 @@ class ISparseSet;
 namespace ecs {
 template <typename... Components>
 class View;
-
+template <typename... Components>
 class Group;
+class IGroup;
 }; // namespace ecs
 
 // declarations ********
@@ -68,7 +69,7 @@ public:
 
     // Returns a group that manages the ordering of the specified components
     template <typename... Components>
-    const Group &group();
+    const Group<Components...> &group();
 
 private:
     // Requires that the type be registered already
@@ -86,7 +87,7 @@ private:
 
 private:
     std::vector<std::unique_ptr<internal::ISparseSet>> m_components;
-    std::vector<std::unique_ptr<Group>> m_groups;
+    std::vector<std::unique_ptr<IGroup>> m_groups;
     std::unique_ptr<internal::EntityManager> m_entities;
 };
 } // namespace ecs

@@ -7,7 +7,7 @@ namespace ecs {
 
 // class Iterator ********
 template <typename projection>
-class Group::Iterator {
+class IGroup::Iterator {
 public:
     using iterator_category = std::forward_iterator_tag;
     using value_type = projection::value_type;
@@ -22,7 +22,7 @@ public:
         m_it++;
         return *this;
     }
-    bool operator!=(Group::Iterator<projection> &o) {
+    bool operator!=(IGroup::Iterator<projection> &o) {
         return m_it != o.m_it;
     }
     value_type operator*() {
@@ -35,12 +35,12 @@ private:
     const std::vector<internal::ISparseSet *> &m_sets;
 };
 
-// class public ********
-inline Group::Group(std::vector<internal::ISparseSet *> &sets)
+// IGroup public ********
+inline IGroup::IGroup(std::vector<internal::ISparseSet *> &sets)
     : m_sets(std::move(sets)) {
 }
 
-inline void Group::add_update(Entity entity) {
+inline void IGroup::add_update(Entity entity) {
     // detect if changes need to be made
     if (!should_add(entity))
         return;
@@ -54,7 +54,7 @@ inline void Group::add_update(Entity entity) {
     m_entities.insert(entity);
 }
 
-inline void Group::remove_update(Entity entity) {
+inline void IGroup::remove_update(Entity entity) {
     // detect if changes need to be made
     if (!should_remove(entity))
         return;
@@ -69,37 +69,52 @@ inline void Group::remove_update(Entity entity) {
     m_entities.erase(entity);
 }
 
-inline Group::entity_iterator Group::begin() const {
+inline IGroup::entity_iterator IGroup::begin() const {
     ASSERT_MSG(m_sets.size() > 0, "Group size {} should be > 0 ",
                m_sets.size());
     auto it = m_sets[0]->begin();
     return entity_iterator(it, m_sets);
 }
-inline Group::entity_iterator Group::end() const {
+inline IGroup::entity_iterator IGroup::end() const {
     ASSERT_MSG(m_sets.size() > 0, "Group size {} should be > 0 ",
                m_sets.size());
     auto it = m_sets[0]->end();
     return entity_iterator(it, m_sets);
 }
 
-// class private ********
-inline bool Group::should_add(Entity entity) const {
+// IGroup private ********
+inline bool IGroup::should_add(Entity entity) const {
     ASSERT_MSG(!contains(entity),
                "if part of group, then push/emplace double register")
     return has_all(entity);
 }
-inline bool Group::should_remove(Entity entity) const {
+inline bool IGroup::should_remove(Entity entity) const {
     // we are part of the group but no longer have every component
     return contains(entity) && !has_all(entity);
 }
-inline bool Group::contains(Entity entity) const {
+inline bool IGroup::contains(Entity entity) const {
     return m_entities.count(entity);
 }
-inline bool Group::has_all(Entity entity) const {
+inline bool IGroup::has_all(Entity entity) const {
     for (auto &set : m_sets) {
         if (!set->contains(entity))
             return false;
     }
     return true;
+}
+
+// Group public ********
+template <typename... Ts>
+Group<Ts...>::Group(std::vector<internal::ISparseSet *> &sets) : IGroup(sets) {
+}
+
+template <typename... Ts>
+EachRange<typename Group<Ts...>::each_iterator> Group<Ts...>::each() const {
+    ASSERT_MSG(m_sets.size() > 0, "Group size {} should be > 0 ",
+               m_sets.size());
+    auto set = m_sets[0];
+    each_iterator begin_it(set->begin(), m_sets);
+    each_iterator end_it(set->end(), m_sets);
+    return EachRange<each_iterator>(begin_it, end_it);
 }
 }; // namespace ecs

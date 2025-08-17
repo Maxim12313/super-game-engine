@@ -8,7 +8,7 @@
 
 // Forwarding ********
 namespace ecs {
-class Group;
+class IGroup;
 };
 
 // Declaration ********
