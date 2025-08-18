@@ -4,7 +4,11 @@
 #include "ecs/common.hpp"
 #include <unordered_set>
 #include "../src/projections.hpp"
-#include "ecs/each_range.hpp"
+
+namespace ecs {
+template <typename each_iterator>
+class EachRange;
+};
 
 namespace ecs::internal {
 class ISparseSet;

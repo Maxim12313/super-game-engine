@@ -1,13 +1,12 @@
 project(ecs)
 
 # make library
-file(GLOB_RECURSE source_files "${PROJECT_SOURCE_DIR}/src/*.cpp")
-add_library(${PROJECT_NAME} ${source_files})
+add_library(${PROJECT_NAME} INTERFACE)
 target_include_directories(${PROJECT_NAME}
-                           PUBLIC "${PROJECT_SOURCE_DIR}/include")
+                           INTERFACE "${PROJECT_SOURCE_DIR}/include")
 
 # link libraries
-target_link_libraries(${PROJECT_NAME} PRIVATE utils)
+target_link_libraries(${PROJECT_NAME} INTERFACE utils)
 
 # tests
 file(GLOB tests ${PROJECT_SOURCE_DIR}/tests/*.cpp)

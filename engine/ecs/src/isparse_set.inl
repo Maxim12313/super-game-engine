@@ -1,5 +1,6 @@
-#include "ecs/group.hpp"
+#pragma once
 #include "isparse_set.hpp"
+#include "ecs/group.hpp"
 
 namespace ecs::internal {
 // class public ********

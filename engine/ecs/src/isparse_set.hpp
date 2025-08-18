@@ -47,3 +47,5 @@ protected:
     IGroup *m_group;
 };
 }; // namespace ecs::internal
+
+#include "isparse_set.inl"

@@ -47,7 +47,7 @@ bool Registry::contains(Entity entity) const {
 template <typename Component>
 void Registry::remove(Entity entity) {
     internal::SparseSet<Component> *arr = get_array<Component>();
-    arr->erase(entity);
+    arr->remove(entity);
 }
 
 inline Entity Registry::create() {

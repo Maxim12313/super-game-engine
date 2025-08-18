@@ -3,6 +3,7 @@
 #include "utils/macros.hpp"
 #include "../src/isparse_set.hpp"
 #include "utils/macros.hpp"
+#include "ecs/each_range.hpp"
 namespace ecs {
 
 // class Iterator ********
@@ -15,23 +16,26 @@ public:
     using iterator_type = std::vector<Entity>::const_iterator;
 
 public:
-    Iterator(iterator_type it, const std::vector<internal::ISparseSet *> &sets)
-        : m_it(it), m_sets(sets) {
+    // end_it for keeping same api as view iterator
+    Iterator(iterator_type begin_it, iterator_type end_it,
+             const std::vector<internal::ISparseSet *> &sets)
+        : m_curr(begin_it), m_end(end_it), m_sets(sets) {
     }
     Iterator &operator++() {
-        m_it++;
+        m_curr++;
         return *this;
     }
     bool operator!=(IGroup::Iterator<projection> &o) {
-        return m_it != o.m_it;
+        return m_curr != o.m_curr;
     }
     value_type operator*() {
-        return m_proj(*m_it, m_sets);
+        return m_proj(*m_curr, m_sets);
     }
 
 private:
     projection m_proj;
-    iterator_type m_it;
+    iterator_type m_curr;
+    iterator_type m_end;
     const std::vector<internal::ISparseSet *> &m_sets;
 };
 
@@ -72,14 +76,14 @@ inline void IGroup::remove_update(Entity entity) {
 inline IGroup::entity_iterator IGroup::begin() const {
     ASSERT_MSG(m_sets.size() > 0, "Group size {} should be > 0 ",
                m_sets.size());
-    auto it = m_sets[0]->begin();
-    return entity_iterator(it, m_sets);
+    auto set = m_sets[0];
+    return entity_iterator(set->begin(), set->end(), m_sets);
 }
 inline IGroup::entity_iterator IGroup::end() const {
     ASSERT_MSG(m_sets.size() > 0, "Group size {} should be > 0 ",
                m_sets.size());
-    auto it = m_sets[0]->end();
-    return entity_iterator(it, m_sets);
+    auto set = m_sets[0];
+    return entity_iterator(set->end(), set->end(), m_sets);
 }
 
 // IGroup private ********
@@ -112,9 +116,6 @@ template <typename... Ts>
 EachRange<typename Group<Ts...>::each_iterator> Group<Ts...>::each() const {
     ASSERT_MSG(m_sets.size() > 0, "Group size {} should be > 0 ",
                m_sets.size());
-    auto set = m_sets[0];
-    each_iterator begin_it(set->begin(), m_sets);
-    each_iterator end_it(set->end(), m_sets);
-    return EachRange<each_iterator>(begin_it, end_it);
+    return EachRange<each_iterator>(/*min_idx=*/0, m_sets);
 }
 }; // namespace ecs

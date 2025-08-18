@@ -1,6 +1,7 @@
 #pragma once
 #include "ecs/view.hpp"
-#include "../src/sparse_set.hpp"
+#include "isparse_set.hpp"
+#include "utils/macros.hpp"
 
 namespace ecs {
 
@@ -74,11 +75,7 @@ View<Components...>::View(std::vector<internal::ISparseSet *> &sets)
 
 template <typename... Ts>
 EachRange<typename View<Ts...>::each_iterator> View<Ts...>::each() {
-    const auto &min_set = m_sets[m_min_idx];
-    each_iterator begin_it(min_set->begin(), min_set->end(), m_sets);
-
-    each_iterator end_it(min_set->end(), min_set->end(), m_sets);
-    return EachRange<each_iterator>(begin_it, end_it);
+    return EachRange<each_iterator>(m_min_idx, m_sets);
 }
 
 template <typename... Ts>
