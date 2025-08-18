@@ -3,6 +3,7 @@
 #include "common.hpp"
 #include <vector>
 #include <memory>
+#include <unordered_map>
 
 // forwarding ********
 namespace ecs::internal {
@@ -87,8 +88,8 @@ private:
 
 private:
     std::vector<std::unique_ptr<internal::ISparseSet>> m_components;
-    std::vector<std::unique_ptr<IGroup>> m_groups;
     std::unique_ptr<internal::EntityManager> m_entities;
+    std::unordered_map<Signature, std::unique_ptr<IGroup>> m_groups;
 };
 } // namespace ecs
 

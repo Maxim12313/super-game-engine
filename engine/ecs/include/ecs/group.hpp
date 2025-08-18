@@ -8,7 +8,7 @@
 namespace ecs {
 template <typename each_iterator>
 class EachRange;
-};
+}; // namespace ecs
 
 namespace ecs::internal {
 class ISparseSet;
@@ -35,10 +35,16 @@ public:
     // Callback on entity update watching in each sparse set
     void remove_update(Entity entity);
 
+    // Begin iterator
     entity_iterator begin() const;
+
+    // End iterator
     entity_iterator end() const;
 
 private:
+    // swap entity into the last of [0, size]
+    void swap_last(Entity entity);
+
     bool should_add(Entity entity) const;
     bool should_remove(Entity entity) const;
     bool contains(Entity entity) const;

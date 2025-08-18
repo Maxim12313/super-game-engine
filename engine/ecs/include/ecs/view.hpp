@@ -4,7 +4,6 @@
 #include <unordered_map>
 #include <vector>
 #include "common.hpp"
-#include "each_range.hpp"
 #include "../src/projections.hpp"
 
 // Forwarding ********
@@ -14,14 +13,25 @@ class SparseSet;
 class ISparseSet;
 }; // namespace ecs::internal
 
+namespace ecs {
+
+class Registry;
+template <typename each_iterator>
+class EachRange;
+}; // namespace ecs
+
 // Declaration ********
 namespace ecs {
-class Registry;
 
+// Helpers ********
+bool all_sets_have_entity(const std::vector<internal::ISparseSet *> &sets,
+                          Entity entity);
+
+// Class ********
 // WARNING: for any pools that are pushed or removed from, related iterators
 // will be invalidated
-// Views also depends on the lifetime of the registry and will store dangling
-// pointers otherwise
+// Views also depends on the lifetime of the registry and will store
+// dangling pointers otherwise
 template <typename... Components>
 class View {
 public:

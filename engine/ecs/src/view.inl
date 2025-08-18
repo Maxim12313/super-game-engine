@@ -1,9 +1,20 @@
 #pragma once
+#include "ecs/each_range.hpp"
 #include "ecs/view.hpp"
 #include "isparse_set.hpp"
 #include "utils/macros.hpp"
 
 namespace ecs {
+// Helpers ********
+
+bool all_sets_have_entity(const std::vector<internal::ISparseSet *> &sets,
+                          Entity entity) {
+    for (const auto &set : sets) {
+        if (!set->contains(entity))
+            return false;
+    }
+    return true;
+}
 
 // Iterator ********
 template <typename... Components>
@@ -36,11 +47,7 @@ public:
 
 private:
     bool is_valid() const {
-        for (const auto &set : m_sets) {
-            if (!set->contains(*m_curr_it))
-                return false;
-        }
-        return true;
+        return all_sets_have_entity(m_sets, *m_curr_it);
     }
 
     void search_next() {
@@ -57,7 +64,6 @@ private:
 };
 
 // View public ********
-
 template <typename... Components>
 View<Components...>::View(std::vector<internal::ISparseSet *> &sets)
     : m_sets(std::move(sets)) {

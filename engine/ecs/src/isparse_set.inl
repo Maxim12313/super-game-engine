@@ -29,4 +29,10 @@ std::vector<Entity>::const_iterator ISparseSet::end() const {
     return m_to_entity.end();
 }
 
+// Set group observer
+void ISparseSet::set_group(IGroup *group) {
+    ASSERT_MSG(!m_group, "already registered with a group");
+    m_group = group;
+}
+
 } // namespace ecs::internal

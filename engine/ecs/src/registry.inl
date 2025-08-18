@@ -69,11 +69,17 @@ View<Components...> Registry::view() {
 
 template <typename... Components>
 const Group<Components...> &Registry::group() {
-    auto sets = get_sets<Components...>();
+    Signature sig = internal::utils::get_signature<Components...>();
+    if (m_groups.count(sig)) {
+        LOG_DEBUG("group {} already exists, so returning", sig.to_string());
+        return *static_cast<Group<Components...> *>(m_groups[sig].get());
+    }
 
+    auto sets = get_sets<Components...>();
     auto ptr = std::make_unique<Group<Components...>>(sets);
     const auto &group_ref = *ptr;
-    m_groups.emplace_back(std::move(ptr));
+
+    m_groups.emplace(sig, std::move(ptr));
     return group_ref;
 }
 
