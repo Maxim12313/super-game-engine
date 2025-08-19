@@ -29,13 +29,37 @@ int main() {
     registry.emplace_back<float>(d, 11.5);
 
     {
+        auto view = registry.view<int>();
+        registry.remove<int>(c);
+        std::set<ecs::Entity> expected = {a, d};
+        std::set<ecs::Entity> have;
+        for (auto it : view) {
+            have.insert(it);
+        }
+        ASSERT_EQUAL(str_list(expected), str_list(have));
+        registry.emplace_back<int>(c, 3);
+    }
+
+    {
+        auto view = registry.view<float, int, char>();
+        registry.emplace_back<float>(c, -0.5);
+        std::set<ecs::Entity> expected = {a, c, d};
+        std::set<ecs::Entity> have;
+        for (auto it : view) {
+            have.insert(it);
+        }
+        ASSERT_EQUAL(str_list(have), str_list(expected));
+        registry.remove<float>(c);
+    }
+
+    {
         auto view = registry.view<char>();
         std::set<ecs::Entity> expected = {a, b, c, d};
         std::set<ecs::Entity> have;
         for (auto it : view) {
             have.insert(it);
         }
-        ASSERT_EQUAL(str_list(expected), str_list(have));
+        ASSERT_EQUAL(str_list(have), str_list(expected));
     }
     {
         auto view = registry.view<char, int>();
@@ -44,7 +68,7 @@ int main() {
         for (auto it : view) {
             have.insert(it);
         }
-        ASSERT_EQUAL(str_list(expected), str_list(have));
+        ASSERT_EQUAL(str_list(have), str_list(expected));
     }
     {
         auto view = registry.view<float>();
@@ -53,7 +77,7 @@ int main() {
         for (auto it : view) {
             have.insert(it);
         }
-        ASSERT_EQUAL(str_list(expected), str_list(have));
+        ASSERT_EQUAL(str_list(have), str_list(expected));
     }
 
     std::cout << get_ms_since() << "\n";

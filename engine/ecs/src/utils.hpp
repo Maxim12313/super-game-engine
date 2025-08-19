@@ -11,4 +11,12 @@ Component_ID get_component_id() {
     return id;
 }
 
+// set the bit for each component
+template <typename... Components>
+Signature get_signature() {
+    Signature sig;
+    (sig.set(get_component_id<Components>()), ...);
+    return sig;
+}
+
 }; // namespace ecs::internal::utils

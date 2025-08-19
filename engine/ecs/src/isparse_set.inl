@@ -1,9 +1,8 @@
-#include "ecs/group.hpp"
+#pragma once
 #include "isparse_set.hpp"
-#include "utils/macros.hpp"
+#include "ecs/group.hpp"
 
 namespace ecs::internal {
-
 // class public ********
 ISparseSet::ISparseSet() : m_group(nullptr) {
 }
@@ -30,8 +29,9 @@ std::vector<Entity>::const_iterator ISparseSet::end() const {
     return m_to_entity.end();
 }
 
-void ISparseSet::set_group(Group *group) {
-    ASSERT_MSG(!m_group, "Replacing an existing group is not allowed");
+// Set group observer
+void ISparseSet::set_group(IGroup *group) {
+    ASSERT_MSG(!m_group, "already registered with a group");
     m_group = group;
 }
 
