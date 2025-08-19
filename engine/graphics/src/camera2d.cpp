@@ -1,12 +1,9 @@
 #include "graphics/camera2d.hpp"
 #include "graphics/window.hpp"
-#include "../core/constants.hpp"
-#include "utils/macros.hpp"
 #include <GLFW/glfw3.h>
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/glm.hpp>
-#include <iostream>
 
 namespace graphics {
 
