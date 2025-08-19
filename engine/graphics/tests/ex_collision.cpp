@@ -1,5 +1,5 @@
 #include "graphics/collisions.hpp"
-#include "graphics/color.hpp"
+#include "graphics/structs.hpp"
 #include "graphics/window.hpp"
 #include "graphics/camera2d.hpp"
 #include "graphics/drawer.hpp"
@@ -11,6 +11,7 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/glm.hpp>
+#include "graphics/constants.hpp"
 #include <iostream>
 
 #define STB_IMAGE_IMPLEMENTATION

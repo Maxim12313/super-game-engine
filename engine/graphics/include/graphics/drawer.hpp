@@ -4,7 +4,7 @@
 #include <iterator>
 #include <memory>
 #include <queue>
-#include "graphics/color.hpp"
+#include "graphics/structs.hpp"
 
 namespace graphics {
 
@@ -12,14 +12,6 @@ class Window;
 class Color;
 class Camera2D;
 class WorldShader;
-
-struct Rect {
-    double x;
-    double y;
-    double w;
-    double h;
-    Color color;
-};
 
 class Drawer {
 public:

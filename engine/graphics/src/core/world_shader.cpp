@@ -1,9 +1,11 @@
 #include "world_shader.hpp"
-#include "graphics/color.hpp"
+#include "graphics/structs.hpp"
 #include "constants.hpp"
+#include "graphics/constants.hpp"
 #include <glm/gtc/type_ptr.hpp>
 
 namespace graphics {
+
 WorldShader::WorldShader(const std::string &vertex_path,
                          const std::string &fragment_path)
     : Shader(vertex_path, fragment_path) {
@@ -25,6 +27,7 @@ void WorldShader::set_projection(const float *value) const {
 }
 
 void WorldShader::set_color(Color color) const {
-    set_vec3("color", color.red, color.blue, color.green);
+    set_vec4("color", color.red / COLOR_SCALE, color.blue / COLOR_SCALE,
+             color.green / COLOR_SCALE, color.alpha / COLOR_SCALE);
 }
 } // namespace graphics
