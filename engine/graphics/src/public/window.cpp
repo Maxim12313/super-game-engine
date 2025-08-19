@@ -4,12 +4,11 @@
 #include <glm/ext/vector_float2.hpp>
 #include <stdexcept>
 #include "graphics/window.hpp"
-#include "graphics/color.hpp"
+#include "graphics/structs.hpp"
 #include "../core/clock.hpp"
 #include "../core/world_shader.hpp"
 #include "../core/constants.hpp"
 #include "graphics/camera2d.hpp"
-#include "graphics/color.hpp"
 
 namespace graphics {
 

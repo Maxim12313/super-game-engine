@@ -46,7 +46,8 @@ void Drawer::end_camera() {
 }
 
 void Drawer::set_background_color(Color color) const {
-    glClearColor(color.red, color.green, color.blue, 1);
+    glClearColor(color.red / COLOR_SCALE, color.green / COLOR_SCALE,
+                 color.blue / COLOR_SCALE, color.alpha / COLOR_SCALE);
 }
 
 void Drawer::clear() const {
