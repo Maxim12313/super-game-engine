@@ -2,46 +2,41 @@
 #include <utility>
 #include <vector>
 
-namespace ecs::internal {
-class ISparseSet;
-};
-
 namespace ecs {
 
 // Declaration ********
+// WARNING: these are lightweight and store the begin/end iterators directly
+// If those iterators are invalidated, so too is this range
 template <typename each_iterator>
 class EachRange {
 public:
-    EachRange(int idx, const std::vector<internal::ISparseSet *> &sets);
+    EachRange(each_iterator begin_it, each_iterator end_it);
 
     each_iterator begin() const;
     each_iterator end() const;
 
 private:
-    int m_idx;
-    const std::vector<internal::ISparseSet *> &m_sets;
+    each_iterator m_begin;
+    each_iterator m_end;
 };
 
 }; // namespace ecs
 
-#include "../src/isparse_set.hpp"
 namespace ecs {
 // Class public ********
 template <typename each_iterator>
-EachRange<each_iterator>::EachRange(
-    int idx, const std::vector<internal::ISparseSet *> &sets)
-    : m_idx(idx), m_sets(sets) {
+EachRange<each_iterator>::EachRange(each_iterator begin_it,
+                                    each_iterator end_it)
+    : m_begin(begin_it), m_end(end_it) {
 }
 
 template <typename each_iterator>
 each_iterator EachRange<each_iterator>::begin() const {
-    auto set = m_sets[m_idx];
-    return each_iterator(set->begin(), set->end(), m_sets);
+    return m_begin;
 }
 
 template <typename each_iterator>
 each_iterator EachRange<each_iterator>::end() const {
-    auto set = m_sets[m_idx];
-    return each_iterator(set->end(), set->end(), m_sets);
+    return m_end;
 }
 }; // namespace ecs

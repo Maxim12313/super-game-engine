@@ -61,6 +61,14 @@ public:
     using each_iterator = Iterator<internal::each_projection<Components...>>;
 
 public:
+    // copy not allowed
+    Group(const Group &o) = delete;
+    Group &operator=(const Group &o) = delete;
+
+    // move allowed
+    Group(const Group &&o) = default;
+    Group &operator=(const Group &&o) = default;
+
     Group(std::vector<internal::ISparseSet *> &sets);
     EachRange<each_iterator> each() const;
 };

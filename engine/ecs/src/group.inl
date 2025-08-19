@@ -4,7 +4,8 @@
 #include "../src/isparse_set.hpp"
 #include "utils/macros.hpp"
 #include "ecs/each_range.hpp"
-#include "view.inl"
+#include "ecs/view.hpp"
+#include "utils/str_converter.hpp"
 namespace ecs {
 
 // class Iterator ********
@@ -62,6 +63,11 @@ inline IGroup::IGroup(std::vector<internal::ISparseSet *> &sets)
             m_entities.insert(*it);
         }
     }
+
+    // set observers
+    for (auto set : m_sets) {
+        set->set_group(this);
+    }
 }
 
 inline void IGroup::add_update(Entity entity) {
@@ -86,11 +92,13 @@ inline void IGroup::remove_update(Entity entity) {
 
 inline IGroup::entity_iterator IGroup::begin() const {
     auto set = m_sets[0];
-    return entity_iterator(set->begin(), set->end(), m_sets);
+    return entity_iterator(set->begin(), set->begin() + m_entities.size(),
+                           m_sets);
 }
 inline IGroup::entity_iterator IGroup::end() const {
     auto set = m_sets[0];
-    return entity_iterator(set->end(), set->end(), m_sets);
+    auto end_it = set->begin() + m_entities.size();
+    return entity_iterator(end_it, end_it, m_sets);
 }
 
 // IGroup private ********
@@ -114,25 +122,22 @@ inline bool IGroup::contains(Entity entity) const {
     return m_entities.count(entity);
 }
 inline bool IGroup::has_all(Entity entity) const {
-    for (auto &set : m_sets) {
-        if (!set->contains(entity))
-            return false;
-    }
-    return true;
+    return all_sets_have_entity(m_sets, entity);
 }
 
 // Group public ********
 template <typename... Ts>
 Group<Ts...>::Group(std::vector<internal::ISparseSet *> &sets) : IGroup(sets) {
-
-    // set observers
-    for (auto set : sets) {
-        set->set_group(this);
-    }
 }
 
 template <typename... Ts>
 EachRange<typename Group<Ts...>::each_iterator> Group<Ts...>::each() const {
-    return EachRange<each_iterator>(/*min_idx=*/0, m_sets);
+    auto set = m_sets[0];
+    auto begin_inner = set->begin();
+    auto end_inner = set->begin() + m_entities.size();
+
+    each_iterator begin_it(begin_inner, end_inner, m_sets);
+    each_iterator end_it(end_inner, end_inner, m_sets);
+    return EachRange<each_iterator>(begin_it, end_it);
 }
 }; // namespace ecs
