@@ -1,6 +1,6 @@
 #include "utils/macros.hpp"
 #include <queue>
-#include "../src/core/ring_buffer.hpp"
+#include "../src/ring_buffer.hpp"
 
 using namespace graphics;
 

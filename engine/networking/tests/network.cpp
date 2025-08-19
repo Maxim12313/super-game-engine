@@ -1,4 +1,4 @@
-#include "../src/core/setup.hpp"
+#include "../src/setup.hpp"
 #include <iostream>
 #include <sys/socket.h>
 

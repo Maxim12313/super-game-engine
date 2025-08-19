@@ -1,4 +1,4 @@
-#include "../src/core/stat_window.hpp"
+#include "../src/stat_window.hpp"
 
 using namespace graphics;
 

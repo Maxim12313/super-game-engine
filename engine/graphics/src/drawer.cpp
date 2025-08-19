@@ -4,11 +4,11 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
-#include "../core/world_shader.hpp"
+#include "world_shader.hpp"
+#include "constants.hpp"
 #include "utils/macros.hpp"
-#include "../core/shapes.hpp"
-#include "../core/buffer_handler.hpp"
-#include "../core/constants.hpp"
+#include "shapes.hpp"
+#include "buffer_handler.hpp"
 #include "graphics/camera2d.hpp"
 #include "graphics/drawer.hpp"
 
@@ -32,8 +32,8 @@ Drawer::Drawer(const int &width, const int &height)
     glEnable(GL_DEPTH_TEST);
 
     m_clear_bits = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
-    m_square_vao = configure_vao(internal::SQUARE_VERTICES.begin(),
-                                 internal::SQUARE_VERTICES.size());
+    m_square_vao =
+        configure_vao(SQUARE_VERTICES.begin(), SQUARE_VERTICES.size());
 }
 Drawer::~Drawer() = default;
 

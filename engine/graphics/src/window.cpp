@@ -1,13 +1,9 @@
-#include <functional>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/ext/vector_float2.hpp>
 #include <stdexcept>
 #include "graphics/window.hpp"
-#include "graphics/structs.hpp"
-#include "../core/clock.hpp"
-#include "../core/world_shader.hpp"
-#include "../core/constants.hpp"
+#include "clock.hpp"
 #include "graphics/camera2d.hpp"
 
 namespace graphics {
