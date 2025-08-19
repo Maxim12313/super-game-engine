@@ -3,6 +3,9 @@
 #include "utils/macros.hpp"
 #include "../src/isparse_set.hpp"
 #include "utils/macros.hpp"
+#include "ecs/each_range.hpp"
+#include "ecs/view.hpp"
+#include "utils/str_converter.hpp"
 namespace ecs {
 
 // class Iterator ********
@@ -15,29 +18,56 @@ public:
     using iterator_type = std::vector<Entity>::const_iterator;
 
 public:
-    Iterator(iterator_type it, const std::vector<internal::ISparseSet *> &sets)
-        : m_it(it), m_sets(sets) {
+    // end_it for keeping same api as view iterator
+    Iterator(iterator_type begin_it, iterator_type end_it,
+             const std::vector<internal::ISparseSet *> &sets)
+        : m_curr(begin_it), m_end(end_it), m_sets(sets) {
     }
     Iterator &operator++() {
-        m_it++;
+        m_curr++;
         return *this;
     }
     bool operator!=(IGroup::Iterator<projection> &o) {
-        return m_it != o.m_it;
+        return m_curr != o.m_curr;
     }
     value_type operator*() {
-        return m_proj(*m_it, m_sets);
+        return m_proj(*m_curr, m_sets);
     }
 
 private:
     projection m_proj;
-    iterator_type m_it;
+    iterator_type m_curr;
+    iterator_type m_end;
     const std::vector<internal::ISparseSet *> &m_sets;
 };
 
 // IGroup public ********
 inline IGroup::IGroup(std::vector<internal::ISparseSet *> &sets)
     : m_sets(std::move(sets)) {
+
+    ASSERT_MSG(m_sets.size() > 0, "Group size {} should be > 0 ",
+               m_sets.size());
+
+    // get min sset
+    auto min_set = m_sets[0];
+    for (auto set : m_sets) {
+        if (min_set->size() > set->size())
+            min_set = set;
+    }
+
+    // rearrange the memory of sets to form the group
+    for (auto it = min_set->begin(); it != min_set->end(); it++) {
+        // swap into the front
+        if (all_sets_have_entity(m_sets, *it)) {
+            swap_last(*it);
+            m_entities.insert(*it);
+        }
+    }
+
+    // set observers
+    for (auto set : m_sets) {
+        set->set_group(this);
+    }
 }
 
 inline void IGroup::add_update(Entity entity) {
@@ -45,12 +75,8 @@ inline void IGroup::add_update(Entity entity) {
     if (!should_add(entity))
         return;
 
-    int idx = m_entities.size();
-    // swap entity into the first [0, idx]
-    for (auto &set : m_sets)
-        set->swap_ent_idx(entity, idx);
-
-    // include entity
+    // put it just into the range and include it
+    swap_last(entity);
     m_entities.insert(entity);
 }
 
@@ -59,30 +85,30 @@ inline void IGroup::remove_update(Entity entity) {
     if (!should_remove(entity))
         return;
 
-    int idx = m_entities.size() - 1;
-    // swap entity into last position of [0, idx]
-    for (auto &set : m_sets) {
-        set->swap_ent_idx(entity, idx);
-    }
-
-    // kickout entity
+    // put it to the end of the range then exclude it
     m_entities.erase(entity);
+    swap_last(entity);
 }
 
 inline IGroup::entity_iterator IGroup::begin() const {
-    ASSERT_MSG(m_sets.size() > 0, "Group size {} should be > 0 ",
-               m_sets.size());
-    auto it = m_sets[0]->begin();
-    return entity_iterator(it, m_sets);
+    auto set = m_sets[0];
+    return entity_iterator(set->begin(), set->begin() + m_entities.size(),
+                           m_sets);
 }
 inline IGroup::entity_iterator IGroup::end() const {
-    ASSERT_MSG(m_sets.size() > 0, "Group size {} should be > 0 ",
-               m_sets.size());
-    auto it = m_sets[0]->end();
-    return entity_iterator(it, m_sets);
+    auto set = m_sets[0];
+    auto end_it = set->begin() + m_entities.size();
+    return entity_iterator(end_it, end_it, m_sets);
 }
 
 // IGroup private ********
+inline void IGroup::swap_last(Entity entity) {
+    int idx = m_entities.size();
+    for (auto &set : m_sets) {
+        set->swap_ent_idx(entity, idx);
+    }
+}
+
 inline bool IGroup::should_add(Entity entity) const {
     ASSERT_MSG(!contains(entity),
                "if part of group, then push/emplace double register")
@@ -96,11 +122,7 @@ inline bool IGroup::contains(Entity entity) const {
     return m_entities.count(entity);
 }
 inline bool IGroup::has_all(Entity entity) const {
-    for (auto &set : m_sets) {
-        if (!set->contains(entity))
-            return false;
-    }
-    return true;
+    return all_sets_have_entity(m_sets, entity);
 }
 
 // Group public ********
@@ -110,11 +132,12 @@ Group<Ts...>::Group(std::vector<internal::ISparseSet *> &sets) : IGroup(sets) {
 
 template <typename... Ts>
 EachRange<typename Group<Ts...>::each_iterator> Group<Ts...>::each() const {
-    ASSERT_MSG(m_sets.size() > 0, "Group size {} should be > 0 ",
-               m_sets.size());
     auto set = m_sets[0];
-    each_iterator begin_it(set->begin(), m_sets);
-    each_iterator end_it(set->end(), m_sets);
+    auto begin_inner = set->begin();
+    auto end_inner = set->begin() + m_entities.size();
+
+    each_iterator begin_it(begin_inner, end_inner, m_sets);
+    each_iterator end_it(end_inner, end_inner, m_sets);
     return EachRange<each_iterator>(begin_it, end_it);
 }
 }; // namespace ecs

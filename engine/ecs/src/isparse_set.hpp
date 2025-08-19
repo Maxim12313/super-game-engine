@@ -37,7 +37,7 @@ public:
     std::vector<Entity>::const_iterator end() const;
 
     // Set group observer
-    void set_group(IGroup *m_group);
+    void set_group(IGroup *group);
 
     virtual bool swap_ent_idx(Entity entity, int idx) = 0;
 
@@ -47,3 +47,5 @@ protected:
     IGroup *m_group;
 };
 }; // namespace ecs::internal
+
+#include "isparse_set.inl"

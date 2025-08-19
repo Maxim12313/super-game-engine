@@ -47,13 +47,12 @@ void SparseSet<T>::remove(Entity entity) {
     Entity b = m_to_entity.back();
 
     // swap with the end
-    bool swapped = swap_ent_ent(a, b);
-    if (swapped) {
-        // pop off the back entry
-        m_to_idx.erase(a);
-        m_to_entity.pop_back();
-        m_data.pop_back();
-    }
+    swap_ent_ent(a, b);
+
+    // pop off the end
+    m_to_entity.pop_back();
+    m_data.pop_back();
+    m_to_idx.erase(a);
 
     // group observer
     if (m_group)

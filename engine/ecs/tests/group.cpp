@@ -24,12 +24,43 @@ int main() {
     registry.emplace_back<int>(d, 4);
     registry.emplace_back<float>(d, 11.5);
 
-    auto group = registry.group<char>();
-    std::set<ecs::Entity> expected = {a, b, c, d};
-    std::set<ecs::Entity> have;
-    for (auto [entity, val] : group.each()) {
-        LOG_INFO("{}, {}", entity, val);
-        have.insert(entity);
+    const auto &group = registry.group<char, int>();
+    {
+        std::set<ecs::Entity> expected = {a, c, d};
+        std::set<ecs::Entity> have;
+        for (auto [entity, char_val, int_val] : group.each()) {
+            have.insert(entity);
+        }
+        ASSERT_EQUAL(str_list(have), str_list(expected));
     }
-    ASSERT_EQUAL(str_list(expected), str_list(have));
+
+    ecs::Entity e = 4;
+    registry.emplace_back<char>(e, 'e');
+    {
+        std::set<ecs::Entity> expected = {a, c, d};
+        std::set<ecs::Entity> have;
+        for (auto [entity, char_val, int_val] : group.each()) {
+            have.insert(entity);
+        }
+        ASSERT_EQUAL(str_list(have), str_list(expected));
+    }
+    registry.emplace_back<int>(e, 1);
+    {
+        std::set<ecs::Entity> expected = {a, c, d, e};
+        std::set<ecs::Entity> have;
+        for (auto [entity, char_val, int_val] : group.each()) {
+            have.insert(entity);
+        }
+        ASSERT_EQUAL(str_list(have), str_list(expected));
+    }
+    registry.remove<char>(a);
+
+    {
+        std::set<ecs::Entity> expected = {c, d, e};
+        std::set<ecs::Entity> have;
+        for (auto [entity, char_val, int_val] : group.each()) {
+            have.insert(entity);
+        }
+        ASSERT_EQUAL(str_list(have), str_list(expected));
+    }
 }

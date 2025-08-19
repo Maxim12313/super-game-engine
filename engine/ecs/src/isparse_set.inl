@@ -1,5 +1,6 @@
-#include "ecs/group.hpp"
+#pragma once
 #include "isparse_set.hpp"
+#include "ecs/group.hpp"
 
 namespace ecs::internal {
 // class public ********
@@ -26,6 +27,12 @@ std::vector<Entity>::const_iterator ISparseSet::begin() const {
 
 std::vector<Entity>::const_iterator ISparseSet::end() const {
     return m_to_entity.end();
+}
+
+// Set group observer
+void ISparseSet::set_group(IGroup *group) {
+    ASSERT_MSG(!m_group, "already registered with a group");
+    m_group = group;
 }
 
 } // namespace ecs::internal

@@ -47,7 +47,7 @@ bool Registry::contains(Entity entity) const {
 template <typename Component>
 void Registry::remove(Entity entity) {
     internal::SparseSet<Component> *arr = get_array<Component>();
-    arr->erase(entity);
+    arr->remove(entity);
 }
 
 inline Entity Registry::create() {
@@ -69,12 +69,15 @@ View<Components...> Registry::view() {
 
 template <typename... Components>
 const Group<Components...> &Registry::group() {
-    auto sets = get_sets<Components...>();
-
-    auto ptr = std::make_unique<Group<Components...>>(sets);
-    const auto &group_ref = *ptr;
-    m_groups.emplace_back(std::move(ptr));
-    return group_ref;
+    Signature sig = internal::utils::get_signature<Components...>();
+    auto [it, inserted] = m_groups.try_emplace(sig, nullptr);
+    if (inserted) {
+        // create it if it's not contained
+        auto sets = get_sets<Components...>();
+        it->second = std::make_unique<Group<Components...>>(sets);
+    }
+    // return it
+    return *static_cast<Group<Components...> *>(it->second.get());
 }
 
 // class private ********
